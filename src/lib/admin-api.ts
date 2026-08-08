@@ -13,11 +13,17 @@ export type NominationRow = {
   nomineeName: string;
   nominatorName: string;
   nominatorEmail: string;
+  nominatorPhone?: string;
+  nomineeEmail?: string | null;
+  nomineePhone?: string | null;
   category: string;
-  status: "draft" | "pending_payment" | "paid" | "under_review";
+  status: "draft" | "pending_payment" | "paid" | "under_review" | "referral_pending";
   reviewStatus: "pending" | "approved";
   paymentId: string | null;
+  paymentStatus?: "unpaid" | "paid";
   paymentPaid: boolean;
+  inviteSentAt?: string | null;
+  completionTokenActive?: boolean;
   createdAt: string;
 };
 
@@ -38,6 +44,10 @@ export type PaymentRow = {
   status: "created" | "paid" | "failed";
   type: "nomination" | "sponsorship";
   createdAt: string;
+  contactName?: string | null;
+  contactPhone?: string | null;
+  contactEmail?: string | null;
+  company?: string | null;
 };
 
 export type PaymentDetail = PaymentRow & {
@@ -119,6 +129,86 @@ export function useMarkNominationPaid() {
       queryClient.invalidateQueries({ queryKey: ["admin", "nominations"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "nominations", id] });
       queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
+    },
+  });
+}
+
+export function useSendNominationInvite() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (nominationId: string) =>
+      adminFetch<{ ok: boolean; sent: boolean }>("/api/admin/send-invite", {
+        method: "POST",
+        body: JSON.stringify({ nominationId }),
+      }),
+    onSuccess: (_data, nominationId) => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "nominations"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "nominations", nominationId] });
+    },
+  });
+}
+
+export function useResendCompletionInvite() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (nominationId: string) =>
+      adminFetch<{ ok: boolean; sent: boolean; inviteSentAt?: string }>(
+        `/api/admin/nominations/${nominationId}/resend-completion`,
+        { method: "POST" },
+      ),
+    onSuccess: (_data, nominationId) => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "nominations"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "nominations", nominationId] });
+    },
+  });
+}
+
+export function useUpdateNomination(id: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: Record<string, unknown>) =>
+      adminFetch<{ ok: boolean }>(`/api/admin/nominations/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "nominations"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "nominations", id] });
+    },
+  });
+}
+
+export function useUpdateSponsorship(id: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: Record<string, unknown>) =>
+      adminFetch<{ ok: boolean }>(`/api/admin/sponsorships/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "sponsorships"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "sponsorships", id] });
+    },
+  });
+}
+
+export function useUpdateInquiry(id: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: Record<string, unknown>) =>
+      adminFetch<{ ok: boolean }>(`/api/admin/inquiries/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "inquiries"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "inquiries", id] });
     },
   });
 }

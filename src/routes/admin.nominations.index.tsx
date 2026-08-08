@@ -7,13 +7,30 @@ import {
 } from "@/components/admin/DataTable";
 import { ExportCsvButton } from "@/components/admin/ExportCsvButton";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { PaymentBadge, StatusBadge } from "@/components/admin/StatusBadge";
+import { PaymentBadge } from "@/components/admin/StatusBadge";
 import { formatAdminDate } from "@/components/admin/admin-utils";
-import { useNominations } from "@/lib/admin-api";
+import { useNominations, type NominationRow } from "@/lib/admin-api";
 
 export const Route = createFileRoute("/admin/nominations/")({
   component: AdminNominations,
 });
+
+function formatStatus(status: NominationRow["status"]) {
+  switch (status) {
+    case "referral_pending":
+      return "Referral pending";
+    case "under_review":
+      return "Under review";
+    case "pending_payment":
+      return "Pending payment";
+    case "paid":
+      return "Paid";
+    case "draft":
+      return "Draft";
+    default:
+      return status;
+  }
+}
 
 function AdminNominations() {
   const navigate = useNavigate();
@@ -56,14 +73,24 @@ function AdminNominations() {
           "nominatorEmail",
           "category",
           "referenceId",
+          "status",
         ]}
         searchPlaceholder="Name, email, category, or reference"
         entryLabel="nominations"
-        columns={["Reference", "Nominee", "Nominator", "Category", "Payment", "Review", "Submitted"]}
+        columns={[
+          "Reference",
+          "Nominee",
+          "Nominator",
+          "Category",
+          "Status",
+          "Payment",
+          "Invite sent",
+          "Submitted",
+        ]}
       >
         {(rows) =>
           rows.length === 0 ? (
-            <DataTableEmpty colSpan={7} message="No nominations yet." />
+            <DataTableEmpty colSpan={8} message="No nominations yet." />
           ) : (
             rows.map((row) => (
               <DataTableRow
@@ -88,14 +115,13 @@ function AdminNominations() {
                 </DataTableCell>
                 <DataTableCell>{row.category}</DataTableCell>
                 <DataTableCell>
-                  <PaymentBadge paid={row.paymentPaid} />
+                  <span className="text-sm text-zinc-800">{formatStatus(row.status)}</span>
                 </DataTableCell>
                 <DataTableCell>
-                  <StatusBadge
-                    variant={row.reviewStatus === "approved" ? "success" : "warning"}
-                  >
-                    {row.reviewStatus}
-                  </StatusBadge>
+                  <PaymentBadge paid={row.paymentPaid} />
+                </DataTableCell>
+                <DataTableCell className="text-zinc-500">
+                  {row.inviteSentAt ? formatAdminDate(row.inviteSentAt) : "Not sent"}
                 </DataTableCell>
                 <DataTableCell className="text-zinc-500">
                   {formatAdminDate(row.createdAt)}

@@ -32,25 +32,40 @@ export function DetailField({
   label,
   value,
   mono,
+  prominent,
 }: {
   label: string;
   value: unknown;
   mono?: boolean;
+  /** Larger, bolder label for long-form answer sections. */
+  prominent?: boolean;
 }) {
   const formatted = formatDetailValue(value);
   const isMultiline = formatted.includes("\n");
 
   return (
     <div>
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">{label}</p>
+      <p
+        className={
+          prominent
+            ? "text-base font-bold tracking-tight text-zinc-900 md:text-lg"
+            : "text-[10px] font-semibold uppercase tracking-wider text-zinc-400"
+        }
+      >
+        {label}
+      </p>
       {isMultiline ? (
         <pre
-          className={`mt-1 whitespace-pre-wrap text-sm text-zinc-800 ${mono ? "font-mono text-xs" : ""}`}
+          className={`mt-2 whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 ${mono ? "font-mono text-xs" : ""}`}
         >
           {formatted}
         </pre>
       ) : (
-        <p className={`mt-1 text-sm font-medium text-zinc-900 ${mono ? "font-mono text-xs" : ""}`}>
+        <p
+          className={`mt-1.5 text-sm leading-relaxed text-zinc-800 ${
+            prominent ? "font-normal" : "font-medium text-zinc-900"
+          } ${mono ? "font-mono text-xs" : ""}`}
+        >
           {formatted}
         </p>
       )}

@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { toast } from "sonner";
+import { AdminEditableSection } from "@/components/admin/AdminEditableSection";
 import {
   DetailField,
   DetailGrid,
@@ -6,7 +8,7 @@ import {
   DetailTimestamp,
 } from "@/components/admin/DetailView";
 import { ExportCsvButton } from "@/components/admin/ExportCsvButton";
-import { useInquiry } from "@/lib/admin-api";
+import { useInquiry, useUpdateInquiry } from "@/lib/admin-api";
 
 export const Route = createFileRoute("/admin/inquiries/$id")({
   component: InquiryDetailPage,
@@ -15,6 +17,7 @@ export const Route = createFileRoute("/admin/inquiries/$id")({
 function InquiryDetailPage() {
   const { id } = Route.useParams();
   const { data, isLoading, error } = useInquiry(id);
+  const updateInquiry = useUpdateInquiry(id);
 
   if (isLoading) {
     return <p className="text-sm text-zinc-500">Loading inquiry…</p>;
@@ -44,7 +47,25 @@ function InquiryDetailPage() {
         <ExportCsvButton filename={`inquiry-${data.id}`} rows={[data]} />
       </div>
 
-      <DetailSection title="Inquiry details">
+      <AdminEditableSection
+        title="Inquiry details"
+        saving={updateInquiry.isPending}
+        fields={[
+          { key: "name", label: "Name", value: data.name },
+          { key: "email", label: "Email", value: data.email, type: "email" },
+          { key: "company", label: "Company", value: data.company ?? "" },
+          { key: "inquiryType", label: "Inquiry type", value: data.inquiryType ?? "" },
+          { key: "message", label: "Message", value: data.message, type: "textarea" },
+        ]}
+        onSave={async (values) => {
+          await updateInquiry.mutateAsync({
+            ...values,
+            company: values.company || null,
+            inquiryType: values.inquiryType || null,
+          });
+          toast.success("Inquiry updated.");
+        }}
+      >
         <DetailGrid>
           <DetailField label="Name" value={data.name} />
           <DetailField label="Email" value={data.email} />
@@ -55,7 +76,7 @@ function InquiryDetailPage() {
         <div className="mt-4">
           <DetailField label="Message" value={data.message} />
         </div>
-      </DetailSection>
+      </AdminEditableSection>
     </div>
   );
 }

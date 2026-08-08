@@ -72,6 +72,7 @@ function Sponsorship() {
   const [submitting, setSubmitting] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [confirmationEmail, setConfirmationEmail] = useState<string | null>(null);
   const [registrationReady, setRegistrationReady] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [registration, setRegistration] = useState<SponsorshipCheckoutInput | null>(null);
@@ -88,6 +89,8 @@ function Sponsorship() {
           tier.amountInr * (Number.parseFloat(paymentDetails.advancePercent) / 100),
         )
       : null;
+  const gstInr = advanceInr != null ? Math.round(advanceInr * 0.18) : null;
+  const totalInr = advanceInr != null && gstInr != null ? advanceInr + gstInr : null;
 
   async function startCheckout(input: SponsorshipCheckoutInput, sponsorshipReservationId: string) {
     setCheckoutLoading(true);
@@ -101,6 +104,7 @@ function Sponsorship() {
         () => {
           setPaymentStatus("idle");
           setPaymentError(null);
+          setConfirmationEmail(input.contactEmail);
           setSubmitted(true);
           toast.success("Payment received — your sponsorship slot is reserved.");
         },
@@ -224,7 +228,8 @@ function Sponsorship() {
         <Toaster />
         <FormSuccessState
           title="Sponsorship Payment Successful"
-          message="Thank you — your advance payment has been received and your sponsorship application is confirmed. Our corporate relations team will contact you shortly."
+          message="Thank you — your advance payment has been received and your sponsorship slot is confirmed. A sponsorship confirmation email with your committed package value and amount paid has been sent to you. Our corporate relations team will contact you shortly."
+          confirmationEmails={confirmationEmail ?? registration?.contactEmail}
         />
       </>
     );
@@ -370,7 +375,7 @@ function Sponsorship() {
 
           <div className="space-y-8 lg:col-span-8">
             <FormPanel className="!p-6 md:!p-10">
-              {registrationReady && registration && tier && advanceInr ? (
+              {registrationReady && registration && tier && advanceInr && totalInr ? (
                 <div className="space-y-6">
                   <FormSectionHeader
                     title="Complete Payment"
@@ -444,10 +449,12 @@ function Sponsorship() {
                     </p>
                     <h3 className="mt-2 text-2xl font-bold text-foreground">{tier.name}</h3>
                     <p className="mt-4 text-4xl font-black text-amber-400">
-                      ₹ {advanceInr.toLocaleString("en-IN")}
-                      <span className="ml-2 text-sm font-normal text-gray-500">
-                        ({paymentDetails.advancePercent} advance)
-                      </span>
+                      ₹ {totalInr.toLocaleString("en-IN")}
+                      <span className="ml-2 text-sm font-normal text-gray-500">(incl. GST)</span>
+                    </p>
+                    <p className="mt-2 text-sm text-gray-400">
+                      {paymentDetails.advancePercent} advance ₹ {advanceInr.toLocaleString("en-IN")}{" "}
+                      + {paymentDetails.gstRate} GST ₹ {gstInr?.toLocaleString("en-IN")}
                     </p>
                     <p className="mt-3 text-sm text-gray-400">
                       {paymentStatus === "idle"

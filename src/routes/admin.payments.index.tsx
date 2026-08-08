@@ -15,12 +15,6 @@ export const Route = createFileRoute("/admin/payments/")({
   component: AdminPayments,
 });
 
-function paymentStatusVariant(status: string) {
-  if (status === "paid") return "success" as const;
-  if (status === "failed") return "error" as const;
-  return "pending" as const;
-}
-
 function AdminPayments() {
   const navigate = useNavigate();
 
@@ -56,10 +50,18 @@ function AdminPayments() {
 
       <DataTableShell
         items={items}
-        searchKeys={["razorpayOrderId", "razorpayPaymentId", "type", "status"]}
-        searchPlaceholder="Order ID, payment ID, type, or status"
+        searchKeys={[
+          "razorpayOrderId",
+          "razorpayPaymentId",
+          "type",
+          "contactName",
+          "contactPhone",
+          "contactEmail",
+          "company",
+        ]}
+        searchPlaceholder="Order ID, payer name, phone, or company"
         entryLabel="payments"
-        columns={["Order ID", "Payment ID", "Amount (INR)", "Status", "Type", "Date"]}
+        columns={["Order ID", "Payer", "Phone", "Amount (INR)", "Type", "Date"]}
       >
         {(rows) =>
           rows.length === 0 ? (
@@ -79,16 +81,15 @@ function AdminPayments() {
                 <DataTableCell mono className="text-zinc-500">
                   {row.razorpayOrderId}
                 </DataTableCell>
-                <DataTableCell mono className="text-zinc-500">
-                  {row.razorpayPaymentId ?? "—"}
+                <DataTableCell>
+                  <div className="font-semibold text-zinc-900">{row.contactName ?? "—"}</div>
+                  <div className="text-xs text-zinc-500">{row.company ?? row.contactEmail ?? ""}</div>
+                </DataTableCell>
+                <DataTableCell className="font-medium text-zinc-900">
+                  {row.contactPhone ?? "—"}
                 </DataTableCell>
                 <DataTableCell className="font-semibold text-zinc-900">
                   ₹{Number(row.amountInr).toLocaleString("en-IN")}
-                </DataTableCell>
-                <DataTableCell>
-                  <StatusBadge variant={paymentStatusVariant(row.status)}>
-                    {row.status}
-                  </StatusBadge>
                 </DataTableCell>
                 <DataTableCell>
                   <StatusBadge variant="neutral">{row.type}</StatusBadge>

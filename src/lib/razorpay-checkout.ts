@@ -1,4 +1,4 @@
-import { postSponsorshipCreateOrder, postSponsorshipPayment } from "@/lib/api-client";
+import { postNominationCreateOrder, postNominationPayment, postSponsorshipCreateOrder, postSponsorshipPayment } from "@/lib/api-client";
 import type { SponsorshipTierId } from "@/data/awards";
 import { toast } from "sonner";
 
@@ -61,7 +61,10 @@ export async function openSponsorshipRazorpayCheckout(
     throw new Error("Unable to load Razorpay checkout. Please try again.");
   }
 
-  const order = await postSponsorshipCreateOrder(input);
+  const order = await postSponsorshipCreateOrder({
+    ...input,
+    reservationId,
+  });
 
   if (order.isTestCharge) {
     const testInr = (order.amount / 100).toLocaleString("en-IN");
@@ -106,7 +109,9 @@ export async function openSponsorshipRazorpayCheckout(
             razorpayOrderId: response.razorpay_order_id,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpaySignature: response.razorpay_signature,
-            amountPaise: order.displayAmountPaise,
+            amountPaise: order.totalPaise ?? order.displayAmountPaise,
+            basePaise: order.basePaise,
+            gstPaise: order.gstPaise,
           });
 
           onSuccess();
@@ -119,7 +124,106 @@ export async function openSponsorshipRazorpayCheckout(
         ondismiss: () => {
           if (settled) return;
           onDismiss?.();
-          finish(() => reject(new Error("Payment was cancelled.")));
+          finish(() => resolve());
+        },
+      },
+    });
+
+    rzp.on("payment.failed", (response: { error?: { description?: string; reason?: string } }) => {
+      const description =
+        response?.error?.description?.trim() ||
+        response?.error?.reason?.trim() ||
+        "Payment failed. Please try again.";
+      finish(() => reject(new Error(description)));
+    });
+
+    rzp.open();
+  });
+}
+
+export type NominationCheckoutInput = {
+  nominatorName: string;
+  nominatorEmail: string;
+  nominatorPhone: string;
+  nomineeName: string;
+  category: string;
+};
+
+export async function openNominationRazorpayCheckout(
+  input: NominationCheckoutInput,
+  onSuccess: (paymentId: string) => void | Promise<void>,
+  onDismiss?: () => void,
+): Promise<void> {
+  const scriptLoaded = await loadRazorpayScript();
+  if (!scriptLoaded || !window.Razorpay) {
+    throw new Error("Unable to load Razorpay checkout. Please try again.");
+  }
+
+  const order = await postNominationCreateOrder(input);
+
+  if (order.isTestCharge) {
+    const testInr = (order.amount / 100).toLocaleString("en-IN");
+    const displayInr = (order.displayAmountPaise / 100).toLocaleString("en-IN");
+    toast.message(
+      `Razorpay test mode: checkout will charge ₹${testInr} (nomination fee shown: ₹${displayInr}).`,
+    );
+  }
+
+  return new Promise((resolve, reject) => {
+    let settled = false;
+
+    const finish = (fn: () => void) => {
+      if (settled) return;
+      settled = true;
+      fn();
+    };
+
+    const rzp = new window.Razorpay!({
+      key: order.keyId,
+      amount: order.amount,
+      currency: order.currency,
+      name: "FG Media Group",
+      description: order.feeLabel,
+      order_id: order.orderId,
+      prefill: {
+        name: input.nominatorName,
+        email: input.nominatorEmail,
+        contact: input.nominatorPhone,
+      },
+      notes: {
+        nominee: input.nomineeName,
+        category: input.category,
+      },
+      theme: {
+        color: "#d97706",
+      },
+      handler: async (response: RazorpayHandlerResponse) => {
+        try {
+          const payment = await postNominationPayment({
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
+            amountPaise: order.totalPaise ?? order.displayAmountPaise,
+            basePaise: order.basePaise,
+            gstPaise: order.gstPaise,
+            nominatorName: input.nominatorName,
+            nominatorEmail: input.nominatorEmail,
+            nominatorPhone: input.nominatorPhone,
+            nomineeName: input.nomineeName,
+            category: input.category,
+          });
+
+          await onSuccess(payment.paymentId);
+          finish(() => resolve());
+        } catch (error) {
+          finish(() => reject(error));
+        }
+      },
+      modal: {
+        ondismiss: () => {
+          if (settled) return;
+          onDismiss?.();
+          finish(() => resolve());
         },
       },
     });

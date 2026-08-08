@@ -30,6 +30,8 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminNominationsRouteImport } from './routes/admin.nominations'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminSponsorshipsRouteImport } from './routes/admin.sponsorships'
+import { Route as NominateIndexRouteImport } from './routes/nominate.index'
+import { Route as NominateCompleteRouteImport } from './routes/nominate.complete'
 import { Route as AdminInquiriesIndexRouteImport } from './routes/admin.inquiries.index'
 import { Route as AdminInquiriesIdRouteImport } from './routes/admin.inquiries.$id'
 import { Route as AdminNominationsIndexRouteImport } from './routes/admin.nominations.index'
@@ -144,6 +146,16 @@ const AdminSponsorshipsRoute = AdminSponsorshipsRouteImport.update({
   path: '/sponsorships',
   getParentRoute: () => AdminRoute,
 } as any)
+const NominateIndexRoute = NominateIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NominateRoute,
+} as any)
+const NominateCompleteRoute = NominateCompleteRouteImport.update({
+  id: '/complete',
+  path: '/complete',
+  getParentRoute: () => NominateRoute,
+} as any)
 const AdminInquiriesIndexRoute = AdminInquiriesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -194,7 +206,7 @@ export interface FileRoutesByFullPath {
   '/awards': typeof AwardsRoute
   '/contact': typeof ContactRoute
   '/media': typeof MediaRoute
-  '/nominate': typeof NominateRoute
+  '/nominate': typeof NominateRouteWithChildren
   '/operations': typeof OperationsRoute
   '/publications': typeof PublicationsRoute
   '/sponsorship': typeof SponsorshipRoute
@@ -206,7 +218,9 @@ export interface FileRoutesByFullPath {
   '/admin/nominations': typeof AdminNominationsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
+  '/nominate/complete': typeof NominateCompleteRoute
   '/admin/': typeof AdminIndexRoute
+  '/nominate/': typeof NominateIndexRoute
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
   '/admin/nominations/$id': typeof AdminNominationsIdRoute
   '/admin/payments/$id': typeof AdminPaymentsIdRoute
@@ -224,7 +238,6 @@ export interface FileRoutesByTo {
   '/awards': typeof AwardsRoute
   '/contact': typeof ContactRoute
   '/media': typeof MediaRoute
-  '/nominate': typeof NominateRoute
   '/operations': typeof OperationsRoute
   '/publications': typeof PublicationsRoute
   '/sponsorship': typeof SponsorshipRoute
@@ -232,7 +245,9 @@ export interface FileRoutesByTo {
   '/technology': typeof TechnologyRoute
   '/viera': typeof VieraRoute
   '/admin/login': typeof AdminLoginRoute
+  '/nominate/complete': typeof NominateCompleteRoute
   '/admin': typeof AdminIndexRoute
+  '/nominate': typeof NominateIndexRoute
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
   '/admin/nominations/$id': typeof AdminNominationsIdRoute
   '/admin/payments/$id': typeof AdminPaymentsIdRoute
@@ -252,7 +267,7 @@ export interface FileRoutesById {
   '/awards': typeof AwardsRoute
   '/contact': typeof ContactRoute
   '/media': typeof MediaRoute
-  '/nominate': typeof NominateRoute
+  '/nominate': typeof NominateRouteWithChildren
   '/operations': typeof OperationsRoute
   '/publications': typeof PublicationsRoute
   '/sponsorship': typeof SponsorshipRoute
@@ -264,7 +279,9 @@ export interface FileRoutesById {
   '/admin/nominations': typeof AdminNominationsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
+  '/nominate/complete': typeof NominateCompleteRoute
   '/admin/': typeof AdminIndexRoute
+  '/nominate/': typeof NominateIndexRoute
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
   '/admin/nominations/$id': typeof AdminNominationsIdRoute
   '/admin/payments/$id': typeof AdminPaymentsIdRoute
@@ -297,7 +314,9 @@ export interface FileRouteTypes {
     | '/admin/nominations'
     | '/admin/payments'
     | '/admin/sponsorships'
+    | '/nominate/complete'
     | '/admin/'
+    | '/nominate/'
     | '/admin/inquiries/$id'
     | '/admin/nominations/$id'
     | '/admin/payments/$id'
@@ -315,7 +334,6 @@ export interface FileRouteTypes {
     | '/awards'
     | '/contact'
     | '/media'
-    | '/nominate'
     | '/operations'
     | '/publications'
     | '/sponsorship'
@@ -323,7 +341,9 @@ export interface FileRouteTypes {
     | '/technology'
     | '/viera'
     | '/admin/login'
+    | '/nominate/complete'
     | '/admin'
+    | '/nominate'
     | '/admin/inquiries/$id'
     | '/admin/nominations/$id'
     | '/admin/payments/$id'
@@ -354,7 +374,9 @@ export interface FileRouteTypes {
     | '/admin/nominations'
     | '/admin/payments'
     | '/admin/sponsorships'
+    | '/nominate/complete'
     | '/admin/'
+    | '/nominate/'
     | '/admin/inquiries/$id'
     | '/admin/nominations/$id'
     | '/admin/payments/$id'
@@ -374,7 +396,7 @@ export interface RootRouteChildren {
   AwardsRoute: typeof AwardsRoute
   ContactRoute: typeof ContactRoute
   MediaRoute: typeof MediaRoute
-  NominateRoute: typeof NominateRoute
+  NominateRoute: typeof NominateRouteWithChildren
   OperationsRoute: typeof OperationsRoute
   PublicationsRoute: typeof PublicationsRoute
   SponsorshipRoute: typeof SponsorshipRoute
@@ -532,6 +554,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSponsorshipsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/nominate/': {
+      id: '/nominate/'
+      path: '/'
+      fullPath: '/nominate/'
+      preLoaderRoute: typeof NominateIndexRouteImport
+      parentRoute: typeof NominateRoute
+    }
+    '/nominate/complete': {
+      id: '/nominate/complete'
+      path: '/complete'
+      fullPath: '/nominate/complete'
+      preLoaderRoute: typeof NominateCompleteRouteImport
+      parentRoute: typeof NominateRoute
+    }
     '/admin/inquiries/': {
       id: '/admin/inquiries/'
       path: '/'
@@ -665,6 +701,20 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface NominateRouteChildren {
+  NominateCompleteRoute: typeof NominateCompleteRoute
+  NominateIndexRoute: typeof NominateIndexRoute
+}
+
+const NominateRouteChildren: NominateRouteChildren = {
+  NominateCompleteRoute: NominateCompleteRoute,
+  NominateIndexRoute: NominateIndexRoute,
+}
+
+const NominateRouteWithChildren = NominateRoute._addFileChildren(
+  NominateRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -674,7 +724,7 @@ const rootRouteChildren: RootRouteChildren = {
   AwardsRoute: AwardsRoute,
   ContactRoute: ContactRoute,
   MediaRoute: MediaRoute,
-  NominateRoute: NominateRoute,
+  NominateRoute: NominateRouteWithChildren,
   OperationsRoute: OperationsRoute,
   PublicationsRoute: PublicationsRoute,
   SponsorshipRoute: SponsorshipRoute,

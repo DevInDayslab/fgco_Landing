@@ -341,7 +341,19 @@ export const paymentDetails = {
   gstRate: "18%",
   advancePercent: "50%",
   balanceDueDays: 15,
+  nominationFeeInr: 20_000,
 };
+
+export function getNominationFeeBreakdown() {
+  const baseInr = paymentDetails.nominationFeeInr;
+  const gstRate = Number.parseFloat(paymentDetails.gstRate) / 100;
+  const gstInr = Math.round(baseInr * gstRate);
+  return {
+    baseInr,
+    gstInr,
+    totalInr: baseInr + gstInr,
+  };
+}
 
 export const INVIGIL_INTRO =
   "InViGIL is the world's first and most advanced decentralized media, commerce, spatial journalism, and event management ecosystem. By replacing opaque, clickbait-driven legacy models with an architecture anchored to the ViERA Engine Core and an immutable PostgreSQL ledger, InViGIL shifts economic incentives strictly toward high-integrity content generation based on Truth, Telemetry, and Real-World Impact.";

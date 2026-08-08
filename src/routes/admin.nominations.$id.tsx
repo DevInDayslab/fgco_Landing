@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AdminFileAttachment } from "@/components/admin/AdminFileAttachment";
+import { toast } from "sonner";
+import { AdminAttachmentEditor } from "@/components/admin/AdminAttachmentEditor";
+import { AdminEditableSection } from "@/components/admin/AdminEditableSection";
 import {
   DetailField,
   DetailGrid,
@@ -8,19 +10,18 @@ import {
 } from "@/components/admin/DetailView";
 import { ExportCsvButton } from "@/components/admin/ExportCsvButton";
 import { PaymentBadge } from "@/components/admin/StatusBadge";
-import { useMarkNominationPaid, useNomination } from "@/lib/admin-api";
+import {
+  useMarkNominationPaid,
+  useNomination,
+  useResendCompletionInvite,
+  useSendNominationInvite,
+  useUpdateNomination,
+} from "@/lib/admin-api";
+import { formatAdminDate } from "@/components/admin/admin-utils";
 
 export const Route = createFileRoute("/admin/nominations/$id")({
   component: NominationDetailPage,
 });
-
-function humanizeKey(key: string) {
-  return key
-    .replace(/([A-Z])/g, " $1")
-    .replace(/_/g, " ")
-    .replace(/^./, (s) => s.toUpperCase())
-    .trim();
-}
 
 type AttachmentMeta = {
   key?: string | null;
@@ -36,6 +37,9 @@ function NominationDetailPage() {
   const { id } = Route.useParams();
   const { data, isLoading, error } = useNomination(id);
   const markPaid = useMarkNominationPaid();
+  const sendInvite = useSendNominationInvite();
+  const resendCompletion = useResendCompletionInvite();
+  const updateNomination = useUpdateNomination(id);
 
   if (isLoading) {
     return <p className="text-sm text-zinc-500">Loading nomination…</p>;
@@ -53,22 +57,59 @@ function NominationDetailPage() {
   const attachments =
     formData.attachments && typeof formData.attachments === "object"
       ? (formData.attachments as Record<string, AttachmentMeta | string | null>)
-      : null;
+      : {};
 
   const profileMeta =
-    attachments?.profilePhoto && typeof attachments.profilePhoto === "object"
+    attachments.profilePhoto && typeof attachments.profilePhoto === "object"
       ? attachments.profilePhoto
-      : { originalName: attachments?.profilePhoto as string | undefined, key: data.profilePhotoKey };
+      : { key: data.profilePhotoKey };
   const docsMeta =
-    attachments?.supportingDocs && typeof attachments.supportingDocs === "object"
+    attachments.supportingDocs && typeof attachments.supportingDocs === "object"
       ? attachments.supportingDocs
-      : { originalName: attachments?.supportingDocs as string | undefined, key: data.supportingDocsKey };
+      : { key: data.supportingDocsKey };
   const videoMeta =
-    attachments?.videoFile && typeof attachments.videoFile === "object"
+    attachments.videoFile && typeof attachments.videoFile === "object"
       ? attachments.videoFile
-      : { originalName: attachments?.videoFile as string | undefined, key: data.videoKey };
+      : { key: data.videoKey };
 
-  const formFields = Object.entries(formData).filter(([key]) => key !== "attachments");
+  const nomineeEmail =
+    data.nomineeEmail ||
+    (typeof formData["nomineeEmail"] === "string" ? formData["nomineeEmail"] : "");
+  const nomineePhone =
+    typeof formData["nomineePhone"] === "string" ? formData["nomineePhone"] : "";
+  const nomineeLocation =
+    typeof formData["nomineeLocation"] === "string" ? formData["nomineeLocation"] : "";
+  const relationship =
+    typeof formData["relationship"] === "string" ? formData["relationship"] : "";
+  const publications = Array.isArray(formData["publications"])
+    ? (formData["publications"] as unknown[]).filter((v): v is string => typeof v === "string")
+    : [];
+  const executiveSummary =
+    typeof formData["executiveSummary"] === "string" ? formData["executiveSummary"] : "";
+  const achievement = typeof formData["achievement"] === "string" ? formData["achievement"] : "";
+  const impact = typeof formData["impact"] === "string" ? formData["impact"] : "";
+  const futureGoals = typeof formData["futureGoals"] === "string" ? formData["futureGoals"] : "";
+  const hasApplicationNarrative = Boolean(
+    executiveSummary || achievement || impact || futureGoals,
+  );
+
+  async function saveAttachment(
+    slot: "profilePhoto" | "supportingDocs" | "videoFile",
+    keyField: "profilePhotoKey" | "supportingDocsKey" | "videoKey",
+    key: string,
+    meta: AttachmentMeta,
+  ) {
+    await updateNomination.mutateAsync({
+      [keyField]: key,
+      formData: {
+        attachments: {
+          ...attachments,
+          [slot]: meta,
+        },
+      },
+    });
+    toast.success("Attachment updated.");
+  }
 
   return (
     <div className="space-y-6">
@@ -89,6 +130,45 @@ function NominationDetailPage() {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ExportCsvButton filename={`nomination-${data.referenceId ?? data.id}`} rows={[data]} />
+          {data.status === "referral_pending" && (
+            <button
+              type="button"
+              disabled={resendCompletion.isPending || !nomineeEmail}
+              onClick={() => {
+                resendCompletion.mutate(data.id, {
+                  onSuccess: (result) => {
+                    if (result.sent) toast.success("Completion invitation resent to nominee.");
+                    else toast.error("Invite could not be sent. Check SMTP configuration.");
+                  },
+                  onError: (err) => toast.error(err.message),
+                });
+              }}
+              className="rounded-lg border border-sky-200 bg-sky-50 px-3.5 py-2 text-sm font-medium text-sky-800 hover:bg-sky-100 disabled:opacity-50"
+            >
+              {resendCompletion.isPending ? "Sending…" : "Resend completion email"}
+            </button>
+          )}
+          <button
+            type="button"
+            disabled={sendInvite.isPending || !nomineeEmail}
+            onClick={() => {
+              sendInvite.mutate(data.id, {
+                onSuccess: (result) => {
+                  if (result.sent) toast.success("Formal invitation sent to nominee.");
+                  else toast.error("Invite could not be sent. Check SMTP configuration.");
+                },
+                onError: (err) => toast.error(err.message),
+              });
+            }}
+            className="rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-2 text-sm font-medium text-amber-800 hover:bg-amber-100 disabled:opacity-50"
+          >
+            {sendInvite.isPending ? "Sending…" : "Approve & Send Formal Invite"}
+          </button>
+          <p className="w-full text-xs text-zinc-500">
+            {data.status === "referral_pending"
+              ? "Resend completion email re-sends the secure token link so the nominee can upload documents and pay."
+              : "Sends the Official Nominee Communication (CEO letter) to the nominee's email."}
+          </p>
           {!data.paymentPaid && (
             <button
               type="button"
@@ -108,6 +188,20 @@ function NominationDetailPage() {
           <DetailField label="Category" value={data.category} />
           <DetailField label="Status" value={data.status} />
           <DetailField label="Review status" value={data.reviewStatus} />
+          <DetailField
+            label="Invite sent"
+            value={data.inviteSentAt ? formatAdminDate(data.inviteSentAt) : "Not sent"}
+          />
+          <DetailField
+            label="Completion link"
+            value={
+              data.status === "referral_pending"
+                ? data.completionTokenActive
+                  ? "Active"
+                  : "Missing"
+                : "—"
+            }
+          />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
               Payment
@@ -122,46 +216,148 @@ function NominationDetailPage() {
         </DetailGrid>
       </DetailSection>
 
-      <DetailSection title="Nominator">
+      <AdminEditableSection
+        title="Nominator"
+        saving={updateNomination.isPending}
+        fields={[
+          { key: "nominatorName", label: "Name", value: data.nominatorName },
+          { key: "nominatorEmail", label: "Email", value: data.nominatorEmail, type: "email" },
+          { key: "nominatorPhone", label: "Phone", value: data.nominatorPhone, type: "tel" },
+        ]}
+        onSave={async (values) => {
+          await updateNomination.mutateAsync(values);
+          toast.success("Nominator details saved.");
+        }}
+      >
         <DetailGrid>
           <DetailField label="Name" value={data.nominatorName} />
           <DetailField label="Email" value={data.nominatorEmail} />
           <DetailField label="Phone" value={data.nominatorPhone} />
         </DetailGrid>
-      </DetailSection>
+      </AdminEditableSection>
 
-      <DetailSection title="Nominee">
+      <AdminEditableSection
+        title="Nominee"
+        saving={updateNomination.isPending}
+        fields={[
+          { key: "nomineeName", label: "Name", value: data.nomineeName },
+          { key: "category", label: "Category", value: data.category },
+          { key: "nomineeEmail", label: "Email", value: nomineeEmail, type: "email" },
+          { key: "nomineePhone", label: "Phone", value: nomineePhone, type: "tel" },
+          { key: "nomineeLocation", label: "Location", value: nomineeLocation },
+          {
+            key: "status",
+            label: "Status",
+            value: data.status,
+            type: "select",
+            options: [
+              { value: "draft", label: "Draft" },
+              { value: "pending_payment", label: "Pending payment" },
+              { value: "paid", label: "Paid" },
+              { value: "under_review", label: "Under review" },
+              { value: "referral_pending", label: "Referral pending" },
+            ],
+          },
+          {
+            key: "reviewStatus",
+            label: "Review status",
+            value: data.reviewStatus,
+            type: "select",
+            options: [
+              { value: "pending", label: "Pending" },
+              { value: "approved", label: "Approved" },
+            ],
+          },
+        ]}
+        onSave={async (values) => {
+          const { nomineeEmail: email, nomineePhone: phone, nomineeLocation: location, ...top } =
+            values;
+          await updateNomination.mutateAsync({
+            nomineeName: top.nomineeName,
+            category: top.category,
+            status: top.status,
+            reviewStatus: top.reviewStatus,
+            nomineeEmail: email,
+            formData: { nomineeEmail: email, nomineePhone: phone, nomineeLocation: location },
+          });
+          toast.success("Nominee details saved.");
+        }}
+      >
         <DetailGrid>
           <DetailField label="Name" value={data.nomineeName} />
+          <DetailField label="Category" value={data.category} />
+          <DetailField label="Email" value={nomineeEmail} />
+          <DetailField label="Phone" value={nomineePhone} />
+          <DetailField label="Location" value={nomineeLocation} />
         </DetailGrid>
-      </DetailSection>
+      </AdminEditableSection>
 
-      {formFields.length > 0 && (
-        <DetailSection title="Form details">
-          <DetailGrid>
-            {formFields.map(([key, value]) => (
-              <DetailField key={key} label={humanizeKey(key)} value={value} />
-            ))}
-          </DetailGrid>
+      {hasApplicationNarrative ? (
+        <DetailSection title="Application answers">
+          <div className="space-y-7">
+            {relationship ? (
+              <DetailField prominent label="Relationship" value={relationship} />
+            ) : null}
+            {publications.length > 0 ? (
+              <DetailField
+                prominent
+                label="Preferred publications"
+                value={publications.join(", ")}
+              />
+            ) : null}
+            <DetailField prominent label="Executive summary" value={executiveSummary || "—"} />
+            <DetailField prominent label="Achievement" value={achievement || "—"} />
+            <DetailField prominent label="Impact & outcomes" value={impact || "—"} />
+            <DetailField prominent label="Future goals & vision" value={futureGoals || "—"} />
+          </div>
         </DetailSection>
-      )}
+      ) : data.status === "referral_pending" ? (
+        <DetailSection title="Application answers">
+          <div className="space-y-7">
+            {relationship ? (
+              <DetailField prominent label="Relationship" value={relationship} />
+            ) : null}
+            {publications.length > 0 ? (
+              <DetailField
+                prominent
+                label="Preferred publications"
+                value={publications.join(", ")}
+              />
+            ) : null}
+            <p className="text-sm text-zinc-500">
+              Waiting for the nominee to complete their profile, justification, and uploads.
+            </p>
+          </div>
+        </DetailSection>
+      ) : null}
 
       <DetailSection title="Attachments">
-        <div className="grid gap-4 md:grid-cols-3">
-          <AdminFileAttachment
+        <div className="grid gap-6 md:grid-cols-3">
+          <AdminAttachmentEditor
             label="Profile photo"
+            purpose="profile"
             keyValue={data.profilePhotoKey ?? profileMeta?.key}
             meta={profileMeta}
+            accept="image/jpeg,image/png,image/webp"
+            onUploaded={(key, meta) => void saveAttachment("profilePhoto", "profilePhotoKey", key, meta)}
           />
-          <AdminFileAttachment
+          <AdminAttachmentEditor
             label="Supporting documents"
+            purpose="document"
             keyValue={data.supportingDocsKey ?? docsMeta?.key}
             meta={docsMeta}
+            accept=".pdf,.doc,.docx,image/jpeg,image/png,image/webp"
+            onUploaded={(key, meta) =>
+              void saveAttachment("supportingDocs", "supportingDocsKey", key, meta)
+            }
           />
-          <AdminFileAttachment
+          <AdminAttachmentEditor
             label="Video"
+            purpose="video"
             keyValue={data.videoKey ?? videoMeta?.key}
             meta={videoMeta}
+            accept="video/mp4,video/quicktime,video/webm"
+            onUploaded={(key, meta) => void saveAttachment("videoFile", "videoKey", key, meta)}
           />
         </div>
       </DetailSection>

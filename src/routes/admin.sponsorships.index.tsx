@@ -7,7 +7,7 @@ import {
 } from "@/components/admin/DataTable";
 import { ExportCsvButton } from "@/components/admin/ExportCsvButton";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { PaymentBadge, StatusBadge } from "@/components/admin/StatusBadge";
+import { PaymentBadge } from "@/components/admin/StatusBadge";
 import { formatAdminDate } from "@/components/admin/admin-utils";
 import { useSponsorships } from "@/lib/admin-api";
 
@@ -53,7 +53,7 @@ function AdminSponsorships() {
         searchKeys={["company", "contactName", "contactEmail", "tierName", "referenceId"]}
         searchPlaceholder="Company, contact, tier, or reference"
         entryLabel="registrations"
-        columns={["Reference", "Company", "Tier", "Contact", "Payment", "Status", "Submitted"]}
+        columns={["Reference", "Company", "Tier", "Contact", "Payment", "Phone", "Submitted"]}
       >
         {(rows) =>
           rows.length === 0 ? (
@@ -84,18 +84,8 @@ function AdminSponsorships() {
                 <DataTableCell>
                   <PaymentBadge paid={row.paymentPaid} />
                 </DataTableCell>
-                <DataTableCell>
-                  <StatusBadge
-                    variant={
-                      row.status === "confirmed"
-                        ? "success"
-                        : row.status === "cancelled"
-                          ? "error"
-                          : "warning"
-                    }
-                  >
-                    {row.status}
-                  </StatusBadge>
+                <DataTableCell className="font-medium text-zinc-900">
+                  {row.contactPhone}
                 </DataTableCell>
                 <DataTableCell className="text-zinc-500">
                   {formatAdminDate(row.createdAt)}

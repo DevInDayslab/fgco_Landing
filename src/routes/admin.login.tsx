@@ -1,6 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
-import { setAdminPasscode } from "@/lib/api-client";
+import { useEffect, useState, type FormEvent } from "react";
+import {
+  clearAdminLogoutMessage,
+  getAdminLogoutMessage,
+  isAdminAuthenticated,
+} from "@/lib/admin-auth";
+import { setAdminPasscode } from "@/lib/admin-auth";
 
 export const Route = createFileRoute("/admin/login")({
   component: AdminLogin,
@@ -10,6 +15,19 @@ function AdminLogin() {
   const navigate = useNavigate();
   const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");
+  const [sessionNotice, setSessionNotice] = useState("");
+
+  useEffect(() => {
+    const notice = getAdminLogoutMessage();
+    if (notice) {
+      setSessionNotice(notice);
+      clearAdminLogoutMessage();
+    }
+
+    if (isAdminAuthenticated()) {
+      void navigate({ to: "/admin" });
+    }
+  }, [navigate]);
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -67,6 +85,12 @@ function AdminLogin() {
               className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
             />
           </div>
+
+          {sessionNotice && (
+            <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+              {sessionNotice}
+            </p>
+          )}
 
           {error && (
             <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">

@@ -58,6 +58,28 @@ function PaymentDetailPage() {
           <DetailField label="Payment ID" value={data.id} mono />
           <DetailField label="Razorpay order ID" value={data.razorpayOrderId} mono />
           <DetailField label="Razorpay payment ID" value={data.razorpayPaymentId} mono />
+          <DetailField
+            label="Payer name"
+            value={
+              typeof data.metadata?.contactName === "string" ? data.metadata.contactName : null
+            }
+          />
+          <DetailField
+            label="Payer phone"
+            value={
+              typeof data.metadata?.contactPhone === "string" ? data.metadata.contactPhone : null
+            }
+          />
+          <DetailField
+            label="Payer email"
+            value={
+              typeof data.metadata?.contactEmail === "string" ? data.metadata.contactEmail : null
+            }
+          />
+          <DetailField
+            label="Company"
+            value={typeof data.metadata?.company === "string" ? data.metadata.company : null}
+          />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
               Status

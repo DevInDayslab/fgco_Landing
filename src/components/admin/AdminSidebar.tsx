@@ -7,7 +7,7 @@ import {
   Mail,
   Trophy,
 } from "lucide-react";
-import { clearAdminPasscode } from "@/lib/api-client";
+import { logoutAdmin } from "@/lib/admin-auth";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -56,10 +56,7 @@ export function AdminSidebar() {
         <p className="text-xs text-zinc-500">FG Media Group</p>
         <button
           type="button"
-          onClick={() => {
-            clearAdminPasscode();
-            window.location.href = "/admin/login";
-          }}
+          onClick={() => logoutAdmin()}
           className={cn(
             "mt-3 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium",
             "text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-red-600",

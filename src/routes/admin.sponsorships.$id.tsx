@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { toast } from "sonner";
+import { AdminEditableSection } from "@/components/admin/AdminEditableSection";
 import {
   DetailField,
   DetailGrid,
@@ -7,7 +9,7 @@ import {
 } from "@/components/admin/DetailView";
 import { ExportCsvButton } from "@/components/admin/ExportCsvButton";
 import { PaymentBadge, StatusBadge } from "@/components/admin/StatusBadge";
-import { useSponsorship } from "@/lib/admin-api";
+import { useSponsorship, useUpdateSponsorship } from "@/lib/admin-api";
 
 export const Route = createFileRoute("/admin/sponsorships/$id")({
   component: SponsorshipDetailPage,
@@ -16,6 +18,7 @@ export const Route = createFileRoute("/admin/sponsorships/$id")({
 function SponsorshipDetailPage() {
   const { id } = Route.useParams();
   const { data, isLoading, error } = useSponsorship(id);
+  const updateSponsorship = useUpdateSponsorship(id);
 
   if (isLoading) {
     return <p className="text-sm text-zinc-500">Loading sponsorship…</p>;
@@ -87,7 +90,37 @@ function SponsorshipDetailPage() {
         </DetailGrid>
       </DetailSection>
 
-      <DetailSection title="Contact">
+      <AdminEditableSection
+        title="Contact & registration"
+        saving={updateSponsorship.isPending}
+        fields={[
+          { key: "company", label: "Company", value: data.company },
+          { key: "contactName", label: "Contact name", value: data.contactName },
+          { key: "contactEmail", label: "Email", value: data.contactEmail, type: "email" },
+          { key: "contactPhone", label: "Phone", value: data.contactPhone, type: "tel" },
+          { key: "tierName", label: "Tier name", value: data.tierName },
+          { key: "tierId", label: "Tier ID", value: data.tierId },
+          {
+            key: "status",
+            label: "Status",
+            value: data.status,
+            type: "select",
+            options: [
+              { value: "pending", label: "Pending" },
+              { value: "confirmed", label: "Confirmed" },
+              { value: "cancelled", label: "Cancelled" },
+            ],
+          },
+          { key: "message", label: "Message", value: data.message ?? "", type: "textarea" },
+        ]}
+        onSave={async (values) => {
+          await updateSponsorship.mutateAsync({
+            ...values,
+            message: values.message || null,
+          });
+          toast.success("Sponsorship details saved.");
+        }}
+      >
         <DetailGrid>
           <DetailField label="Company" value={data.company} />
           <DetailField label="Contact name" value={data.contactName} />
@@ -95,7 +128,7 @@ function SponsorshipDetailPage() {
           <DetailField label="Phone" value={data.contactPhone} />
           <DetailField label="Message" value={data.message} />
         </DetailGrid>
-      </DetailSection>
+      </AdminEditableSection>
     </div>
   );
 }
