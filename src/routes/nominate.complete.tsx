@@ -66,7 +66,6 @@ function NominateCompletePage() {
   const [ready, setReady] = useState(false);
   const [lookupEmail, setLookupEmail] = useState("");
   const [lookingUp, setLookingUp] = useState(false);
-  const [lookupSent, setLookupSent] = useState(false);
 
   const [nomineeName, setNomineeName] = useState("");
   const [nomineeType, setNomineeType] = useState("");
@@ -161,13 +160,14 @@ function NominateCompletePage() {
     setLookingUp(true);
     try {
       const result = await lookupNominationByEmail(lookupEmail.trim());
-      setLookupSent(true);
-      toast.success(
-        result.message ??
-          `A secure completion link has been sent to continue ${result.nomineeName}'s nomination.`,
+      if (!result.completionToken) {
+        toast.error("No incomplete nomination was found for this email.");
+        return;
+      }
+      window.location.assign(
+        `/nominate/complete?token=${encodeURIComponent(result.completionToken)}`,
       );
     } catch (err) {
-      setLookupSent(false);
       toast.error(err instanceof Error ? err.message : "Unable to find your nomination.");
     } finally {
       setLookingUp(false);
@@ -404,13 +404,8 @@ function NominateCompletePage() {
               <h2 className="text-2xl font-bold text-foreground">Continue your nomination</h2>
               <p className="mt-3 text-sm text-gray-400">
                 If you were nominated but do not have the email link, enter the nominee email address
-                below. We will send a secure completion link to that inbox.
+                below to continue on this site.
               </p>
-              {lookupSent ? (
-                <p className="mt-4 rounded-lg border border-gold/30 bg-gold/10 px-4 py-3 text-sm text-gold">
-                  Check your email for the completion link, then open it to finish your nomination.
-                </p>
-              ) : null}
               <div className="mt-6 space-y-4">
                 <div>
                   <label className={labelClass} htmlFor="lookupEmail">
@@ -431,7 +426,7 @@ function NominateCompletePage() {
                   onClick={() => void handleEmailLookup()}
                   className={submitButtonClass}
                 >
-                  {lookingUp ? "Sending link…" : "Email me the completion link"}
+                  {lookingUp ? "Looking up…" : "Continue on site"}
                 </button>
               </div>
             </FormPanel>
@@ -440,13 +435,8 @@ function NominateCompletePage() {
               <h2 className="text-2xl font-bold text-foreground">Link unavailable</h2>
               <p className={`mt-3 ${errorClass}`}>{error}</p>
               <p className="mt-4 text-sm text-gray-400">
-                Enter your nominee email and we will send a fresh secure completion link.
+                Enter your nominee email and we will open your completion form on this site.
               </p>
-              {lookupSent ? (
-                <p className="mt-4 rounded-lg border border-gold/30 bg-gold/10 px-4 py-3 text-sm text-gold">
-                  Check your email for the completion link.
-                </p>
-              ) : null}
               <div className="mt-6 space-y-4">
                 <input
                   type="email"
@@ -461,7 +451,7 @@ function NominateCompletePage() {
                   onClick={() => void handleEmailLookup()}
                   className={primaryInlineButtonClass}
                 >
-                  {lookingUp ? "Sending link…" : "Email me a fresh link"}
+                  {lookingUp ? "Looking up…" : "Continue on site"}
                 </button>
               </div>
             </FormPanel>

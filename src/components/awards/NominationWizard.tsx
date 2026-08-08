@@ -147,11 +147,14 @@ export function NominationWizard() {
     if (!email.trim() || !getApiBaseUrl()) return false;
     try {
       const result = await lookupNominationByEmail(email.trim());
-      toast.message(
-        result.message ??
-          `You already have an incomplete nomination for ${result.category}. Check your email for the completion link.`,
-      );
-      return true;
+      if (result.completionToken) {
+        toast.message(`Continuing your incomplete nomination for ${result.category}.`);
+        window.location.assign(
+          `/nominate/complete?token=${encodeURIComponent(result.completionToken)}`,
+        );
+        return true;
+      }
+      return false;
     } catch (err) {
       if (err instanceof Error && err.message.toLowerCase().includes("already been completed")) {
         toast.error(err.message);
@@ -431,11 +434,13 @@ export function NominationWizard() {
     setResending(true);
     try {
       const result = await lookupNominationByEmail(resendEmail.trim());
-      toast.success(
-        result.message ??
-          "A secure completion link has been sent to this email. Open the link from your inbox to continue.",
+      if (!result.completionToken) {
+        toast.error("No incomplete nomination was found for this email.");
+        return;
+      }
+      window.location.assign(
+        `/nominate/complete?token=${encodeURIComponent(result.completionToken)}`,
       );
-      setResendOpen(false);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Unable to continue nomination.");
     } finally {

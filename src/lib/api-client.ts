@@ -234,6 +234,8 @@ export async function lookupNominationByEmail(email: string) {
     found: boolean;
     nomineeName: string;
     category: string;
+    completionToken: string;
+    completionUrl: string;
     message?: string;
   }>("/api/nominations/lookup-by-email", {
     method: "POST",
