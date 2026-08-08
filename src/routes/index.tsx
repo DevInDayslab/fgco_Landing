@@ -1,0 +1,387 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  Award,
+  ChevronDown,
+  ChevronRight,
+  Cpu,
+  Crown,
+  Newspaper,
+  Shield,
+  Trophy,
+  Zap,
+} from "lucide-react";
+import type { ReactElement } from "react";
+import heroOffice from "@/assets/hero_office.jpg";
+import founderPhoto from "@/assets/ramesh.png";
+import { FgLogo } from "@/components/brand/FgLogo";
+import { PublicationLogo } from "@/components/brand/PublicationLogo";
+import { SiteLinkButton } from "@/components/site/SiteButton";
+import { cardLinkClass, HeroAccent, SectionTitle } from "@/components/site/PageLayout";
+import { TrustStrip } from "@/components/site/TrustStrip";
+import type { PublicationId } from "@/data/brands";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "FG Media Group — Recognising Excellence. Celebrating Vision." },
+      {
+        name: "description",
+        content:
+          "Trusted multilingual journalism meets InViGIL and ViERA — pioneering media and technology from Bengaluru, India.",
+      },
+      { property: "og:title", content: "FG Media Group — Media · Technology · India" },
+      {
+        property: "og:description",
+        content:
+          "Empowering India through world-class Media, groundbreaking Virtual Intelligence (InViGIL), and National Recognition.",
+      },
+    ],
+  }),
+  component: Index,
+});
+
+const marquee = [
+  "HIT NEWS",
+  "HAPPY INDIA TIMES",
+  "KURUKSHETRA",
+  "ViERA PLATFORM",
+  "InViGIL",
+  "VIRTUAL INTELLIGENCE",
+  "FG MEDIA GROUP",
+  "NATIONAL ENGLISH WEEKLY",
+  "TELUGU NEWS WEEKLY",
+  "KANNADA NEWS WEEKLY",
+];
+
+const stats = [
+  ["3", "News Publications"],
+  ["5+", "Ventures"],
+  ["10K+", "Features in ViERA"],
+  ["195+", "Countries"],
+];
+
+const ventures: {
+  tag: string;
+  tagClass: string;
+  title: string;
+  subtitle: string;
+  text: string;
+  to: "/publications" | "/viera" | "/technology";
+  publicationId?: PublicationId;
+}[] = [
+  {
+    tag: "EN",
+    tagClass: "border-en/40 bg-en/10 text-en",
+    title: "HIT News",
+    subtitle: "National English Weekly",
+    text: "Comprehensive national coverage — politics, technology, business, culture, and investigative journalism.",
+    to: "/publications",
+    publicationId: "hit-news",
+  },
+  {
+    tag: "TE",
+    tagClass: "border-te/40 bg-te/10 text-te",
+    title: "Happy India Times",
+    subtitle: "National Telugu Weekly",
+    text: "Quality news for Telugu-speaking communities — progress, innovation, and human interest stories.",
+    to: "/publications",
+    publicationId: "happy-india-times",
+  },
+  {
+    tag: "KA",
+    tagClass: "border-ka/40 bg-ka/10 text-ka",
+    title: "Kurukshetra",
+    subtitle: "National Kannada Weekly",
+    text: "Empowering Kannada-speaking audiences with quality news and promotional support.",
+    to: "/publications",
+    publicationId: "kurukshetra",
+  },
+  {
+    tag: "ViERA",
+    tagClass: "border-viera/50 bg-viera/15 text-viera",
+    title: "ViERA",
+    subtitle: "Virtual Intelligence Engine",
+    text: "Virtual Intelligence Enabled Real Actor — powering InViGIL beyond conventional AI.",
+    to: "/viera",
+  },
+  {
+    tag: "INV",
+    tagClass: "border-gold/40 bg-gold/10 text-gold",
+    title: "InViGIL",
+    subtitle: "Virtual Commerce Platform",
+    text: "World's First Virtual Commerce Platform — built on ViERA intelligence and end-to-end security.",
+    to: "/technology",
+  },
+];
+
+function EcosystemCard({
+  icon,
+  title,
+  desc,
+  to,
+}: {
+  icon: ReactElement<{ size?: number }>;
+  title: string;
+  desc: string;
+  to: "/media" | "/technology" | "/viera" | "/awards" | "/operations";
+}) {
+  return (
+    <Link to={to} className={`group ${cardLinkClass()}`}>
+      <div className="fg-card-inner">
+        <div className="fg-icon-badge mb-6 flex h-14 w-14 items-center justify-center rounded-xl text-gold">
+          {icon}
+        </div>
+        <h3 className="mb-3 text-xl">{title}</h3>
+        <p className="mb-6 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+        <div className="flex items-center text-sm font-semibold text-gold transition-transform duration-300 group-hover:translate-x-2">
+          Explore <ChevronRight size={16} className="ml-1" />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function Index() {
+  return (
+    <div className="animate-fade-in">
+      {/* Reference-style hero */}
+      <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden py-20">
+        <img
+          src={heroOffice}
+          alt=""
+          aria-hidden
+          width={1920}
+          height={1080}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background/85 to-background" />
+        <div className="absolute inset-0 fg-hero-pattern" />
+        <div className="absolute top-1/2 left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/5 blur-[100px]" />
+
+        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-2 shadow-[0_0_15px_rgba(209,176,117,0.12)] backdrop-blur-sm">
+            <Crown className="h-4 w-4 text-gold" />
+            <span className="text-xs font-medium tracking-widest text-gold uppercase sm:text-sm">
+              A Legacy of Excellence
+            </span>
+          </div>
+
+          <h1 className="fg-hero-title text-5xl md:text-6xl lg:text-7xl">
+            Recognising Excellence. <br className="hidden md:block" />
+            <HeroAccent>Celebrating Vision.</HeroAccent>
+          </h1>
+
+          <p className="mx-auto mt-8 max-w-3xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
+            Empowering India through world-class Media, groundbreaking Virtual Intelligence
+            (InViGIL), and National Recognition.
+          </p>
+
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <SiteLinkButton to="/technology" variant="viera" size="lg" className="w-full sm:w-auto">
+              <Cpu className="h-4 w-4" /> Discover InViGIL
+            </SiteLinkButton>
+            <SiteLinkButton to="/awards" variant="goldOutline" size="lg" className="w-full sm:w-auto">
+              <Award className="h-4 w-4" /> HIT ViERA Awards
+            </SiteLinkButton>
+            <SiteLinkButton to="/publications" variant="outline" size="lg" className="w-full sm:w-auto">
+              <Newspaper className="h-4 w-4" /> Our Publications
+            </SiteLinkButton>
+          </div>
+
+          <div className="mt-16 flex flex-col items-center gap-2 text-[0.6rem] tracking-[0.3em] text-muted-foreground">
+            SCROLL
+            <ChevronDown className="h-4 w-4 animate-bounce" />
+          </div>
+        </div>
+      </section>
+
+      <div className="overflow-hidden border-y border-border bg-surface py-6">
+        <div className="marquee-track flex w-max items-center gap-8 whitespace-nowrap">
+          {[...marquee, ...marquee].map((m, i) => (
+            <span key={i} className="flex items-center gap-8">
+              <span className="marquee-item">{m}</span>
+              <span className="text-gold/50">·</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map(([n, l]) => (
+            <div
+              key={l}
+              className={`fg-card fg-card-stat fg-card-interactive rounded-2xl px-8 py-12 text-center`}
+            >
+              <div className="fg-card-inner">
+                <p className="fg-stat text-5xl fg-text-gradient-gold">{n}</p>
+                <p className="mt-3 text-[0.68rem] tracking-[0.2em] text-muted-foreground uppercase">
+                  {l}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <TrustStrip className="mt-10" />
+      </section>
+
+      <section className="border-t border-border bg-surface/50 py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <SectionTitle
+            overline="Ecosystem"
+            title={
+              <span className="flex flex-col items-center gap-4">
+                <FgLogo size="md" showTagline align="center" />
+                <span>
+                  The <HeroAccent>Ecosystem</HeroAccent>
+                </span>
+              </span>
+            }
+          />
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            <EcosystemCard
+              icon={<Newspaper size={28} />}
+              title="Media Wing"
+              desc="National News Weeklies including HIT NEWS, Happy India Times, InViGIL & Kurukshetra."
+              to="/media"
+            />
+            <EcosystemCard
+              icon={<Cpu size={28} />}
+              title="InViGIL"
+              desc="The World's First Virtual Commerce Platform — built on ViERA intelligence and security."
+              to="/technology"
+            />
+            <EcosystemCard
+              icon={<Zap size={28} />}
+              title="ViERA"
+              desc="Virtual Intelligence Enabled Real Actor — your digital replica and intelligence layer."
+              to="/viera"
+            />
+            <EcosystemCard
+              icon={<Trophy size={28} />}
+              title="Excellence Awards"
+              desc="HIT ViERA National Awards recognizing extraordinary individuals & institutions."
+              to="/awards"
+            />
+            <EcosystemCard
+              icon={<Shield size={28} />}
+              title="Special Operations"
+              desc="Automobiles, Supply Chain, Investigations, and hyper-secure E-commerce."
+              to="/operations"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-24">
+        <SectionTitle
+          overline="Our Portfolio"
+          title={
+            <>
+              Ventures & <span className="italic fg-text-gradient-gold">Platforms</span>
+            </>
+          }
+        />
+
+        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {ventures.map((v) => (
+            <article
+              key={v.title}
+              className="fg-card fg-card-interactive flex flex-col rounded-2xl p-8"
+            >
+              <div className="fg-card-inner flex flex-col flex-1">
+              {v.publicationId && (
+                <div className="mb-6 flex h-14 items-center">
+                  <PublicationLogo id={v.publicationId} size="sm" />
+                </div>
+              )}
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-xl font-semibold">{v.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{v.subtitle}</p>
+                </div>
+                <span
+                  className={`rounded-full border px-3 py-1 text-[0.65rem] font-semibold tracking-widest ${v.tagClass}`}
+                >
+                  {v.tag}
+                </span>
+              </div>
+              <p className="mt-6 flex-1 text-sm leading-relaxed text-muted-foreground">{v.text}</p>
+              <Link
+                to={v.to}
+                className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-gold hover:underline"
+              >
+                Learn more <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-24">
+        <div className="fg-card rounded-3xl p-10 md:p-16">
+          <div className="fg-card-inner grid gap-12 md:grid-cols-[auto_1fr_1fr] md:items-start">
+          <div className="mx-auto md:mx-0">
+            <img
+              src={founderPhoto}
+              alt="Mr. Ramesh Babu Pasupuleti — Founder"
+              className="h-28 w-28 rounded-2xl border border-gold/25 object-cover object-top shadow-[0_8px_32px_-8px_rgba(245,158,11,0.25)] md:h-32 md:w-32"
+            />
+          </div>
+          <div>
+            <div className="flex flex-wrap gap-3 text-[0.65rem] tracking-[0.2em] text-muted-foreground uppercase">
+              <span className="rounded-full border border-border px-4 py-1.5">Est. 14 Jan 2020</span>
+              <span className="rounded-full border border-border px-4 py-1.5">
+                Bengaluru, Karnataka
+              </span>
+            </div>
+            <p className="section-label mt-8">Who We Are</p>
+            <h2 className="mt-4 text-4xl leading-tight md:text-5xl">
+              Where Journalism <span className="italic fg-text-gradient-gold">Meets Innovation</span>
+            </h2>
+          </div>
+          <div className="space-y-5 text-sm leading-relaxed text-muted-foreground">
+            <p>
+              Founded by Mr. Ramesh Babu Pasupuleti — a professional with a dual background in Media
+              and Information Technology — FG Media Group bridges trusted journalism and frontier
+              technology.
+            </p>
+            <p>
+              From three respected news weeklies reaching millions of readers across India, to
+              pioneering InViGIL — the world's first Virtual Commerce Platform powered by ViERA — we
+              build solutions that are safe, user-friendly, and meaningful.
+            </p>
+            <Link
+              to="/about"
+              className="inline-flex items-center gap-2 text-sm font-medium text-gold hover:underline"
+            >
+              Our full story <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-28">
+        <div className="fg-card fg-card-featured rounded-3xl p-10 text-center md:p-16">
+          <div className="fg-card-inner">
+          <div className="flex flex-col items-center gap-4">
+            <h2 className="text-4xl md:text-5xl">Partner With</h2>
+            <FgLogo size="md" showTagline align="center" />
+          </div>
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Advertise across our print, digital, and virtual commerce network — reaching engaged
+            readers and users across India and the globe.
+          </p>
+          <SiteLinkButton to="/contact" variant="gold" size="lg" className="mt-8">
+            Get In Touch <ArrowRight className="h-4 w-4" />
+          </SiteLinkButton>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
