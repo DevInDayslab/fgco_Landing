@@ -29,6 +29,7 @@ import { Route as AdminInquiriesRouteImport } from './routes/admin.inquiries'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminNominationsRouteImport } from './routes/admin.nominations'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminSponsorshipsRouteImport } from './routes/admin.sponsorships'
 import { Route as NominateIndexRouteImport } from './routes/nominate.index'
 import { Route as NominateCompleteRouteImport } from './routes/nominate.complete'
@@ -141,6 +142,11 @@ const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
   path: '/payments',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSponsorshipsRoute = AdminSponsorshipsRouteImport.update({
   id: '/sponsorships',
   path: '/sponsorships',
@@ -217,6 +223,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/nominations': typeof AdminNominationsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
   '/nominate/complete': typeof NominateCompleteRoute
   '/admin/': typeof AdminIndexRoute
@@ -245,6 +252,7 @@ export interface FileRoutesByTo {
   '/technology': typeof TechnologyRoute
   '/viera': typeof VieraRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/nominate/complete': typeof NominateCompleteRoute
   '/admin': typeof AdminIndexRoute
   '/nominate': typeof NominateIndexRoute
@@ -278,6 +286,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/nominations': typeof AdminNominationsRouteWithChildren
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
   '/nominate/complete': typeof NominateCompleteRoute
   '/admin/': typeof AdminIndexRoute
@@ -313,6 +322,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/nominations'
     | '/admin/payments'
+    | '/admin/settings'
     | '/admin/sponsorships'
     | '/nominate/complete'
     | '/admin/'
@@ -341,6 +351,7 @@ export interface FileRouteTypes {
     | '/technology'
     | '/viera'
     | '/admin/login'
+    | '/admin/settings'
     | '/nominate/complete'
     | '/admin'
     | '/nominate'
@@ -373,6 +384,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/nominations'
     | '/admin/payments'
+    | '/admin/settings'
     | '/admin/sponsorships'
     | '/nominate/complete'
     | '/admin/'
@@ -547,6 +559,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPaymentsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/sponsorships': {
       id: '/admin/sponsorships'
       path: '/sponsorships'
@@ -686,6 +705,7 @@ interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNominationsRoute: typeof AdminNominationsRouteWithChildren
   AdminPaymentsRoute: typeof AdminPaymentsRouteWithChildren
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSponsorshipsRoute: typeof AdminSponsorshipsRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -695,6 +715,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminNominationsRoute: AdminNominationsRouteWithChildren,
   AdminPaymentsRoute: AdminPaymentsRouteWithChildren,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminSponsorshipsRoute: AdminSponsorshipsRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
 }

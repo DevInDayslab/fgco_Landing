@@ -27,7 +27,7 @@ function AdminLayout() {
     }
 
     function onStorage(event: StorageEvent) {
-      if (event.key === "admin_passcode" && !event.newValue) {
+      if (event.key === "admin_token" && !event.newValue) {
         logoutAdmin("Your session has expired. Please sign in again.");
       }
     }

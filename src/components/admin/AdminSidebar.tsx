@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   LogOut,
   Mail,
+  Settings,
   Trophy,
 } from "lucide-react";
 import { logoutAdmin } from "@/lib/admin-auth";
@@ -16,6 +17,7 @@ const navItems = [
   { to: "/admin/sponsorships", label: "Sponsorships", icon: Handshake },
   { to: "/admin/payments", label: "Payments", icon: CreditCard },
   { to: "/admin/inquiries", label: "Inquiries", icon: Mail },
+  { to: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
 
 export function AdminSidebar() {

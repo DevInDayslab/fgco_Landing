@@ -1,23 +1,23 @@
-const ADMIN_PASSCODE_KEY = "admin_passcode";
+const ADMIN_TOKEN_KEY = "admin_token";
 const LOGOUT_MESSAGE_KEY = "admin_logout_message";
 
 let logoutInProgress = false;
 
-export function getAdminPasscode(): string | null {
+export function getAdminToken(): string | null {
   if (typeof window === "undefined") return null;
-  return sessionStorage.getItem(ADMIN_PASSCODE_KEY);
+  return sessionStorage.getItem(ADMIN_TOKEN_KEY);
 }
 
-export function setAdminPasscode(passcode: string) {
-  sessionStorage.setItem(ADMIN_PASSCODE_KEY, passcode);
+export function setAdminToken(token: string) {
+  sessionStorage.setItem(ADMIN_TOKEN_KEY, token);
 }
 
-export function clearAdminPasscode() {
-  sessionStorage.removeItem(ADMIN_PASSCODE_KEY);
+export function clearAdminToken() {
+  sessionStorage.removeItem(ADMIN_TOKEN_KEY);
 }
 
 export function isAdminAuthenticated(): boolean {
-  return Boolean(getAdminPasscode());
+  return Boolean(getAdminToken());
 }
 
 export function getAdminLogoutMessage(): string | null {
@@ -34,7 +34,7 @@ export function logoutAdmin(message?: string) {
   if (typeof window === "undefined" || logoutInProgress) return;
 
   logoutInProgress = true;
-  clearAdminPasscode();
+  clearAdminToken();
 
   if (message) {
     sessionStorage.setItem(LOGOUT_MESSAGE_KEY, message);
@@ -54,15 +54,15 @@ export function isAdminUnauthorizedError(error: unknown): boolean {
   return (
     msg.includes("unauthorized") ||
     msg.includes("session expired") ||
-    msg.includes("admin passcode not configured")
+    msg.includes("admin auth not configured")
   );
 }
 
-export function requireAdminPasscode(): string {
-  const passcode = getAdminPasscode();
-  if (!passcode) {
+export function requireAdminToken(): string {
+  const token = getAdminToken();
+  if (!token) {
     logoutAdmin("Your session has expired. Please sign in again.");
     throw new Error("Admin session expired");
   }
-  return passcode;
+  return token;
 }

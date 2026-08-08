@@ -1,10 +1,10 @@
-import { logoutAdmin, requireAdminPasscode } from "./admin-auth";
+import { logoutAdmin, requireAdminToken } from "./admin-auth";
 
 export {
-  clearAdminPasscode,
-  getAdminPasscode,
+  clearAdminToken,
+  getAdminToken,
   isAdminAuthenticated,
-  setAdminPasscode,
+  setAdminToken,
 } from "./admin-auth";
 
 export function getApiBaseUrl(): string {
@@ -76,7 +76,7 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 }
 
 export async function adminFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const passcode = requireAdminPasscode();
+  const token = requireAdminToken();
 
   const base = getApiBaseUrl();
   if (!base) {
@@ -84,7 +84,7 @@ export async function adminFetch<T>(path: string, options: RequestInit = {}): Pr
   }
 
   const headers = new Headers(options.headers);
-  headers.set("X-Admin-Passcode", passcode);
+  headers.set("Authorization", `Bearer ${token}`);
   const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
   if (!isFormData && !headers.has("Content-Type") && options.body) {
     headers.set("Content-Type", "application/json");
@@ -125,7 +125,7 @@ export async function postContact(payload: {
 }
 
 export async function adminFetchBlob(path: string): Promise<Blob> {
-  const passcode = requireAdminPasscode();
+  const token = requireAdminToken();
 
   const base = getApiBaseUrl();
   if (!base) {
@@ -133,7 +133,7 @@ export async function adminFetchBlob(path: string): Promise<Blob> {
   }
 
   const res = await fetch(`${base}${path}`, {
-    headers: { "X-Admin-Passcode": passcode },
+    headers: { Authorization: `Bearer ${token}` },
   });
 
   if (res.status === 401) {
