@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Pin Vercel when deploying frontend to Vercel (default Lovable preset is Cloudflare).
+  nitro: {
+    preset: "vercel",
+  },
 });
