@@ -1,8 +1,6 @@
-import {
-  createSponsorshipRazorpayOrder,
-  verifySponsorshipRazorpayPayment,
-} from "@/lib/sponsorship-payment";
+import { postSponsorshipCreateOrder, postSponsorshipPayment } from "@/lib/api-client";
 import type { SponsorshipTierId } from "@/data/awards";
+import { toast } from "sonner";
 
 type RazorpayHandlerResponse = {
   razorpay_order_id: string;
@@ -54,6 +52,7 @@ export type SponsorshipCheckoutInput = {
 
 export async function openSponsorshipRazorpayCheckout(
   input: SponsorshipCheckoutInput,
+  reservationId: string,
   onSuccess: () => void,
   onDismiss?: () => void,
 ): Promise<void> {
@@ -62,9 +61,25 @@ export async function openSponsorshipRazorpayCheckout(
     throw new Error("Unable to load Razorpay checkout. Please try again.");
   }
 
-  const order = await createSponsorshipRazorpayOrder({ data: input });
+  const order = await postSponsorshipCreateOrder(input);
+
+  if (order.isTestCharge) {
+    const testInr = (order.amount / 100).toLocaleString("en-IN");
+    const displayInr = (order.displayAmountPaise / 100).toLocaleString("en-IN");
+    toast.message(
+      `Razorpay test mode: checkout will charge ₹${testInr} (advance shown: ₹${displayInr}).`,
+    );
+  }
 
   return new Promise((resolve, reject) => {
+    let settled = false;
+
+    const finish = (fn: () => void) => {
+      if (settled) return;
+      settled = true;
+      fn();
+    };
+
     const rzp = new window.Razorpay!({
       key: order.keyId,
       amount: order.amount,
@@ -86,29 +101,35 @@ export async function openSponsorshipRazorpayCheckout(
       },
       handler: async (response: RazorpayHandlerResponse) => {
         try {
-          await verifySponsorshipRazorpayPayment({
-            data: {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            },
+          await postSponsorshipPayment({
+            reservationId,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
+            amountPaise: order.displayAmountPaise,
           });
+
           onSuccess();
-          resolve();
+          finish(() => resolve());
         } catch (error) {
-          reject(error);
+          finish(() => reject(error));
         }
       },
       modal: {
         ondismiss: () => {
+          if (settled) return;
           onDismiss?.();
-          reject(new Error("Payment was cancelled."));
+          finish(() => reject(new Error("Payment was cancelled.")));
         },
       },
     });
 
-    rzp.on("payment.failed", () => {
-      reject(new Error("Payment failed. Please try again."));
+    rzp.on("payment.failed", (response: { error?: { description?: string; reason?: string } }) => {
+      const description =
+        response?.error?.description?.trim() ||
+        response?.error?.reason?.trim() ||
+        "Payment failed. Please try again.";
+      finish(() => reject(new Error(description)));
     });
 
     rzp.open();

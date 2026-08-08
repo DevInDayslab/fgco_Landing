@@ -27,6 +27,9 @@ import {
   phoneField,
   requiredTextField,
 } from "@/lib/form-validation";
+import { getApiBaseUrl, postNomination, uploadNominationFile } from "@/lib/api-client";
+import { formatMaxUploadSize, UPLOAD_MAX_BYTES, VIDEO_MAX_DURATION_SEC } from "@/lib/upload-limits";
+import { prepareNominationUpload } from "@/lib/file-compress";
 
 const wordCount = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
 
@@ -131,22 +134,138 @@ export function NominationWizard() {
     setValue("publications", next, { shouldValidate: true });
   }
 
+  async function processProfileUpload(file: File): Promise<File | null> {
+    const prepared = await prepareNominationUpload(file, "profile");
+    if (prepared.file.size > UPLOAD_MAX_BYTES.profile) {
+      throw new Error(
+        `Profile photo must be under ${formatMaxUploadSize(UPLOAD_MAX_BYTES.profile)}.`,
+      );
+    }
+    return prepared.file;
+  }
+
+  async function processDocumentUpload(file: File): Promise<File | null> {
+    const prepared = await prepareNominationUpload(file, "document");
+    if (prepared.file.size > UPLOAD_MAX_BYTES.document) {
+      throw new Error(
+        `Supporting document must be under ${formatMaxUploadSize(UPLOAD_MAX_BYTES.document)}.`,
+      );
+    }
+    return prepared.file;
+  }
+
+  async function processVideoUpload(file: File): Promise<File | null> {
+    const previewUrl = URL.createObjectURL(file);
+    const previewVideo = document.createElement("video");
+    previewVideo.preload = "metadata";
+    previewVideo.src = previewUrl;
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        previewVideo.onloadedmetadata = () => resolve();
+        previewVideo.onerror = () => reject(new Error("Could not read video file."));
+      });
+
+      if (previewVideo.duration > VIDEO_MAX_DURATION_SEC) {
+        toast.message("Video is longer than 3 minutes. Only the first 3 minutes will be uploaded.");
+      }
+    } finally {
+      URL.revokeObjectURL(previewUrl);
+      previewVideo.removeAttribute("src");
+      previewVideo.load();
+    }
+
+    const prepared = await prepareNominationUpload(file, "video");
+    if (prepared.file.size > UPLOAD_MAX_BYTES.video) {
+      throw new Error(
+        `Video must be under ${formatMaxUploadSize(UPLOAD_MAX_BYTES.video)}. Please use a shorter clip or the alternative video link.`,
+      );
+    }
+    return prepared.file;
+  }
+
   async function onSubmit(data: FormData) {
     if (!profilePhoto) {
       toast.error("Profile photo or company logo is required.");
       setStep(4);
       return;
     }
+
+    if (!getApiBaseUrl()) {
+      toast.error("Nomination API is not configured. Set VITE_API_BASE_URL.");
+      return;
+    }
+
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setSubmitting(false);
-    setSubmitted(true);
-    void data;
-    void supportingDocs;
-    void videoFile;
-    setTimeout(() => {
-      void navigate({ to: "/awards" });
-    }, 4000);
+    try {
+      const profileUpload = await uploadNominationFile(profilePhoto, "profile");
+
+      let supportingUpload: Awaited<ReturnType<typeof uploadNominationFile>> | null = null;
+      if (supportingDocs) {
+        supportingUpload = await uploadNominationFile(supportingDocs, "document");
+      }
+
+      let videoUpload: Awaited<ReturnType<typeof uploadNominationFile>> | null = null;
+      if (videoFile) {
+        videoUpload = await uploadNominationFile(videoFile, "video");
+      }
+
+      const result = await postNomination({
+        nominatorName: data.nominatorName,
+        nominatorEmail: data.nominatorEmail,
+        nominatorPhone: data.nominatorPhone,
+        nomineeName: data.nomineeName,
+        category: data.category,
+        profilePhotoKey: profileUpload.key,
+        supportingDocsKey: supportingUpload?.key,
+        videoKey: videoUpload?.key,
+        formData: {
+          ...data,
+          attachments: {
+            profilePhoto: {
+              key: profileUpload.key,
+              originalName: profileUpload.originalName,
+              contentType: profileUpload.contentType,
+              size: profileUpload.size,
+              originalSize: profileUpload.originalSize,
+              compressed: profileUpload.compressed,
+              publicUrl: profileUpload.publicUrl,
+            },
+            supportingDocs: supportingUpload
+              ? {
+                  key: supportingUpload.key,
+                  originalName: supportingUpload.originalName,
+                  contentType: supportingUpload.contentType,
+                  size: supportingUpload.size,
+                  originalSize: supportingUpload.originalSize,
+                  compressed: supportingUpload.compressed,
+                  publicUrl: supportingUpload.publicUrl,
+                }
+              : null,
+            videoFile: videoUpload
+              ? {
+                  key: videoUpload.key,
+                  originalName: videoUpload.originalName,
+                  contentType: videoUpload.contentType,
+                  size: videoUpload.size,
+                  originalSize: videoUpload.originalSize,
+                  compressed: videoUpload.compressed,
+                  publicUrl: videoUpload.publicUrl,
+                }
+              : null,
+          },
+        },
+      });
+      toast.success(`Nomination submitted (ref ${result.referenceId}).`);
+      setSubmitted(true);
+      setTimeout(() => {
+        void navigate({ to: "/awards" });
+      }, 4000);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to submit nomination.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -454,25 +573,32 @@ export function NominationWizard() {
                 label="Profile Photo / Logo"
                 required
                 accept="image/jpeg,image/png,image/webp"
-                hint="JPG, PNG up to 5MB"
+                hint={`JPG, PNG · max ${formatMaxUploadSize(UPLOAD_MAX_BYTES.profile)}`}
                 value={profilePhoto}
                 onChange={setProfilePhoto}
+                maxBytes={UPLOAD_MAX_BYTES.profile}
+                processFile={processProfileUpload}
               />
               <FileDropzone
                 label="Supporting Documents"
                 variant="document"
-                accept=".pdf,.doc,.docx,.ppt,.pptx,application/pdf"
-                hint="PDF, DOCX up to 10MB"
+                accept=".pdf,.doc,.docx,.ppt,.pptx,application/pdf,image/jpeg,image/png,image/webp"
+                hint={`PDF or images · max ${formatMaxUploadSize(UPLOAD_MAX_BYTES.document)}`}
                 value={supportingDocs}
                 onChange={setSupportingDocs}
+                maxBytes={UPLOAD_MAX_BYTES.document}
+                processFile={processDocumentUpload}
               />
             </div>
             <FileDropzone
               label="Introduction or Showcase Video (Max 3 minutes)"
-              accept="video/mp4,video/quicktime"
-              hint="MP4, MOV supported"
+              variant="video"
+              accept="video/mp4,video/quicktime,video/webm"
+              hint={`MP4, MOV, WebM · max ${formatMaxUploadSize(UPLOAD_MAX_BYTES.video)} · compressed automatically`}
               value={videoFile}
               onChange={setVideoFile}
+              maxBytes={UPLOAD_MAX_BYTES.video}
+              processFile={processVideoUpload}
             />
             <div>
               <label className={labelClass} htmlFor="altVideoLink">

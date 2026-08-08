@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Building2, CheckCircle2, CreditCard, Star } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { Building2, CheckCircle2, CreditCard, RefreshCw, Star, XCircle } from "lucide-react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import {
   benefitsPanelClass,
@@ -29,6 +29,7 @@ import {
   requiredTextField,
   validateField,
 } from "@/lib/form-validation";
+import { getApiBaseUrl, postSponsorshipRegister } from "@/lib/api-client";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/sponsorship")({
@@ -74,6 +75,11 @@ function Sponsorship() {
   const [registrationReady, setRegistrationReady] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [registration, setRegistration] = useState<SponsorshipCheckoutInput | null>(null);
+  const [reservationId, setReservationId] = useState<string | null>(null);
+  const [referenceId, setReferenceId] = useState<string | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState<"idle" | "failed" | "cancelled">("idle");
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const autoCheckoutAttempted = useRef(false);
 
   const tier = sponsorshipTiers.find((t) => t.id === selectedTier);
   const advanceInr =
@@ -83,21 +89,36 @@ function Sponsorship() {
         )
       : null;
 
-  async function startCheckout(input: SponsorshipCheckoutInput) {
+  async function startCheckout(input: SponsorshipCheckoutInput, sponsorshipReservationId: string) {
     setCheckoutLoading(true);
+    setPaymentStatus("idle");
+    setPaymentError(null);
+
     try {
       await openSponsorshipRazorpayCheckout(
         input,
+        sponsorshipReservationId,
         () => {
+          setPaymentStatus("idle");
+          setPaymentError(null);
           setSubmitted(true);
           toast.success("Payment received — your sponsorship slot is reserved.");
         },
-        () => toast.message("Payment window closed."),
+        () => {
+          setPaymentStatus("cancelled");
+          setPaymentError("The payment window was closed before completion.");
+        },
       );
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Payment could not be completed.";
-      if (!message.includes("cancelled")) {
+
+      if (message.includes("cancelled")) {
+        setPaymentStatus("cancelled");
+        setPaymentError("The payment window was closed before completion.");
+      } else {
+        setPaymentStatus("failed");
+        setPaymentError(message);
         toast.error(message);
       }
     } finally {
@@ -145,15 +166,56 @@ function Sponsorship() {
       contactEmail,
       contactPhone,
     };
-    setRegistration(checkoutInput);
-    setRegistrationReady(true);
-    setSubmitting(false);
-    toast.success("Registration submitted. Complete payment below to secure your sponsorship.");
+
+    try {
+      if (!getApiBaseUrl()) {
+        throw new Error("API is not configured. Set VITE_API_BASE_URL.");
+      }
+
+      if (!tier) {
+        throw new Error("Selected tier not found.");
+      }
+
+      const registrationResult = await postSponsorshipRegister({
+        tierId: selectedTier,
+        tierName: tier.name,
+        company,
+        contactName,
+        contactEmail,
+        contactPhone,
+      });
+
+      setReservationId(registrationResult.id);
+      setReferenceId(registrationResult.referenceId);
+      setRegistration(checkoutInput);
+      setRegistrationReady(true);
+      toast.success("Registration saved — opening secure payment.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Registration failed.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
+  // Auto-open Razorpay once registration is saved (popup over the payment step panel).
+  useEffect(() => {
+    if (
+      !registrationReady ||
+      !registration ||
+      !reservationId ||
+      submitted ||
+      autoCheckoutAttempted.current
+    ) {
+      return;
+    }
+
+    autoCheckoutAttempted.current = true;
+    void startCheckout(registration, reservationId);
+  }, [registrationReady, registration, reservationId, submitted]);
+
   async function handlePaymentCardClick() {
-    if (!registration) return;
-    await startCheckout(registration);
+    if (!registration || !reservationId) return;
+    await startCheckout(registration, reservationId);
   }
 
   if (submitted) {
@@ -308,152 +370,235 @@ function Sponsorship() {
 
           <div className="space-y-8 lg:col-span-8">
             <FormPanel className="!p-6 md:!p-10">
-              <FormSectionHeader title="Registration Form" />
-
-              <form onSubmit={onInquirySubmit} className="space-y-6">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div>
-                    <label className={labelClass} htmlFor="company">
-                      Company Name *
-                    </label>
-                    <input
-                      id="company"
-                      name="company"
-                      required
-                      placeholder="FG Media Group Pvt Ltd"
-                      className={fieldClass}
-                    />
-                    {errors.company && <p className={errorClass}>{errors.company}</p>}
-                  </div>
-                  <div>
-                    <label className={labelClass} htmlFor="contactName">
-                      Contact Person *
-                    </label>
-                    <input
-                      id="contactName"
-                      name="contactName"
-                      required
-                      placeholder="Full name"
-                      className={fieldClass}
-                    />
-                    {errors.contactName && <p className={errorClass}>{errors.contactName}</p>}
-                  </div>
-                  <div>
-                    <label className={labelClass} htmlFor="contactEmail">
-                      Official Email *
-                    </label>
-                    <input
-                      id="contactEmail"
-                      name="contactEmail"
-                      type="email"
-                      autoComplete="email"
-                      placeholder="name@company.com"
-                      required
-                      className={fieldClass}
-                    />
-                    {errors.contactEmail && <p className={errorClass}>{errors.contactEmail}</p>}
-                  </div>
-                  <div>
-                    <label className={labelClass} htmlFor="contactPhone">
-                      Phone Number *
-                    </label>
-                    <input
-                      id="contactPhone"
-                      name="contactPhone"
-                      type="tel"
-                      inputMode="numeric"
-                      autoComplete="tel"
-                      placeholder="+91 00000 00000"
-                      maxLength={15}
-                      required
-                      className={fieldClass}
-                    />
-                    {errors.contactPhone && <p className={errorClass}>{errors.contactPhone}</p>}
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className={labelClass} htmlFor="website">
-                      Company Website
-                    </label>
-                    <input
-                      id="website"
-                      name="website"
-                      type="url"
-                      placeholder="https://www.example.com"
-                      className={fieldClass}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className={labelClass} htmlFor="selectedTier">
-                    Selected Sponsorship Tier *
-                  </label>
-                  <input
-                    id="selectedTier"
-                    readOnly
-                    type="text"
-                    value={tier?.name ?? "Please select a tier from the grid above..."}
-                    className={selectedTierFieldClass(Boolean(tier))}
+              {registrationReady && registration && tier && advanceInr ? (
+                <div className="space-y-6">
+                  <FormSectionHeader
+                    title="Complete Payment"
+                    subtitle="Your registration is saved. Pay the advance below to secure your sponsorship slot."
                   />
-                </div>
 
-                <div>
-                  <label className={labelClass} htmlFor="message">
-                    Corporate Profile / Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    className={textareaClass}
-                    placeholder="Briefly describe your organisation, industry leadership, and sponsorship objectives..."
-                  />
-                </div>
+                  <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-4">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
+                      <div>
+                        <p className="font-semibold text-foreground">Registration submitted</p>
+                        <p className="mt-1 text-sm text-gray-400">
+                          {registration.company} · {registration.contactName}
+                          {referenceId ? ` · Ref ${referenceId}` : ""}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
-                <button
-                  type="submit"
-                  disabled={!selectedTier || submitting}
-                  className={submitButtonClass}
-                >
-                  {submitting ? "Submitting..." : "Submit Registration"}
-                </button>
-              </form>
-            </FormPanel>
+                  {paymentStatus === "failed" && (
+                    <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4">
+                      <div className="flex items-start gap-3">
+                        <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold text-foreground">Payment failed</p>
+                          <p className="mt-1 text-sm text-gray-400">
+                            {paymentError ??
+                              "Your card or payment method was declined. Please try again."}
+                          </p>
+                          <button
+                            type="button"
+                            onClick={handlePaymentCardClick}
+                            disabled={checkoutLoading}
+                            className={`mt-4 ${siteButtonClass("gold", "md")} disabled:cursor-not-allowed disabled:opacity-60`}
+                          >
+                            <RefreshCw className="h-4 w-4" />
+                            {checkoutLoading ? "Opening Razorpay..." : "Retry payment"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-            {registrationReady && registration && tier && advanceInr && (
-              <button
-                type="button"
-                onClick={handlePaymentCardClick}
-                disabled={checkoutLoading}
-                className="group w-full rounded-3xl border border-amber-500/30 bg-gradient-to-br from-[#0f172a] to-[#111a33] p-6 text-left shadow-[0_0_30px_rgba(217,119,6,0.12)] transition-all hover:border-amber-500/50 hover:shadow-[0_0_40px_rgba(217,119,6,0.2)] disabled:cursor-not-allowed disabled:opacity-60 md:p-10"
-              >
-                <p className="section-label">Next Step</p>
-                <div className="mt-3 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <h3 className="text-2xl font-bold text-foreground md:text-3xl">
-                      Secure Your Sponsorship
-                    </h3>
-                    <p className="mt-2 text-sm text-gray-400">
-                      Tap to open Razorpay checkout and pay the{" "}
-                      {paymentDetails.advancePercent} advance for{" "}
-                      <strong className="text-foreground">{tier.name}</strong>.
+                  {paymentStatus === "cancelled" && (
+                    <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
+                      <div className="flex items-start gap-3">
+                        <CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold text-foreground">Payment not completed</p>
+                          <p className="mt-1 text-sm text-gray-400">
+                            {paymentError ??
+                              "The Razorpay window was closed. Your registration is saved — complete payment to secure your slot."}
+                          </p>
+                          <button
+                            type="button"
+                            onClick={handlePaymentCardClick}
+                            disabled={checkoutLoading}
+                            className={`mt-4 ${siteButtonClass("gold", "md")} disabled:cursor-not-allowed disabled:opacity-60`}
+                          >
+                            <RefreshCw className="h-4 w-4" />
+                            {checkoutLoading ? "Opening Razorpay..." : "Continue to payment"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-[#0f172a] to-[#111a33] p-6 md:p-8">
+                    <p className="text-xs font-semibold tracking-widest text-amber-500 uppercase">
+                      {tier.role}
                     </p>
-                    <p className="mt-4 text-3xl font-black text-amber-400">
+                    <h3 className="mt-2 text-2xl font-bold text-foreground">{tier.name}</h3>
+                    <p className="mt-4 text-4xl font-black text-amber-400">
                       ₹ {advanceInr.toLocaleString("en-IN")}
                       <span className="ml-2 text-sm font-normal text-gray-500">
                         ({paymentDetails.advancePercent} advance)
                       </span>
                     </p>
+                    <p className="mt-3 text-sm text-gray-400">
+                      {paymentStatus === "idle"
+                        ? "Razorpay checkout opens automatically. If the window closed, tap below to pay again."
+                        : "Use the button above or below to open Razorpay and complete your payment."}
+                    </p>
+
+                    {import.meta.env.DEV && (
+                      <p className="mt-2 text-xs text-amber-500/80">
+                        Test mode: high-tier advances may charge a small test amount (₹100) via
+                        Razorpay test keys. Live keys charge the full advance.
+                      </p>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handlePaymentCardClick}
+                      disabled={checkoutLoading}
+                      className={`mt-6 w-full sm:w-auto ${siteButtonClass("gold", "md")} disabled:cursor-not-allowed disabled:opacity-60`}
+                    >
+                      <CreditCard className="h-5 w-5" />
+                      {checkoutLoading
+                        ? "Opening Razorpay..."
+                        : paymentStatus === "failed"
+                          ? "Retry payment"
+                          : paymentStatus === "cancelled"
+                            ? "Continue to payment"
+                            : "Pay via Razorpay"}
+                    </button>
                   </div>
-                  <div
-                    className={`flex shrink-0 items-center justify-center gap-3 ${siteButtonClass("gold", "md")}`}
-                  >
-                    <CreditCard className="h-5 w-5" />
-                    {checkoutLoading ? "Opening Razorpay..." : "Pay via Razorpay"}
-                  </div>
+
+                  <p className="text-xs text-gray-500">
+                    GST {paymentDetails.gstRate} ({paymentDetails.gst}) · Balance due within{" "}
+                    {paymentDetails.balanceDueDays} days of the event.
+                  </p>
                 </div>
-              </button>
-            )}
+              ) : (
+                <>
+                  <FormSectionHeader title="Registration Form" />
+
+                  <form onSubmit={onInquirySubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                      <div>
+                        <label className={labelClass} htmlFor="company">
+                          Company Name *
+                        </label>
+                        <input
+                          id="company"
+                          name="company"
+                          required
+                          placeholder="FG Media Group Pvt Ltd"
+                          className={fieldClass}
+                        />
+                        {errors.company && <p className={errorClass}>{errors.company}</p>}
+                      </div>
+                      <div>
+                        <label className={labelClass} htmlFor="contactName">
+                          Contact Person *
+                        </label>
+                        <input
+                          id="contactName"
+                          name="contactName"
+                          required
+                          placeholder="Full name"
+                          className={fieldClass}
+                        />
+                        {errors.contactName && <p className={errorClass}>{errors.contactName}</p>}
+                      </div>
+                      <div>
+                        <label className={labelClass} htmlFor="contactEmail">
+                          Official Email *
+                        </label>
+                        <input
+                          id="contactEmail"
+                          name="contactEmail"
+                          type="email"
+                          autoComplete="email"
+                          placeholder="name@company.com"
+                          required
+                          className={fieldClass}
+                        />
+                        {errors.contactEmail && <p className={errorClass}>{errors.contactEmail}</p>}
+                      </div>
+                      <div>
+                        <label className={labelClass} htmlFor="contactPhone">
+                          Phone Number *
+                        </label>
+                        <input
+                          id="contactPhone"
+                          name="contactPhone"
+                          type="tel"
+                          inputMode="numeric"
+                          autoComplete="tel"
+                          placeholder="+91 00000 00000"
+                          maxLength={15}
+                          required
+                          className={fieldClass}
+                        />
+                        {errors.contactPhone && <p className={errorClass}>{errors.contactPhone}</p>}
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className={labelClass} htmlFor="website">
+                          Company Website
+                        </label>
+                        <input
+                          id="website"
+                          name="website"
+                          type="url"
+                          placeholder="https://www.example.com"
+                          className={fieldClass}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className={labelClass} htmlFor="selectedTier">
+                        Selected Sponsorship Tier *
+                      </label>
+                      <input
+                        id="selectedTier"
+                        readOnly
+                        type="text"
+                        value={tier?.name ?? "Please select a tier from the grid above..."}
+                        className={selectedTierFieldClass(Boolean(tier))}
+                      />
+                    </div>
+
+                    <div>
+                      <label className={labelClass} htmlFor="message">
+                        Corporate Profile / Message
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={4}
+                        className={textareaClass}
+                        placeholder="Briefly describe your organisation, industry leadership, and sponsorship objectives..."
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={!selectedTier || submitting}
+                      className={submitButtonClass}
+                    >
+                      {submitting ? "Submitting..." : "Submit Registration"}
+                    </button>
+                  </form>
+                </>
+              )}
+            </FormPanel>
           </div>
         </div>
       </section>
