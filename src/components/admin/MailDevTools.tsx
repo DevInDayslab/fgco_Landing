@@ -141,6 +141,32 @@ export function MailDevTools() {
                 <dd className="font-mono text-red-700">{verify.error}</dd>
               </div>
             )}
+            {(status.eaccesHint || verify?.hint) && (
+              <div className="sm:col-span-2 rounded-md border border-amber-200 bg-amber-50 p-3">
+                <dt className="font-medium text-amber-800">GoDaddy SMTP hint</dt>
+                <dd className="mt-1 text-amber-900">{verify?.hint ?? status.eaccesHint}</dd>
+              </div>
+            )}
+            {status.transportProfiles && status.transportProfiles.length > 0 && (
+              <div className="sm:col-span-2">
+                <dt className="mb-1 font-medium text-zinc-400">Profiles tried (in order)</dt>
+                <dd className="space-y-1 font-mono text-[11px] text-zinc-600">
+                  {status.transportProfiles.map((p) => (
+                    <div key={`${p.label}-${p.host}-${p.port}`}>
+                      {p.label}: {p.host}:{p.port} (tls={p.tlsServername})
+                    </div>
+                  ))}
+                </dd>
+              </div>
+            )}
+            {status.activeProfile && (
+              <div className="sm:col-span-2">
+                <dt className="font-medium text-emerald-600">Active profile</dt>
+                <dd className="font-mono text-emerald-700">
+                  {status.activeProfile.label} — {status.activeProfile.host}:{status.activeProfile.port}
+                </dd>
+              </div>
+            )}
             {verify?.smtp?.response && (
               <div className="sm:col-span-2">
                 <dt className="font-medium text-red-500">SMTP response</dt>

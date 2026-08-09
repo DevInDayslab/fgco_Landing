@@ -30,6 +30,9 @@ export type MailDiagnostics = {
     host?: string;
     port?: number;
     user?: string;
+    label?: string;
+    hint?: string | null;
+    attemptedProfiles?: string[];
     error?: string;
     smtp?: {
       code?: string;
@@ -39,6 +42,21 @@ export type MailDiagnostics = {
       message?: string;
     };
   };
+  eaccesHint?: string | null;
+  transportProfiles?: Array<{
+    label: string;
+    host: string;
+    port: number;
+    secure: boolean;
+    tlsServername: string;
+  }>;
+  activeProfile?: {
+    label: string;
+    host: string;
+    port: number;
+    secure: boolean;
+    tlsServername: string;
+  } | null;
 };
 
 export type MailTestResult = {
