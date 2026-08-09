@@ -14,7 +14,7 @@
     },
     {
       "src": "/api/(.*)",
-      "dest": "https://api.fgco.in/$1"
+      "dest": "https://api.fgco.in/api/$1"
     },
     {
       "handle": "filesystem"

@@ -16,8 +16,8 @@ export default defineConfig({
   nitro: {
     preset: "vercel",
     routeRules: {
-      // Same-origin API proxy — browser calls fgco.in/api/*, Nitro forwards to api.fgco.in.
-      "/api/**": { proxy: "https://api.fgco.in/**" },
+      // Preserve /api prefix when forwarding to api.fgco.in
+      "/api/**": { proxy: "https://api.fgco.in/api/**" },
     },
   },
   vite: {

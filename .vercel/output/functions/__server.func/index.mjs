@@ -50,7 +50,7 @@ var findRouteRules = /* @__PURE__ */ (() => {
 		route: "/api/**",
 		handler: proxy,
 		options: {
-			"to": "https://api.fgco.in/**",
+			"to": "https://api.fgco.in/api/**",
 			"_proxyStripBase": "/api"
 		}
 	}], $1 = [{
