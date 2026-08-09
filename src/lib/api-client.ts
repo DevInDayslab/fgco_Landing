@@ -8,8 +8,24 @@ export {
 } from "./admin-auth";
 
 export function getApiBaseUrl(): string {
-  const base = import.meta.env.VITE_API_BASE_URL?.trim();
-  return base ? base.replace(/\/$/, "") : "";
+  const envBase = import.meta.env.VITE_API_BASE_URL?.trim();
+  const configured = envBase ? envBase.replace(/\/$/, "") : "";
+
+  // Live site must never call localhost — override stale local build env.
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host === "fgco.in" || host === "www.fgco.in") {
+      if (
+        !configured ||
+        configured.includes("localhost") ||
+        configured.includes("127.0.0.1")
+      ) {
+        return "https://api.fgco.in";
+      }
+    }
+  }
+
+  return configured;
 }
 
 async function parseJsonResponse<T>(res: Response): Promise<T> {
