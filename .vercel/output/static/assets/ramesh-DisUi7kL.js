@@ -1,0 +1,1 @@
+var e=`/assets/ramesh-faJ9CUV7.png`;export{e as t};

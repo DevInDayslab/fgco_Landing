@@ -1,14 +1,22 @@
-import fgGroupLogo from "@/assets/fg_grouplogo.png";
+import fgLogo from "@/assets/fglogo.png";
+import fitGaadiLogo from "@/assets/fitgaadi.png";
+import invigilLogo from "@/assets/invigil_logo.png";
+import vieraLogo from "@/assets/VieraLogo.png";
 import hitNewsLogo from "@/assets/hitnews_logo.png";
 import happyIndiaTimesLogo from "@/assets/hit_news.png";
 import kurukshetraLogo from "@/assets/kurukshetra.png";
 
 export const logos = {
-  fgGroup: fgGroupLogo,
+  fgGroup: fgLogo,
+  fitGaadi: fitGaadiLogo,
+  invigil: invigilLogo,
+  viera: vieraLogo,
   hitNews: hitNewsLogo,
   happyIndiaTimes: happyIndiaTimesLogo,
   kurukshetra: kurukshetraLogo,
 } as const;
+
+export type BrandLogoId = keyof typeof logos;
 
 export type PublicationId = "hit-news" | "happy-india-times" | "kurukshetra";
 
@@ -46,6 +54,6 @@ export const fgBrand = {
   name: "FG Media Group",
   tagline: "MEDIA · TECHNOLOGY",
   legalName: "FG Media and Safety Technologies Pvt Ltd",
-  logo: fgGroupLogo,
+  logo: fgLogo,
   logoAlt: "FG Media Group",
 };

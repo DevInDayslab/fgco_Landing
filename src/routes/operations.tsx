@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Briefcase, Car, ChevronRight, Image as ImageIcon, Search } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
+import type { BrandLogoId } from "@/data/brands";
 import { ContentCard, HeroAccent, PageSection, SitePageHero, cardLinkClass } from "@/components/site/PageLayout";
 
 export const Route = createFileRoute("/operations")({
@@ -17,12 +19,19 @@ export const Route = createFileRoute("/operations")({
   component: Operations,
 });
 
-const wings: { icon: LucideIcon; title: string; desc: string; to?: "/automobiles" }[] = [
+const wings: {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+  to?: "/automobiles";
+  brandLogo?: BrandLogoId;
+}[] = [
   {
     icon: Car,
     title: "Automobile Wing",
     desc: "Next-generation automotive tech integration, fleet tracking, and virtual showrooms via InViGIL.",
     to: "/automobiles",
+    brandLogo: "fitGaadi",
   },
   {
     icon: Briefcase,
@@ -38,8 +47,31 @@ const wings: { icon: LucideIcon; title: string; desc: string; to?: "/automobiles
     icon: ImageIcon,
     title: "E-Commerce",
     desc: "Hyper-secure, middleman-free Virtual Commerce enabling real-time test, engage, and buy.",
+    brandLogo: "invigil",
   },
 ];
+
+function WingVisual({
+  icon: Icon,
+  brandLogo,
+}: {
+  icon: LucideIcon;
+  brandLogo?: BrandLogoId;
+}) {
+  if (brandLogo) {
+    return (
+      <div className="mb-4 flex h-16 w-16 shrink-0 items-center justify-center sm:mb-0">
+        <BrandLogo id={brandLogo} size="sm" className="max-w-[4.5rem]" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="fg-icon-badge mb-4 flex h-16 w-16 shrink-0 items-center justify-center rounded-xl text-gold sm:mb-0">
+      <Icon size={32} />
+    </div>
+  );
+}
 
 function Operations() {
   return (
@@ -60,9 +92,7 @@ function Operations() {
             const inner = (
               <div className={`group ${cardLinkClass()}`}>
                 <div className="fg-card-inner flex flex-col sm:flex-row sm:items-start sm:gap-6">
-                <div className="fg-icon-badge mb-4 flex h-16 w-16 shrink-0 items-center justify-center rounded-xl text-gold sm:mb-0">
-                  <wing.icon size={32} />
-                </div>
+                <WingVisual icon={wing.icon} brandLogo={wing.brandLogo} />
                 <div className="flex-1">
                   <h3 className="mb-3 text-2xl">{wing.title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">{wing.desc}</p>
@@ -80,9 +110,7 @@ function Operations() {
               <Link key={wing.title} to={wing.to} className="block">{inner}</Link>
             ) : (
               <ContentCard key={wing.title} className="group flex flex-col sm:flex-row sm:items-start sm:gap-6">
-                <div className="fg-icon-badge mb-4 flex h-16 w-16 shrink-0 items-center justify-center rounded-xl text-gold sm:mb-0">
-                  <wing.icon size={32} />
-                </div>
+                <WingVisual icon={wing.icon} brandLogo={wing.brandLogo} />
                 <div className="flex-1">
                   <h3 className="mb-3 text-2xl">{wing.title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">{wing.desc}</p>

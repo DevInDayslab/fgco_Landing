@@ -1,4 +1,4 @@
-import type { PublicationId } from "@/data/brands";
+import type { BrandLogoId, PublicationId } from "@/data/brands";
 
 export type PublicationProfile = {
   id: PublicationId;
@@ -122,12 +122,14 @@ export const digitalExtensions = [
     text: "Decentralized media, commerce, and spatial journalism — the digital extension of FG Media's print legacy.",
     to: "/technology" as const,
     tag: "Digital Media",
+    brandLogo: "invigil" as const satisfies BrandLogoId,
   },
   {
     title: "ViERA Engine",
     text: "Virtual Intelligence Enabled Real Actor — verification, Fact Score, and AI-assisted editorial workflows.",
     to: "/viera" as const,
     tag: "Technology",
+    brandLogo: "viera" as const satisfies BrandLogoId,
   },
   {
     title: "Tharangam Podcasts",
@@ -140,6 +142,7 @@ export const digitalExtensions = [
     text: "Collector's editions, award special issues, and digital editions across the publication network.",
     to: "/publications" as const,
     tag: "Print & Digital",
+    brandLogo: "hitNews" as const satisfies BrandLogoId,
   },
 ] as const;
 

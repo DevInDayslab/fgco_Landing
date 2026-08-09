@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 import {
-  Activity,
   Briefcase,
   Building2,
   GraduationCap,
@@ -9,6 +8,7 @@ import {
   TrendingUp,
   User,
 } from "lucide-react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { digitalAvatarRoles } from "@/data/viera-content";
 
 type RoleMeta = {
@@ -111,10 +111,9 @@ function HubVisual({ className = "" }: { className?: string }) {
         />
       ))}
 
-      <div className="relative z-10 flex flex-col items-center justify-center rounded-full border border-viera/40 bg-background/80 p-8 shadow-[0_0_60px_-12px_rgba(59,130,246,0.35)] backdrop-blur-sm">
-        <Activity className="h-10 w-10 text-viera" aria-hidden />
-        <span className="mt-3 text-lg font-black tracking-[0.2em]">ViERA</span>
-        <span className="mt-1 text-[0.65rem] tracking-[0.18em] text-muted-foreground uppercase">
+      <div className="relative z-10 flex flex-col items-center justify-center rounded-full border border-viera/40 bg-background/80 p-6 shadow-[0_0_60px_-12px_rgba(59,130,246,0.35)] backdrop-blur-sm">
+        <BrandLogo id="viera" size="md" className="max-w-[10rem]" />
+        <span className="mt-2 text-[0.65rem] tracking-[0.18em] text-muted-foreground uppercase">
           Your digital self
         </span>
       </div>

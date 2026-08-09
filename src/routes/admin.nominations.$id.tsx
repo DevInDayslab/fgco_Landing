@@ -13,11 +13,9 @@ import { PaymentBadge } from "@/components/admin/StatusBadge";
 import {
   useMarkNominationPaid,
   useNomination,
-  useResendCompletionInvite,
   useSendNominationInvite,
   useUpdateNomination,
 } from "@/lib/admin-api";
-import { formatAdminDate } from "@/components/admin/admin-utils";
 
 export const Route = createFileRoute("/admin/nominations/$id")({
   component: NominationDetailPage,
@@ -38,7 +36,6 @@ function NominationDetailPage() {
   const { data, isLoading, error } = useNomination(id);
   const markPaid = useMarkNominationPaid();
   const sendInvite = useSendNominationInvite();
-  const resendCompletion = useResendCompletionInvite();
   const updateNomination = useUpdateNomination(id);
 
   if (isLoading) {
@@ -130,24 +127,6 @@ function NominationDetailPage() {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ExportCsvButton filename={`nomination-${data.referenceId ?? data.id}`} rows={[data]} />
-          {data.status === "referral_pending" && (
-            <button
-              type="button"
-              disabled={resendCompletion.isPending || !nomineeEmail}
-              onClick={() => {
-                resendCompletion.mutate(data.id, {
-                  onSuccess: (result) => {
-                    if (result.sent) toast.success("Completion invitation resent to nominee.");
-                    else toast.error("Invite could not be sent. Check SMTP configuration.");
-                  },
-                  onError: (err) => toast.error(err.message),
-                });
-              }}
-              className="rounded-lg border border-sky-200 bg-sky-50 px-3.5 py-2 text-sm font-medium text-sky-800 hover:bg-sky-100 disabled:opacity-50"
-            >
-              {resendCompletion.isPending ? "Sending…" : "Resend completion email"}
-            </button>
-          )}
           <button
             type="button"
             disabled={sendInvite.isPending || !nomineeEmail}
@@ -165,9 +144,7 @@ function NominationDetailPage() {
             {sendInvite.isPending ? "Sending…" : "Approve & Send Formal Invite"}
           </button>
           <p className="w-full text-xs text-zinc-500">
-            {data.status === "referral_pending"
-              ? "Resend completion email re-sends the secure token link so the nominee can upload documents and pay."
-              : "Sends the Official Nominee Communication (CEO letter) to the nominee's email."}
+            Sends the Official Nominee Communication (CEO letter) to the nominee's email.
           </p>
           {!data.paymentPaid && (
             <button
@@ -188,20 +165,6 @@ function NominationDetailPage() {
           <DetailField label="Category" value={data.category} />
           <DetailField label="Status" value={data.status} />
           <DetailField label="Review status" value={data.reviewStatus} />
-          <DetailField
-            label="Invite sent"
-            value={data.inviteSentAt ? formatAdminDate(data.inviteSentAt) : "Not sent"}
-          />
-          <DetailField
-            label="Completion link"
-            value={
-              data.status === "referral_pending"
-                ? data.completionTokenActive
-                  ? "Active"
-                  : "Missing"
-                : "—"
-            }
-          />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
               Payment
@@ -255,7 +218,6 @@ function NominationDetailPage() {
               { value: "pending_payment", label: "Pending payment" },
               { value: "paid", label: "Paid" },
               { value: "under_review", label: "Under review" },
-              { value: "referral_pending", label: "Referral pending" },
             ],
           },
           {
@@ -309,24 +271,6 @@ function NominationDetailPage() {
             <DetailField prominent label="Achievement" value={achievement || "—"} />
             <DetailField prominent label="Impact & outcomes" value={impact || "—"} />
             <DetailField prominent label="Future goals & vision" value={futureGoals || "—"} />
-          </div>
-        </DetailSection>
-      ) : data.status === "referral_pending" ? (
-        <DetailSection title="Application answers">
-          <div className="space-y-7">
-            {relationship ? (
-              <DetailField prominent label="Relationship" value={relationship} />
-            ) : null}
-            {publications.length > 0 ? (
-              <DetailField
-                prominent
-                label="Preferred publications"
-                value={publications.join(", ")}
-              />
-            ) : null}
-            <p className="text-sm text-zinc-500">
-              Waiting for the nominee to complete their profile, justification, and uploads.
-            </p>
           </div>
         </DetailSection>
       ) : null}

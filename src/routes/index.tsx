@@ -4,22 +4,21 @@ import {
   Award,
   ChevronDown,
   ChevronRight,
-  Cpu,
   Crown,
   Newspaper,
   Shield,
   Trophy,
-  Zap,
 } from "lucide-react";
 import type { ReactElement } from "react";
 import heroOffice from "@/assets/hero_office.jpg";
 import founderPhoto from "@/assets/ramesh.png";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { FgLogo } from "@/components/brand/FgLogo";
 import { PublicationLogo } from "@/components/brand/PublicationLogo";
 import { SiteLinkButton } from "@/components/site/SiteButton";
 import { cardLinkClass, HeroAccent, SectionTitle } from "@/components/site/PageLayout";
 import { TrustStrip } from "@/components/site/TrustStrip";
-import type { PublicationId } from "@/data/brands";
+import type { BrandLogoId, PublicationId } from "@/data/brands";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -69,6 +68,7 @@ const ventures: {
   text: string;
   to: "/publications" | "/viera" | "/technology";
   publicationId?: PublicationId;
+  brandLogo?: BrandLogoId;
 }[] = [
   {
     tag: "EN",
@@ -104,6 +104,7 @@ const ventures: {
     subtitle: "Virtual Intelligence Engine",
     text: "Virtual Intelligence Enabled Real Actor — powering InViGIL beyond conventional AI.",
     to: "/viera",
+    brandLogo: "viera",
   },
   {
     tag: "INV",
@@ -112,16 +113,19 @@ const ventures: {
     subtitle: "Virtual Commerce Platform",
     text: "World's First Virtual Commerce Platform — built on ViERA intelligence and end-to-end security.",
     to: "/technology",
+    brandLogo: "invigil",
   },
 ];
 
 function EcosystemCard({
   icon,
+  logo,
   title,
   desc,
   to,
 }: {
-  icon: ReactElement<{ size?: number }>;
+  icon?: ReactElement<{ size?: number }>;
+  logo?: ReactElement;
   title: string;
   desc: string;
   to: "/media" | "/technology" | "/viera" | "/awards" | "/operations";
@@ -129,9 +133,13 @@ function EcosystemCard({
   return (
     <Link to={to} className={`group ${cardLinkClass()}`}>
       <div className="fg-card-inner">
-        <div className="fg-icon-badge mb-6 flex h-14 w-14 items-center justify-center rounded-xl text-gold">
-          {icon}
-        </div>
+        {logo ? (
+          <div className="mb-6 flex h-16 items-center">{logo}</div>
+        ) : (
+          <div className="fg-icon-badge mb-6 flex h-14 w-14 items-center justify-center rounded-xl text-gold">
+            {icon}
+          </div>
+        )}
         <h3 className="mb-3 text-xl">{title}</h3>
         <p className="mb-6 text-sm leading-relaxed text-muted-foreground">{desc}</p>
         <div className="flex items-center text-sm font-semibold text-gold transition-transform duration-300 group-hover:translate-x-2">
@@ -179,7 +187,7 @@ function Index() {
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <SiteLinkButton to="/technology" variant="viera" size="lg" className="w-full sm:w-auto">
-              <Cpu className="h-4 w-4" /> Discover InViGIL
+              <BrandLogo id="invigil" size="xs" /> Discover InViGIL
             </SiteLinkButton>
             <SiteLinkButton to="/awards" variant="goldOutline" size="lg" className="w-full sm:w-auto">
               <Award className="h-4 w-4" /> HIT ViERA Awards
@@ -248,13 +256,13 @@ function Index() {
               to="/media"
             />
             <EcosystemCard
-              icon={<Cpu size={28} />}
+              logo={<BrandLogo id="invigil" size="sm" className="max-w-[11rem]" />}
               title="InViGIL"
               desc="The World's First Virtual Commerce Platform — built on ViERA intelligence and security."
               to="/technology"
             />
             <EcosystemCard
-              icon={<Zap size={28} />}
+              logo={<BrandLogo id="viera" size="sm" className="max-w-[11rem]" />}
               title="ViERA"
               desc="Virtual Intelligence Enabled Real Actor — your digital replica and intelligence layer."
               to="/viera"
@@ -292,11 +300,15 @@ function Index() {
               className="fg-card fg-card-interactive flex flex-col rounded-2xl p-8"
             >
               <div className="fg-card-inner flex flex-col flex-1">
-              {v.publicationId && (
+              {v.publicationId ? (
                 <div className="mb-6 flex h-14 items-center">
                   <PublicationLogo id={v.publicationId} size="sm" />
                 </div>
-              )}
+              ) : v.brandLogo ? (
+                <div className="mb-6 flex h-14 items-center">
+                  <BrandLogo id={v.brandLogo} size="sm" className="max-w-[10rem]" />
+                </div>
+              ) : null}
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="text-xl font-semibold">{v.title}</h3>

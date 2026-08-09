@@ -17,13 +17,11 @@ export type NominationRow = {
   nomineeEmail?: string | null;
   nomineePhone?: string | null;
   category: string;
-  status: "draft" | "pending_payment" | "paid" | "under_review" | "referral_pending";
+  status: "draft" | "pending_payment" | "paid" | "under_review";
   reviewStatus: "pending" | "approved";
   paymentId: string | null;
   paymentStatus?: "unpaid" | "paid";
   paymentPaid: boolean;
-  inviteSentAt?: string | null;
-  completionTokenActive?: boolean;
   createdAt: string;
 };
 
@@ -142,22 +140,6 @@ export function useSendNominationInvite() {
         method: "POST",
         body: JSON.stringify({ nominationId }),
       }),
-    onSuccess: (_data, nominationId) => {
-      queryClient.invalidateQueries({ queryKey: ["admin", "nominations"] });
-      queryClient.invalidateQueries({ queryKey: ["admin", "nominations", nominationId] });
-    },
-  });
-}
-
-export function useResendCompletionInvite() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (nominationId: string) =>
-      adminFetch<{ ok: boolean; sent: boolean; inviteSentAt?: string }>(
-        `/api/admin/nominations/${nominationId}/resend-completion`,
-        { method: "POST" },
-      ),
     onSuccess: (_data, nominationId) => {
       queryClient.invalidateQueries({ queryKey: ["admin", "nominations"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "nominations", nominationId] });

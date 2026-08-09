@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Activity, Globe, Shield } from "lucide-react";
+import { Globe, Shield } from "lucide-react";
 import { InvigilSection } from "@/components/awards/InvigilSection";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { SiteLinkButton } from "@/components/site/SiteButton";
 import { INVIGIL_INTRO } from "@/data/awards";
 import { PageSection, HeroAccent, SitePageHero } from "@/components/site/PageLayout";
@@ -25,6 +26,13 @@ function Technology() {
       <SitePageHero
         tone="viera"
         overline="InViGIL Application"
+        leading={
+          <BrandLogo
+            id="invigil"
+            className="mx-auto mb-6 h-36 max-w-[min(100%,36rem)] md:h-48 lg:h-56"
+            size="xl"
+          />
+        }
         title={
           <>
             Intelligence Beyond <HeroAccent>Vision</HeroAccent>
@@ -82,17 +90,13 @@ function Technology() {
             </div>
 
             <div className="flex justify-center">
-              <div className="relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-full border border-viera/30 bg-card p-8 shadow-[0_0_30px_rgba(59,130,246,0.15)] md:h-80 md:w-80">
+              <div className="relative flex h-72 w-72 items-center justify-center overflow-hidden rounded-full border border-viera/30 bg-card p-6 shadow-[0_0_30px_rgba(59,130,246,0.15)] md:h-96 md:w-96 md:p-8">
                 <div className="absolute inset-0 animate-[spin_60s_linear_infinite] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-                <div className="relative z-10 text-center">
-                  <Activity className="mx-auto mb-4 h-20 w-20 text-viera md:mb-6 md:h-24 md:w-24" />
-                  <h3 className="mb-2 text-2xl font-black tracking-widest uppercase md:text-3xl">
-                    ViERA
-                  </h3>
-                  <p className="text-xs font-medium text-viera md:text-sm">
-                    Virtual Intelligence Enabled Real Actor
-                  </p>
-                </div>
+                <BrandLogo
+                  id="viera"
+                  className="relative z-10 h-full w-full max-w-none"
+                  size="lg"
+                />
               </div>
             </div>
           </div>

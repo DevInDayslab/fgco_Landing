@@ -173,89 +173,14 @@ export async function uploadNominationFile(
   });
 }
 
-export async function postNominationRefer(payload: Record<string, unknown>) {
-  return apiFetch<{
-    ok: boolean;
-    id?: string;
-    referenceId?: string;
-    alreadyNominated?: boolean;
-    message?: string;
-  }>("/api/nominations/refer", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export async function validateNominationToken(token: string) {
-  return apiFetch<{
-    ok: boolean;
-    referenceId: string | null;
-    nominatorName: string;
-    nominatorEmail: string;
-    nominatorOrg: string;
-    relationship: string;
-    nomineeName: string;
-    nomineeType: string;
-    nomineeDesignation: string;
-    nomineeEmail: string;
-    nomineePhone: string;
-    nomineeLocation: string;
-    nomineeSocial: string;
-    category: string;
-    publications: string[];
-  }>(`/api/nominations/validate-token/${encodeURIComponent(token)}`);
-}
-
-export async function postNominationComplete(payload: {
-  token: string;
-  paymentId: string;
-  profilePhotoKey: string;
-  supportingDocsKey?: string;
-  videoKey?: string;
-  altVideoLink?: string;
-  formData?: Record<string, unknown>;
-}) {
-  return apiFetch<{ ok: boolean; id: string; referenceId: string }>("/api/nominations/complete", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export async function postNominationResendLink(email: string) {
-  return apiFetch<{ ok: boolean; message?: string }>("/api/nominations/resend-link", {
-    method: "POST",
-    body: JSON.stringify({ email }),
-  });
-}
-
-export async function lookupNominationByEmail(email: string) {
-  return apiFetch<{
-    ok: boolean;
-    found: boolean;
-    nomineeName: string;
-    category: string;
-    completionToken: string;
-    completionUrl: string;
-    message?: string;
-  }>("/api/nominations/lookup-by-email", {
-    method: "POST",
-    body: JSON.stringify({ email }),
-  });
-}
-
-export async function postNomination(payload: {
-  nominatorName: string;
-  nominatorEmail: string;
-  nominatorPhone: string;
-  nomineeName: string;
-  nomineeEmail: string;
-  nomineePhone: string;
-  category?: string;
-}) {
-  return apiFetch<{ ok: boolean; id: string; referenceId: string }>("/api/nominations", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+export async function checkNomineeEmail(email: string) {
+  return apiFetch<{ ok: boolean; available: boolean; resumable?: boolean }>(
+    "/api/nominations/check-email",
+    {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    },
+  );
 }
 
 export async function postApplication(payload: {

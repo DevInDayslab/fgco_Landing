@@ -3,12 +3,11 @@ import {
   ArrowRight,
   BookOpen,
   ExternalLink,
-  Globe,
   MapPin,
   Mic2,
   Newspaper,
-  Radio,
 } from "lucide-react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { PublicationLogo } from "@/components/brand/PublicationLogo";
 import { SiteAnchorButton, SiteLinkButton } from "@/components/site/SiteButton";
 import { ContentCard, HeroAccent, PageSection, SitePageHero } from "@/components/site/PageLayout";
@@ -248,7 +247,11 @@ function Media() {
           </div>
 
           <ContentCard variant="featured" hover={false} className="p-8 md:p-10">
-            <Globe className="mb-4 h-10 w-10 text-gold" />
+            <div className="mb-6 flex flex-wrap items-center gap-4">
+              <PublicationLogo id="hit-news" size="sm" />
+              <PublicationLogo id="happy-india-times" size="sm" />
+              <PublicationLogo id="kurukshetra" size="sm" />
+            </div>
             <h3 className="text-2xl">Pan-India Reach</h3>
             <ul className="mt-6 space-y-4 text-sm text-muted-foreground">
               <li className="flex gap-3">
@@ -291,6 +294,11 @@ function Media() {
           {digitalExtensions.map((item) => (
             <Link key={item.title} to={item.to} className="block">
               <ContentCard className="h-full group">
+                {"brandLogo" in item && item.brandLogo ? (
+                  <div className="mb-4 flex h-12 items-center">
+                    <BrandLogo id={item.brandLogo} size="sm" />
+                  </div>
+                ) : null}
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <span className="rounded-full border border-border bg-background px-3 py-1 text-[0.6rem] font-semibold tracking-widest text-muted-foreground uppercase">
@@ -318,7 +326,9 @@ function Media() {
             </p>
           </ContentCard>
           <ContentCard hover={false} className="text-center">
-            <Radio className="mx-auto mb-4 h-8 w-8 text-viera" />
+            <div className="mx-auto mb-4 flex h-10 items-center justify-center">
+              <BrandLogo id="invigil" size="sm" className="mx-auto" />
+            </div>
             <h3 className="font-semibold">Electronic Media</h3>
             <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
               Television, social, and omni-channel digital promotions across the InViGIL network and

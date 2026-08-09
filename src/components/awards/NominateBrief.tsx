@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Award, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, MapPin, Sparkles } from "lucide-react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { HeroAccent } from "@/components/site/PageLayout";
 import {
   AWARDS_TAGLINE,
@@ -24,7 +25,12 @@ const stats = [
 export function NominateBrief() {
   return (
     <div className="flex flex-col">
-      <p className="section-label">Official Portal</p>
+      <div className="flex flex-wrap items-center gap-4">
+        <BrandLogo id="hitNews" size="sm" />
+        <span className="text-lg font-light text-muted-foreground">×</span>
+        <BrandLogo id="viera" size="sm" />
+      </div>
+      <p className="section-label mt-6">Official Portal</p>
       <h1 className="fg-hero-title mt-4 text-3xl md:text-4xl lg:text-[2.75rem]">
         HIT Awards <HeroAccent>Nomination Portal</HeroAccent>
       </h1>
@@ -123,7 +129,6 @@ export function NominateBrief() {
         to="/awards"
         className="mt-10 inline-flex items-center gap-2 text-sm font-medium text-gold transition-opacity hover:opacity-80"
       >
-        <Award className="h-4 w-4" />
         Explore the full awards programme
         <ArrowRight className="h-3.5 w-3.5" />
       </Link>

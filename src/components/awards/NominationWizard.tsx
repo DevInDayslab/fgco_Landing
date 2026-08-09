@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, Send } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -27,11 +27,9 @@ import {
   requiredTextField,
 } from "@/lib/form-validation";
 import {
+  checkNomineeEmail,
   getApiBaseUrl,
-  lookupNominationByEmail,
   postApplication,
-  postNominationRefer,
-  postNominationResendLink,
   uploadNominationFile,
 } from "@/lib/api-client";
 import { openNominationRazorpayCheckout } from "@/lib/razorpay-checkout";
@@ -92,14 +90,10 @@ export function NominationWizard() {
     isSelfNomination: boolean;
     nominatorEmail: string;
     nomineeEmail: string;
-    referralOnly?: boolean;
   } | null>(null);
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
   const [supportingDocs, setSupportingDocs] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [resendOpen, setResendOpen] = useState(false);
-  const [resendEmail, setResendEmail] = useState("");
-  const [resending, setResending] = useState(false);
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -121,55 +115,18 @@ export function NominationWizard() {
 
   const publications = watch("publications") ?? [];
   const nomineeType = watch("nomineeType");
-  const relationship = watch("relationship") ?? "";
-  const nominatorEmail = watch("nominatorEmail") ?? "";
-  const nomineeEmail = watch("nomineeEmail") ?? "";
   const executiveSummary = watch("executiveSummary") ?? "";
   const summaryWords = wordCount(executiveSummary);
   const feeBreakdown = getNominationFeeBreakdown();
 
-  const isSelf =
-    relationship === "Self (Nominee)" ||
-    (Boolean(nominatorEmail.trim()) &&
-      Boolean(nomineeEmail.trim()) &&
-      nominatorEmail.trim().toLowerCase() === nomineeEmail.trim().toLowerCase());
-
-  const visibleSteps = isSelf ? STEPS : STEPS.slice(0, 3);
-  const lastStepIndex = visibleSteps.length - 1;
-
-  useEffect(() => {
-    if (step > lastStepIndex) {
-      setStep(lastStepIndex);
-    }
-  }, [step, lastStepIndex]);
-
-  async function redirectIfIncompleteNomination(email: string): Promise<boolean> {
-    if (!email.trim() || !getApiBaseUrl()) return false;
-    try {
-      const result = await lookupNominationByEmail(email.trim());
-      if (result.completionToken) {
-        toast.message(`Continuing your incomplete nomination for ${result.category}.`);
-        window.location.assign(
-          `/nominate/complete?token=${encodeURIComponent(result.completionToken)}`,
-        );
-        return true;
-      }
-      return false;
-    } catch (err) {
-      if (err instanceof Error && err.message.toLowerCase().includes("already been completed")) {
-        toast.error(err.message);
-        return true;
-      }
-      return false;
-    }
-  }
+  const lastStepIndex = STEPS.length - 1;
 
   async function nextStep() {
-    if (isSelf && step === 4 && !profilePhoto) {
+    if (step === 4 && !profilePhoto) {
       toast.error("Profile photo or company logo is required.");
       return;
     }
-    if (isSelf && step === 3) {
+    if (step === 3) {
       const summary = (watch("executiveSummary") ?? "").trim();
       const achievement = (watch("achievement") ?? "").trim();
       if (!summary) {
@@ -189,10 +146,20 @@ export function NominationWizard() {
     const valid = fields.length === 0 || (await trigger(fields));
     if (!valid) return;
 
-    // After nominee details: if this person is the nominee and has a pending referral, open completion flow
-    if (step === 1 && isSelf) {
-      const redirected = await redirectIfIncompleteNomination(nomineeEmail);
-      if (redirected) return;
+    if (step === 1 && getApiBaseUrl()) {
+      const nomineeEmail = watch("nomineeEmail")?.trim();
+      if (nomineeEmail) {
+        try {
+          await checkNomineeEmail(nomineeEmail);
+        } catch (err) {
+          toast.error(
+            err instanceof Error
+              ? err.message
+              : "This nominee email cannot be used for a new nomination.",
+          );
+          return;
+        }
+      }
     }
 
     setStep((s) => Math.min(s + 1, lastStepIndex));
@@ -265,47 +232,6 @@ export function NominationWizard() {
 
     if (!getApiBaseUrl()) {
       toast.error("Nomination API is not configured. Set VITE_API_BASE_URL.");
-      return;
-    }
-
-    if (!selfNomination) {
-      setSubmitting(true);
-      try {
-        const result = await postNominationRefer({
-          nominatorName: data.nominatorName,
-          nominatorOrg: data.nominatorOrg,
-          nominatorEmail: data.nominatorEmail,
-          nominatorPhone: data.nominatorPhone,
-          relationship: data.relationship,
-          nomineeType: data.nomineeType,
-          nomineeName: data.nomineeName,
-          nomineeDesignation: data.nomineeDesignation,
-          nomineeEmail: data.nomineeEmail,
-          nomineePhone: data.nomineePhone,
-          nomineeLocation: data.nomineeLocation,
-          nomineeSocial: data.nomineeSocial,
-          category: data.category,
-          publications: data.publications,
-        });
-
-        setSuccessInfo({
-          referenceId: result.referenceId ?? "NOM",
-          isSelfNomination: false,
-          nominatorEmail: data.nominatorEmail.trim(),
-          nomineeEmail: data.nomineeEmail.trim(),
-          referralOnly: true,
-        });
-        setSubmitted(true);
-        toast.success(
-          result.alreadyNominated
-            ? result.message ?? "This candidate has already been nominated."
-            : `Nomination submitted (ref ${result.referenceId}).`,
-        );
-      } catch (err) {
-        toast.error(err instanceof Error ? err.message : "Failed to submit nomination.");
-      } finally {
-        setSubmitting(false);
-      }
       return;
     }
 
@@ -403,10 +329,9 @@ export function NominationWizard() {
 
           setSuccessInfo({
             referenceId: result.referenceId,
-            isSelfNomination: true,
+            isSelfNomination: selfNomination,
             nominatorEmail: data.nominatorEmail.trim(),
             nomineeEmail: data.nomineeEmail.trim(),
-            referralOnly: false,
           });
           setSubmitted(true);
           toast.success(`Nomination submitted (ref ${result.referenceId}).`);
@@ -422,76 +347,24 @@ export function NominationWizard() {
     }
   }
 
-  async function handleContinueIncomplete() {
-    if (!resendEmail.trim()) {
-      toast.error("Enter the nominee email address.");
-      return;
-    }
-    if (!getApiBaseUrl()) {
-      toast.error("Nomination API is not configured. Set VITE_API_BASE_URL.");
-      return;
-    }
-    setResending(true);
-    try {
-      const result = await lookupNominationByEmail(resendEmail.trim());
-      if (!result.completionToken) {
-        toast.error("No incomplete nomination was found for this email.");
-        return;
-      }
-      window.location.assign(
-        `/nominate/complete?token=${encodeURIComponent(result.completionToken)}`,
-      );
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Unable to continue nomination.");
-    } finally {
-      setResending(false);
-    }
-  }
-
-  async function handleResendLink() {
-    if (!resendEmail.trim()) {
-      toast.error("Enter the nominee email address.");
-      return;
-    }
-    if (!getApiBaseUrl()) {
-      toast.error("Nomination API is not configured. Set VITE_API_BASE_URL.");
-      return;
-    }
-    setResending(true);
-    try {
-      const result = await postNominationResendLink(resendEmail.trim());
-      toast.success(result.message ?? "If a pending nomination exists, a completion link has been sent.");
-      setResendOpen(false);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Unable to resend completion link.");
-    } finally {
-      setResending(false);
-    }
-  }
-
   if (submitted && successInfo) {
-    const emailNotices = successInfo.referralOnly
+    const emailNotices = successInfo.isSelfNomination
       ? [
-          { label: "Nominant acknowledgement", email: successInfo.nominatorEmail },
-          { label: "Official invitation to complete profile", email: successInfo.nomineeEmail },
+          {
+            label: "CEO letter & application acknowledgement",
+            email: successInfo.nomineeEmail,
+          },
         ]
       : [
-          { label: "Payment receipt & application acknowledgement", email: successInfo.nomineeEmail },
+          { label: "Payment receipt & nominator acknowledgement", email: successInfo.nominatorEmail },
+          { label: "CEO letter & nomination acknowledgement", email: successInfo.nomineeEmail },
         ];
 
     return (
       <FormSuccessState
-        title={
-          successInfo.referralOnly
-            ? "Nomination Submitted"
-            : "Nomination Submitted Successfully"
-        }
+        title="Nomination Submitted Successfully"
         referenceId={successInfo.referenceId}
-        message={
-          successInfo.referralOnly
-            ? "Thank you. An official invitation has been sent to the nominee to complete their profile."
-            : "Thank you for your submission. The National Jury will review your profile."
-        }
+        message="Thank you for your submission. The National Jury will review this nomination."
         emailNotices={emailNotices}
       />
     );
@@ -507,7 +380,7 @@ export function NominationWizard() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-        <FormSectionHeader step={step + 1} title={visibleSteps[step] ?? STEPS[0]} />
+        <FormSectionHeader step={step + 1} title={STEPS[step] ?? STEPS[0]} />
 
         {step === 0 && (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -587,11 +460,6 @@ export function NominationWizard() {
               </select>
               {errors.relationship && (
                 <p className={errorClass}>{errors.relationship.message}</p>
-              )}
-              {relationship && !isSelf && (
-                <p className="mt-2 text-xs text-gray-400">
-                  You are nominating someone else — no justification, payment, or document upload is required. The nominee will receive a secure link to complete their profile.
-                </p>
               )}
             </div>
           </div>
@@ -741,7 +609,7 @@ export function NominationWizard() {
           </div>
         )}
 
-        {isSelf && step === 3 && (
+        {step === 3 && (
           <div className="space-y-6">
             <div>
               <div className="mb-2 flex items-center justify-between">
@@ -794,7 +662,7 @@ export function NominationWizard() {
           </div>
         )}
 
-        {isSelf && step === 4 && (
+        {step === 4 && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <FileDropzone
@@ -846,7 +714,7 @@ export function NominationWizard() {
           </div>
         )}
 
-        {isSelf && step === 5 && (
+        {step === 5 && (
           <div className="space-y-6">
             <div className="rounded-xl border border-gold/30 bg-gold/[0.06] p-4 md:p-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-gold">Nomination fee</p>
@@ -905,50 +773,9 @@ export function NominationWizard() {
                 <Send className="h-4 w-4" />
                 {submitting
                   ? "Processing..."
-                  : isSelf
-                    ? `Pay ₹${feeBreakdown.totalInr.toLocaleString("en-IN")} & Submit`
-                    : "Submit Nomination"}
+                  : `Pay ₹${feeBreakdown.totalInr.toLocaleString("en-IN")} & Submit`}
               </span>
             </button>
-          )}
-        </div>
-
-        <div className="border-t border-white/10 pt-6 text-center">
-          <button
-            type="button"
-            onClick={() => setResendOpen((open) => !open)}
-            className="text-sm text-gold underline-offset-2 hover:underline"
-          >
-            Already nominated? Continue or resend my completion link.
-          </button>
-          {resendOpen && (
-            <div className="mx-auto mt-4 max-w-md space-y-3">
-              <input
-                type="email"
-                value={resendEmail}
-                onChange={(e) => setResendEmail(e.target.value)}
-                placeholder="Nominee email address"
-                className={fieldClass}
-              />
-              <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
-                <button
-                  type="button"
-                  disabled={resending}
-                  onClick={() => void handleContinueIncomplete()}
-                  className={primaryInlineButtonClass}
-                >
-                  {resending ? "Looking up…" : "Continue on site"}
-                </button>
-                <button
-                  type="button"
-                  disabled={resending}
-                  onClick={() => void handleResendLink()}
-                  className={secondaryButtonClass}
-                >
-                  {resending ? "Sending…" : "Email me the link"}
-                </button>
-              </div>
-            </div>
           )}
         </div>
       </form>

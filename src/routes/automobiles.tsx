@@ -3,12 +3,10 @@ import {
   ArrowRight,
   Battery,
   Car,
-  Cpu,
-  Globe,
   Shield,
   Wrench,
-  Zap,
 } from "lucide-react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { SiteLinkButton } from "@/components/site/SiteButton";
 import {
   ChecklistGrid,
@@ -80,6 +78,9 @@ function Automobiles() {
       </PageSection>
 
       <PageSection tone="band">
+        <div className="mb-8 flex justify-center">
+          <BrandLogo id="fitGaadi" size="xl" />
+        </div>
         <SectionTitle
           overline="FitGaadi"
           title={
@@ -167,6 +168,9 @@ function Automobiles() {
       </PageSection>
 
       <PageSection>
+        <div className="mb-8 flex justify-center">
+          <BrandLogo id="invigil" size="md" />
+        </div>
         <SectionTitle
           overline="Intelligent Automotive Mobility"
           title={
@@ -216,6 +220,11 @@ function Automobiles() {
               tagline={pillar.tagline}
               description={pillar.description}
               highlight={i === 0}
+              logo={
+                "brandLogo" in pillar && pillar.brandLogo ? (
+                  <BrandLogo id={pillar.brandLogo} size="sm" />
+                ) : undefined
+              }
             />
           ))}
         </div>
@@ -233,10 +242,10 @@ function Automobiles() {
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <SiteLinkButton to="/technology" variant="viera" size="lg">
-            <Globe className="h-4 w-4" /> InViGIL Platform
+            <BrandLogo id="invigil" size="xs" /> InViGIL Platform
           </SiteLinkButton>
           <SiteLinkButton to="/viera" variant="outline" size="lg">
-            <Zap className="h-4 w-4" /> ViERA Intelligence
+            <BrandLogo id="viera" size="xs" /> ViERA Intelligence
           </SiteLinkButton>
         </div>
       </PageSection>

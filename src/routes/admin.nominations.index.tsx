@@ -17,8 +17,6 @@ export const Route = createFileRoute("/admin/nominations/")({
 
 function formatStatus(status: NominationRow["status"]) {
   switch (status) {
-    case "referral_pending":
-      return "Referral pending";
     case "under_review":
       return "Under review";
     case "pending_payment":
@@ -77,20 +75,11 @@ function AdminNominations() {
         ]}
         searchPlaceholder="Name, email, category, or reference"
         entryLabel="nominations"
-        columns={[
-          "Reference",
-          "Nominee",
-          "Nominator",
-          "Category",
-          "Status",
-          "Payment",
-          "Invite sent",
-          "Submitted",
-        ]}
+        columns={["Reference", "Nominee", "Nominator", "Category", "Status", "Payment", "Submitted"]}
       >
         {(rows) =>
           rows.length === 0 ? (
-            <DataTableEmpty colSpan={8} message="No nominations yet." />
+            <DataTableEmpty colSpan={7} message="No nominations yet." />
           ) : (
             rows.map((row) => (
               <DataTableRow
@@ -119,9 +108,6 @@ function AdminNominations() {
                 </DataTableCell>
                 <DataTableCell>
                   <PaymentBadge paid={row.paymentPaid} />
-                </DataTableCell>
-                <DataTableCell className="text-zinc-500">
-                  {row.inviteSentAt ? formatAdminDate(row.inviteSentAt) : "Not sent"}
                 </DataTableCell>
                 <DataTableCell className="text-zinc-500">
                   {formatAdminDate(row.createdAt)}

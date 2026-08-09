@@ -7,6 +7,7 @@ import { InfluencerBlock } from "@/components/awards/InfluencerBlock";
 import { PageHero } from "@/components/awards/PageHero";
 import { ProcessTimeline } from "@/components/awards/ProcessTimeline";
 import { SectionHeader } from "@/components/awards/SectionHeader";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { AWARDS_TAGLINE, evaluationCriteria, excellenceAwards } from "@/data/awards";
 import { HeroAccent } from "@/components/site/PageLayout";
 import { CheckCircle } from "lucide-react";
@@ -42,6 +43,11 @@ function Awards() {
         subtitle="HIT ViERA National Awards 2026 & InViGIL Global Launch Event — Bengaluru, Karnataka."
         showEventBar
       >
+        <div className="mb-8 flex flex-wrap items-center justify-center gap-6 md:gap-10">
+          <BrandLogo id="hitNews" size="sm" />
+          <span className="text-xl font-light text-muted-foreground">×</span>
+          <BrandLogo id="viera" size="sm" />
+        </div>
         <CtaRow
           primary={{ to: "/nominate", label: "Submit Nomination" }}
           secondary={{ to: "/sponsorship", label: "Sponsorship Tiers" }}

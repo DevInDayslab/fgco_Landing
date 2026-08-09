@@ -32,7 +32,6 @@ import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminSponsorshipsRouteImport } from './routes/admin.sponsorships'
 import { Route as NominateIndexRouteImport } from './routes/nominate.index'
-import { Route as NominateCompleteRouteImport } from './routes/nominate.complete'
 import { Route as AdminInquiriesIndexRouteImport } from './routes/admin.inquiries.index'
 import { Route as AdminInquiriesIdRouteImport } from './routes/admin.inquiries.$id'
 import { Route as AdminNominationsIndexRouteImport } from './routes/admin.nominations.index'
@@ -157,11 +156,6 @@ const NominateIndexRoute = NominateIndexRouteImport.update({
   path: '/',
   getParentRoute: () => NominateRoute,
 } as any)
-const NominateCompleteRoute = NominateCompleteRouteImport.update({
-  id: '/complete',
-  path: '/complete',
-  getParentRoute: () => NominateRoute,
-} as any)
 const AdminInquiriesIndexRoute = AdminInquiriesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -225,7 +219,6 @@ export interface FileRoutesByFullPath {
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
-  '/nominate/complete': typeof NominateCompleteRoute
   '/admin/': typeof AdminIndexRoute
   '/nominate/': typeof NominateIndexRoute
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
@@ -253,7 +246,6 @@ export interface FileRoutesByTo {
   '/viera': typeof VieraRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/settings': typeof AdminSettingsRoute
-  '/nominate/complete': typeof NominateCompleteRoute
   '/admin': typeof AdminIndexRoute
   '/nominate': typeof NominateIndexRoute
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
@@ -288,7 +280,6 @@ export interface FileRoutesById {
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
-  '/nominate/complete': typeof NominateCompleteRoute
   '/admin/': typeof AdminIndexRoute
   '/nominate/': typeof NominateIndexRoute
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
@@ -324,7 +315,6 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/settings'
     | '/admin/sponsorships'
-    | '/nominate/complete'
     | '/admin/'
     | '/nominate/'
     | '/admin/inquiries/$id'
@@ -352,7 +342,6 @@ export interface FileRouteTypes {
     | '/viera'
     | '/admin/login'
     | '/admin/settings'
-    | '/nominate/complete'
     | '/admin'
     | '/nominate'
     | '/admin/inquiries/$id'
@@ -386,7 +375,6 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/settings'
     | '/admin/sponsorships'
-    | '/nominate/complete'
     | '/admin/'
     | '/nominate/'
     | '/admin/inquiries/$id'
@@ -580,13 +568,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NominateIndexRouteImport
       parentRoute: typeof NominateRoute
     }
-    '/nominate/complete': {
-      id: '/nominate/complete'
-      path: '/complete'
-      fullPath: '/nominate/complete'
-      preLoaderRoute: typeof NominateCompleteRouteImport
-      parentRoute: typeof NominateRoute
-    }
     '/admin/inquiries/': {
       id: '/admin/inquiries/'
       path: '/'
@@ -723,12 +704,10 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface NominateRouteChildren {
-  NominateCompleteRoute: typeof NominateCompleteRoute
   NominateIndexRoute: typeof NominateIndexRoute
 }
 
 const NominateRouteChildren: NominateRouteChildren = {
-  NominateCompleteRoute: NominateCompleteRoute,
   NominateIndexRoute: NominateIndexRoute,
 }
 

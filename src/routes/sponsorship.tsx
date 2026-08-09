@@ -13,6 +13,7 @@ import {
 } from "@/components/awards/form-styles";
 import { FormPanel, FormSectionHeader, FormSuccessState } from "@/components/awards/FormPrimitives";
 import { PageHero } from "@/components/awards/PageHero";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { siteButtonClass } from "@/lib/site-buttons";
 import { HeroAccent } from "@/components/site/PageLayout";
 import { SectionHeader } from "@/components/awards/SectionHeader";
@@ -248,7 +249,13 @@ function Sponsorship() {
           </>
         }
         subtitle="Partner with the HIT ViERA National Awards 2026 and the official global launch of InViGIL — India's most prestigious national recognition platform."
-      />
+      >
+        <div className="mb-2 flex flex-wrap items-center justify-center gap-6 md:gap-10">
+          <BrandLogo id="hitNews" size="sm" />
+          <BrandLogo id="viera" size="sm" />
+          <BrandLogo id="invigil" size="sm" />
+        </div>
+      </PageHero>
 
       <section className="mx-auto max-w-7xl px-6 py-20 md:py-24">
         <SectionHeader

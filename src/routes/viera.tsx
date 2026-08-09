@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  Activity,
   ArrowRight,
   Brain,
   ExternalLink,
@@ -10,6 +9,7 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { DigitalAvatarSection } from "@/components/viera/DigitalAvatarSection";
 import { SiteAnchorButton, SiteLinkButton } from "@/components/site/SiteButton";
 import {
@@ -55,13 +55,11 @@ function Viera() {
       <SitePageHero
         tone="viera"
         leading={
-          <div className="relative mx-auto mb-6 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border border-viera/30 bg-card/50 md:h-36 md:w-36">
-            <div className="absolute inset-0 animate-[spin_60s_linear_infinite] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-            <div className="relative z-10 text-center">
-              <Activity className="mx-auto mb-2 h-12 w-12 text-viera" />
-              <span className="text-xl font-black tracking-widest">ViERA</span>
-            </div>
-          </div>
+          <BrandLogo
+            id="viera"
+            className="mx-auto mb-6 h-40 max-w-[min(100%,40rem)] md:h-52 lg:h-60"
+            size="xl"
+          />
         }
         badge={
           <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-viera/40 bg-viera/15 px-5 py-2 text-[0.68rem] tracking-[0.22em]">
@@ -195,7 +193,12 @@ function Viera() {
           description="ViERA is initially being introduced through the InViGIL platform — intelligent digital security and information experiences."
         />
         <TagCloud tags={invigilVieraStack} tone="viera" />
-        <div className="mt-12 text-center">
+        <div className="mt-12 flex flex-col items-center gap-6 text-center">
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+            <BrandLogo id="invigil" size="md" />
+            <span className="text-2xl font-light text-muted-foreground">+</span>
+            <BrandLogo id="viera" size="md" />
+          </div>
           <p className="text-sm font-semibold tracking-wide">InViGIL + ViERA</p>
           <p className="mt-3 text-muted-foreground">
             See More · Understand More · Think Smarter · Protect Better

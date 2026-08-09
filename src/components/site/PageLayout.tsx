@@ -513,6 +513,7 @@ export function NumberedItem({
   tagline,
   description,
   highlight = false,
+  logo,
 }: {
   index: number;
   title: string;
@@ -520,11 +521,13 @@ export function NumberedItem({
   tagline?: string;
   description: string;
   highlight?: boolean;
+  logo?: ReactNode;
 }) {
   return (
     <div
       className={`border-t border-border pt-8 first:border-t-0 first:pt-0 md:border-t-0 md:pt-0 md:pl-8 md:first:pl-0 md:border-l ${highlight ? "md:border-gold/30" : "md:border-border/60"}`}
     >
+      {logo ? <div className="mb-4 flex h-12 items-center">{logo}</div> : null}
       <span className="text-3xl font-bold tabular-nums text-muted-foreground/40">
         {String(index).padStart(2, "0")}
       </span>

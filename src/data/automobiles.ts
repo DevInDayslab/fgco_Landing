@@ -92,6 +92,7 @@ export const automobilePillars = [
     tagline: "Safety. Intelligence. 365° Care.",
     subtitle: "Automobile Safety Technologies + 365° Vehicle Care",
     description: "Your intelligent vehicle-care and safety ecosystem.",
+    brandLogo: "fitGaadi" as const,
   },
   {
     name: "FitGarage",
