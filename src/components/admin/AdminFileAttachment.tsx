@@ -1,6 +1,6 @@
 import { Download, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
-import { adminFetchBlob, getApiBaseUrl } from "@/lib/api-client";
+import { adminFetchBlob, buildApiUrl } from "@/lib/api-client";
 
 type AttachmentMeta = {
   key?: string | null;
@@ -65,7 +65,7 @@ export function AdminFileAttachment({
   const isImage = (meta?.contentType ?? "").startsWith("image/");
   const isVideo = (meta?.contentType ?? "").startsWith("video/");
   const downloadUrl =
-    meta?.publicUrl ?? `${getApiBaseUrl()}/api/admin/files?key=${encodeURIComponent(keyValue)}`;
+    meta?.publicUrl ?? buildApiUrl(`/api/admin/files?key=${encodeURIComponent(keyValue)}`);
 
   return (
     <div className="rounded-lg border border-zinc-200 p-4">

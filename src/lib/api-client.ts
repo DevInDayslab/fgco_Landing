@@ -7,25 +7,50 @@ export {
   setAdminToken,
 } from "./admin-auth";
 
+const PRODUCTION_API = "https://api.fgco.in";
+
+function isFgcoProductionHost(hostname: string): boolean {
+  return hostname === "fgco.in" || hostname === "www.fgco.in";
+}
+
+/** API origin for browser requests. Empty string = same-origin /api proxy on fgco.in. */
 export function getApiBaseUrl(): string {
   const envBase = import.meta.env.VITE_API_BASE_URL?.trim();
   const configured = envBase ? envBase.replace(/\/$/, "") : "";
 
-  // Live site must never call localhost — override stale local build env.
-  if (typeof window !== "undefined") {
-    const host = window.location.hostname;
-    if (host === "fgco.in" || host === "www.fgco.in") {
-      if (
-        !configured ||
-        configured.includes("localhost") ||
-        configured.includes("127.0.0.1")
-      ) {
-        return "https://api.fgco.in";
-      }
-    }
+  if (typeof window !== "undefined" && isFgcoProductionHost(window.location.hostname)) {
+    return "";
   }
 
-  return configured;
+  if (configured.includes("localhost") || configured.includes("127.0.0.1")) {
+    return configured;
+  }
+
+  return configured || PRODUCTION_API;
+}
+
+function resolveApiUrl(path: string): string {
+  if (typeof window !== "undefined" && isFgcoProductionHost(window.location.hostname)) {
+    return path;
+  }
+
+  const base = getApiBaseUrl();
+  if (!base) {
+    throw new Error("VITE_API_BASE_URL is not configured");
+  }
+
+  return `${base}${path}`;
+}
+
+export function isApiConfigured(): boolean {
+  if (typeof window !== "undefined" && isFgcoProductionHost(window.location.hostname)) {
+    return true;
+  }
+  return Boolean(import.meta.env.VITE_API_BASE_URL?.trim());
+}
+
+export function buildApiUrl(path: string): string {
+  return resolveApiUrl(path);
 }
 
 async function parseJsonResponse<T>(res: Response): Promise<T> {
@@ -64,11 +89,6 @@ async function parseJsonResponse<T>(res: Response): Promise<T> {
 }
 
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const base = getApiBaseUrl();
-  if (!base) {
-    throw new Error("VITE_API_BASE_URL is not configured");
-  }
-
   const headers = new Headers(options.headers);
   const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
   if (!isFormData && !headers.has("Content-Type") && options.body) {
@@ -77,15 +97,17 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 
   let res: Response;
   try {
-    res = await fetch(`${base}${path}`, {
+    res = await fetch(resolveApiUrl(path), {
       ...options,
       headers,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Network error";
-    throw new Error(
-      `${message}. Check that the API is running at ${base} and CORS allows this site.`,
-    );
+    const hint =
+      typeof window !== "undefined" && isFgcoProductionHost(window.location.hostname)
+        ? "Check that the API proxy and api.fgco.in are reachable."
+        : `Check that the API is running at ${getApiBaseUrl() || PRODUCTION_API} and CORS allows this site.`;
+    throw new Error(`${message}. ${hint}`);
   }
 
   return parseJsonResponse<T>(res);
@@ -93,11 +115,6 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 
 export async function adminFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = requireAdminToken();
-
-  const base = getApiBaseUrl();
-  if (!base) {
-    throw new Error("VITE_API_BASE_URL is not configured");
-  }
 
   const headers = new Headers(options.headers);
   headers.set("Authorization", `Bearer ${token}`);
@@ -108,15 +125,17 @@ export async function adminFetch<T>(path: string, options: RequestInit = {}): Pr
 
   let res: Response;
   try {
-    res = await fetch(`${base}${path}`, {
+    res = await fetch(resolveApiUrl(path), {
       ...options,
       headers,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Network error";
-    throw new Error(
-      `${message}. Check that the API is running at ${base} and CORS allows this site.`,
-    );
+    const hint =
+      typeof window !== "undefined" && isFgcoProductionHost(window.location.hostname)
+        ? "Check that the API proxy and api.fgco.in are reachable."
+        : `Check that the API is running at ${getApiBaseUrl() || PRODUCTION_API} and CORS allows this site.`;
+    throw new Error(`${message}. ${hint}`);
   }
 
   if (res.status === 401) {
@@ -143,12 +162,7 @@ export async function postContact(payload: {
 export async function adminFetchBlob(path: string): Promise<Blob> {
   const token = requireAdminToken();
 
-  const base = getApiBaseUrl();
-  if (!base) {
-    throw new Error("VITE_API_BASE_URL is not configured");
-  }
-
-  const res = await fetch(`${base}${path}`, {
+  const res = await fetch(resolveApiUrl(path), {
     headers: { Authorization: `Bearer ${token}` },
   });
 

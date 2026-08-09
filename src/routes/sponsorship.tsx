@@ -30,7 +30,7 @@ import {
   requiredTextField,
   validateField,
 } from "@/lib/form-validation";
-import { getApiBaseUrl, postSponsorshipRegister } from "@/lib/api-client";
+import { isApiConfigured, postSponsorshipRegister } from "@/lib/api-client";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/sponsorship")({
@@ -173,7 +173,7 @@ function Sponsorship() {
     };
 
     try {
-      if (!getApiBaseUrl()) {
+      if (!isApiConfigured()) {
         throw new Error("API is not configured. Set VITE_API_BASE_URL.");
       }
 

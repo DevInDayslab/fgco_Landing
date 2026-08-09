@@ -28,7 +28,7 @@ import {
 } from "@/lib/form-validation";
 import {
   checkNomineeEmail,
-  getApiBaseUrl,
+  isApiConfigured,
   postApplication,
   uploadNominationFile,
 } from "@/lib/api-client";
@@ -146,7 +146,7 @@ export function NominationWizard() {
     const valid = fields.length === 0 || (await trigger(fields));
     if (!valid) return;
 
-    if (step === 1 && getApiBaseUrl()) {
+    if (step === 1 && isApiConfigured()) {
       const nomineeEmail = watch("nomineeEmail")?.trim();
       if (nomineeEmail) {
         try {
@@ -230,7 +230,7 @@ export function NominationWizard() {
       data.relationship === "Self (Nominee)" ||
       data.nominatorEmail.trim().toLowerCase() === data.nomineeEmail.trim().toLowerCase();
 
-    if (!getApiBaseUrl()) {
+    if (!isApiConfigured()) {
       toast.error("Nomination API is not configured. Set VITE_API_BASE_URL.");
       return;
     }

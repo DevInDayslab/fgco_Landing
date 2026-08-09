@@ -17,7 +17,7 @@ import { HeroAccent, SitePageHero } from "@/components/site/PageLayout";
 import { FG_CONTACT, inquiryTypes } from "@/data/contact";
 import { Toaster } from "@/components/ui/sonner";
 import { emailField, nameField, requiredTextField, validateField } from "@/lib/form-validation";
-import { getApiBaseUrl, postContact } from "@/lib/api-client";
+import { buildApiUrl, isApiConfigured, postContact } from "@/lib/api-client";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -102,7 +102,7 @@ function Contact() {
     const company = (form.elements.namedItem("company") as HTMLInputElement).value.trim();
     const inquiryType = (form.elements.namedItem("type") as HTMLSelectElement).value.trim();
 
-    if (!getApiBaseUrl()) {
+    if (!isApiConfigured()) {
       setSending(false);
       toast.error("Contact API is not configured. Set VITE_API_BASE_URL.");
       return;

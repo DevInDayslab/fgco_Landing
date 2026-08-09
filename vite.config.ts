@@ -15,5 +15,19 @@ export default defineConfig({
   // Pin Vercel when deploying frontend to Vercel (default Lovable preset is Cloudflare).
   nitro: {
     preset: "vercel",
+    routeRules: {
+      // Same-origin API proxy — browser calls fgco.in/api/*, Nitro forwards to api.fgco.in.
+      "/api/**": { proxy: "https://api.fgco.in/**" },
+    },
+  },
+  vite: {
+    server: {
+      proxy: {
+        "/api": {
+          target: "http://localhost:3000",
+          changeOrigin: true,
+        },
+      },
+    },
   },
 });
