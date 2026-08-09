@@ -1,5 +1,5 @@
 import { a as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
-import { O as MapPin } from "../_libs/lucide-react.mjs";
+import { k as MapPin } from "../_libs/lucide-react.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/PageLayout-pd1GZ2pX.js
 var import_jsx_runtime = require_jsx_runtime();
 var hero_office_default = "/assets/hero_office-ClSV7IDR.jpg";

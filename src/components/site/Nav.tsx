@@ -7,6 +7,7 @@ import { SiteLinkButton } from "@/components/site/SiteButton";
 const links = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
+  { to: "/team", label: "Team" },
   { to: "/media", label: "Media Wing" },
   { to: "/technology", label: "InViGIL" },
   { to: "/viera", label: "ViERA" },

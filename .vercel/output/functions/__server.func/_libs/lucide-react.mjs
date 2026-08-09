@@ -840,6 +840,24 @@ var LoaderCircle = createLucideIcon("loader-circle", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Lock = createLucideIcon("lock", [["rect", {
+	width: "18",
+	height: "11",
+	x: "3",
+	y: "11",
+	rx: "2",
+	ry: "2",
+	key: "1w4ew1"
+}], ["path", {
+	d: "M7 11V7a5 5 0 0 1 10 0v4",
+	key: "fwvmzm"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var LogOut = createLucideIcon("log-out", [
 	["path", {
 		d: "m16 17 5-5-5-5",
@@ -1187,6 +1205,26 @@ var Shield = createLucideIcon("shield", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var ShoppingBag = createLucideIcon("shopping-bag", [
+	["path", {
+		d: "M16 10a4 4 0 0 1-8 0",
+		key: "1ltviw"
+	}],
+	["path", {
+		d: "M3.103 6.034h17.794",
+		key: "awc11p"
+	}],
+	["path", {
+		d: "M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z",
+		key: "o988cm"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Sparkles = createLucideIcon("sparkles", [
 	["path", {
 		d: "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
@@ -1403,4 +1441,4 @@ var Zap = createLucideIcon("zap", [["path", {
 	key: "1xq2db"
 }]]);
 //#endregion
-export { CircleCheckBig as $, LogOut as A, Globe as B, Newspaper as C, Menu as D, MessageCircle as E, Image as F, Eye as G, Film as H, House as I, Crown as J, ExternalLink as K, Heart as L, Lightbulb as M, LayoutDashboard as N, MapPin as O, Layers as P, CircleCheck as Q, Handshake as R, Palette as S, MicVocal as T, FileText as U, Gavel as V, FileSearch as W, ClipboardList as X, CreditCard as Y, CircleX as Z, Search as _, User as a, Briefcase as at, Phone as b, TrendingUp as c, Battery as ct, Star as d, ArrowLeft as dt, ChevronRight as et, Sparkles as f, Send as g, Settings as h, Users as i, Building2 as it, LoaderCircle as j, Mail as k, Target as l, Award as lt, ShieldCheck as m, X as n, Check as nt, Upload as o, Brain as ot, Shield as p, Download as q, Wrench as r, Car as rt, Trophy as s, BookOpen as st, Zap as t, ChevronDown as tt, Store as u, ArrowRight as ut, SearchCheck as v, Network as w, Pencil as x, RefreshCw as y, GraduationCap as z };
+export { CircleX as $, Mail as A, Handshake as B, Palette as C, MessageCircle as D, MicVocal as E, LayoutDashboard as F, FileText as G, Globe as H, Layers as I, ExternalLink as J, FileSearch as K, Image as L, Lock as M, LoaderCircle as N, Menu as O, Lightbulb as P, ClipboardList as Q, House as R, Pencil as S, Network as T, Gavel as U, GraduationCap as V, Film as W, Crown as X, Download as Y, CreditCard as Z, Send as _, User as a, Car as at, RefreshCw as b, TrendingUp as c, Brain as ct, Star as d, Award as dt, CircleCheck as et, Sparkles as f, ArrowRight as ft, Settings as g, ShieldCheck as h, Users as i, Check as it, LogOut as j, MapPin as k, Target as l, BookOpen as lt, Shield as m, X as n, ChevronRight as nt, Upload as o, Building2 as ot, ShoppingBag as p, ArrowLeft as pt, Eye as q, Wrench as r, ChevronDown as rt, Trophy as s, Briefcase as st, Zap as t, CircleCheckBig as tt, Store as u, Battery as ut, Search as v, Newspaper as w, Phone as x, SearchCheck as y, Heart as z };

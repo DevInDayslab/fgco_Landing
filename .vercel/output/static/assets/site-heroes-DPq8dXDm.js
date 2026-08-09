@@ -1,1 +1,0 @@
-import{v as e}from"./PageLayout-DKVB6Tno.js";var t={default:e,awards:`/assets/award_hero-j8WLVL0K.jpg`,city:`/assets/hero-city-C1MDZB6p.jpg`};export{t};

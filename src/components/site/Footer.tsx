@@ -75,6 +75,9 @@ export function Footer() {
               <Link to="/about" className="hover:text-gold">About Us</Link>
             </li>
             <li>
+              <Link to="/team" className="hover:text-gold">Team</Link>
+            </li>
+            <li>
               <Link to="/media" className="hover:text-gold">Media Wing</Link>
             </li>
             <li>

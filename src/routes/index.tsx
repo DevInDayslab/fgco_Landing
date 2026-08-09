@@ -366,12 +366,20 @@ function Index() {
               pioneering InViGIL — the world's first Virtual Commerce Platform powered by ViERA — we
               build solutions that are safe, user-friendly, and meaningful.
             </p>
-            <Link
-              to="/about"
-              className="inline-flex items-center gap-2 text-sm font-medium text-gold hover:underline"
-            >
-              Our full story <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 text-sm font-medium text-gold hover:underline"
+              >
+                Our full story <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              <Link
+                to="/ceo"
+                className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-gold hover:underline"
+              >
+                Meet our CEO <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
           </div>
           </div>
         </div>

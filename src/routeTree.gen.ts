@@ -15,12 +15,18 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ApMediaRouteImport } from './routes/ap-media'
 import { Route as AutomobilesRouteImport } from './routes/automobiles'
 import { Route as AwardsRouteImport } from './routes/awards'
+import { Route as CeoRouteImport } from './routes/ceo'
+import { Route as ChandrashekharRouteImport } from './routes/chandrashekhar'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DirectorRouteImport } from './routes/director'
+import { Route as MdRouteImport } from './routes/md'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as NominateRouteImport } from './routes/nominate'
 import { Route as OperationsRouteImport } from './routes/operations'
 import { Route as PublicationsRouteImport } from './routes/publications'
+import { Route as RameshbabupasupuletiRouteImport } from './routes/rameshbabupasupuleti'
 import { Route as SponsorshipRouteImport } from './routes/sponsorship'
+import { Route as TeamRouteImport } from './routes/team'
 import { Route as TeaserRouteImport } from './routes/teaser'
 import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as VieraRouteImport } from './routes/viera'
@@ -71,9 +77,29 @@ const AwardsRoute = AwardsRouteImport.update({
   path: '/awards',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CeoRoute = CeoRouteImport.update({
+  id: '/ceo',
+  path: '/ceo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChandrashekharRoute = ChandrashekharRouteImport.update({
+  id: '/chandrashekhar',
+  path: '/chandrashekhar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DirectorRoute = DirectorRouteImport.update({
+  id: '/director',
+  path: '/director',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MdRoute = MdRouteImport.update({
+  id: '/md',
+  path: '/md',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MediaRoute = MediaRouteImport.update({
@@ -96,9 +122,19 @@ const PublicationsRoute = PublicationsRouteImport.update({
   path: '/publications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RameshbabupasupuletiRoute = RameshbabupasupuletiRouteImport.update({
+  id: '/rameshbabupasupuleti',
+  path: '/rameshbabupasupuleti',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SponsorshipRoute = SponsorshipRouteImport.update({
   id: '/sponsorship',
   path: '/sponsorship',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamRoute = TeamRouteImport.update({
+  id: '/team',
+  path: '/team',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeaserRoute = TeaserRouteImport.update({
@@ -204,12 +240,18 @@ export interface FileRoutesByFullPath {
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
   '/awards': typeof AwardsRoute
+  '/ceo': typeof CeoRoute
+  '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
+  '/director': typeof DirectorRoute
+  '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/nominate': typeof NominateRouteWithChildren
   '/operations': typeof OperationsRoute
   '/publications': typeof PublicationsRoute
+  '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
   '/sponsorship': typeof SponsorshipRoute
+  '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
   '/technology': typeof TechnologyRoute
   '/viera': typeof VieraRoute
@@ -236,11 +278,17 @@ export interface FileRoutesByTo {
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
   '/awards': typeof AwardsRoute
+  '/ceo': typeof CeoRoute
+  '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
+  '/director': typeof DirectorRoute
+  '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/operations': typeof OperationsRoute
   '/publications': typeof PublicationsRoute
+  '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
   '/sponsorship': typeof SponsorshipRoute
+  '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
   '/technology': typeof TechnologyRoute
   '/viera': typeof VieraRoute
@@ -265,12 +313,18 @@ export interface FileRoutesById {
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
   '/awards': typeof AwardsRoute
+  '/ceo': typeof CeoRoute
+  '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
+  '/director': typeof DirectorRoute
+  '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/nominate': typeof NominateRouteWithChildren
   '/operations': typeof OperationsRoute
   '/publications': typeof PublicationsRoute
+  '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
   '/sponsorship': typeof SponsorshipRoute
+  '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
   '/technology': typeof TechnologyRoute
   '/viera': typeof VieraRoute
@@ -300,12 +354,18 @@ export interface FileRouteTypes {
     | '/ap-media'
     | '/automobiles'
     | '/awards'
+    | '/ceo'
+    | '/chandrashekhar'
     | '/contact'
+    | '/director'
+    | '/md'
     | '/media'
     | '/nominate'
     | '/operations'
     | '/publications'
+    | '/rameshbabupasupuleti'
     | '/sponsorship'
+    | '/team'
     | '/teaser'
     | '/technology'
     | '/viera'
@@ -332,11 +392,17 @@ export interface FileRouteTypes {
     | '/ap-media'
     | '/automobiles'
     | '/awards'
+    | '/ceo'
+    | '/chandrashekhar'
     | '/contact'
+    | '/director'
+    | '/md'
     | '/media'
     | '/operations'
     | '/publications'
+    | '/rameshbabupasupuleti'
     | '/sponsorship'
+    | '/team'
     | '/teaser'
     | '/technology'
     | '/viera'
@@ -360,12 +426,18 @@ export interface FileRouteTypes {
     | '/ap-media'
     | '/automobiles'
     | '/awards'
+    | '/ceo'
+    | '/chandrashekhar'
     | '/contact'
+    | '/director'
+    | '/md'
     | '/media'
     | '/nominate'
     | '/operations'
     | '/publications'
+    | '/rameshbabupasupuleti'
     | '/sponsorship'
+    | '/team'
     | '/teaser'
     | '/technology'
     | '/viera'
@@ -394,12 +466,18 @@ export interface RootRouteChildren {
   ApMediaRoute: typeof ApMediaRoute
   AutomobilesRoute: typeof AutomobilesRoute
   AwardsRoute: typeof AwardsRoute
+  CeoRoute: typeof CeoRoute
+  ChandrashekharRoute: typeof ChandrashekharRoute
   ContactRoute: typeof ContactRoute
+  DirectorRoute: typeof DirectorRoute
+  MdRoute: typeof MdRoute
   MediaRoute: typeof MediaRoute
   NominateRoute: typeof NominateRouteWithChildren
   OperationsRoute: typeof OperationsRoute
   PublicationsRoute: typeof PublicationsRoute
+  RameshbabupasupuletiRoute: typeof RameshbabupasupuletiRoute
   SponsorshipRoute: typeof SponsorshipRoute
+  TeamRoute: typeof TeamRoute
   TeaserRoute: typeof TeaserRoute
   TechnologyRoute: typeof TechnologyRoute
   VieraRoute: typeof VieraRoute
@@ -449,11 +527,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AwardsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ceo': {
+      id: '/ceo'
+      path: '/ceo'
+      fullPath: '/ceo'
+      preLoaderRoute: typeof CeoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chandrashekhar': {
+      id: '/chandrashekhar'
+      path: '/chandrashekhar'
+      fullPath: '/chandrashekhar'
+      preLoaderRoute: typeof ChandrashekharRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/director': {
+      id: '/director'
+      path: '/director'
+      fullPath: '/director'
+      preLoaderRoute: typeof DirectorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/md': {
+      id: '/md'
+      path: '/md'
+      fullPath: '/md'
+      preLoaderRoute: typeof MdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/media': {
@@ -484,11 +590,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rameshbabupasupuleti': {
+      id: '/rameshbabupasupuleti'
+      path: '/rameshbabupasupuleti'
+      fullPath: '/rameshbabupasupuleti'
+      preLoaderRoute: typeof RameshbabupasupuletiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sponsorship': {
       id: '/sponsorship'
       path: '/sponsorship'
       fullPath: '/sponsorship'
       preLoaderRoute: typeof SponsorshipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team': {
+      id: '/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof TeamRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/teaser': {
@@ -722,12 +842,18 @@ const rootRouteChildren: RootRouteChildren = {
   ApMediaRoute: ApMediaRoute,
   AutomobilesRoute: AutomobilesRoute,
   AwardsRoute: AwardsRoute,
+  CeoRoute: CeoRoute,
+  ChandrashekharRoute: ChandrashekharRoute,
   ContactRoute: ContactRoute,
+  DirectorRoute: DirectorRoute,
+  MdRoute: MdRoute,
   MediaRoute: MediaRoute,
   NominateRoute: NominateRouteWithChildren,
   OperationsRoute: OperationsRoute,
   PublicationsRoute: PublicationsRoute,
+  RameshbabupasupuletiRoute: RameshbabupasupuletiRoute,
   SponsorshipRoute: SponsorshipRoute,
+  TeamRoute: TeamRoute,
   TeaserRoute: TeaserRoute,
   TechnologyRoute: TechnologyRoute,
   VieraRoute: VieraRoute,
