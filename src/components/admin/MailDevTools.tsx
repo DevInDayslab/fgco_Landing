@@ -101,8 +101,18 @@ export function MailDevTools() {
             <StatusPill ok={status.configured} label={status.configured ? "SMTP configured" : "SMTP missing"} />
             <StatusPill ok={status.passSet} label={status.passSet ? "Password set" : "Password missing"} />
             <StatusPill
-              ok={verify?.ok ?? false}
-              label={verify?.ok ? "SMTP verify OK" : "SMTP verify failed"}
+              ok={status.resendConfigured ?? false}
+              label={status.resendConfigured ? "Resend configured" : "Resend not set"}
+            />
+            <StatusPill
+              ok={status.provider === "resend" || (verify?.ok ?? false)}
+              label={
+                status.provider === "resend"
+                  ? "Using Resend"
+                  : verify?.ok
+                    ? "SMTP verify OK"
+                    : "Mail verify failed"
+              }
             />
             <StatusPill
               ok={status.ceoImageExists}
@@ -148,9 +158,15 @@ export function MailDevTools() {
                 <dd className="font-mono text-red-700">{verify.error}</dd>
               </div>
             )}
+            {status.hostingHint && (
+              <div className="sm:col-span-2 rounded-md border border-amber-200 bg-amber-50 p-3">
+                <dt className="font-medium text-amber-900">Why local worked but production does not</dt>
+                <dd className="mt-1 text-amber-950">{status.hostingHint}</dd>
+              </div>
+            )}
             {(status.eaccesHint || verify?.hint) && (
               <div className="sm:col-span-2 rounded-md border border-amber-200 bg-amber-50 p-3">
-                <dt className="font-medium text-amber-800">GoDaddy SMTP hint</dt>
+                <dt className="font-medium text-amber-800">SMTP note</dt>
                 <dd className="mt-1 text-amber-900">{verify?.hint ?? status.eaccesHint}</dd>
               </div>
             )}
@@ -194,10 +210,10 @@ export function MailDevTools() {
       )}
 
       <p className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs leading-relaxed text-blue-900">
-        <strong>SMTP accepted ≠ inbox delivered.</strong> If tests show ok but Gmail is empty, check
-        spam/promotions, wait 5–10 min, and in cPanel open{" "}
-        <strong>Track Delivery</strong> for hitawards@fgco.in. Also ensure SPF/DKIM records exist
-        for fgco.in. Try <strong>Simple ping</strong> first (plain text) before heavy HTML templates.
+        <strong>Local vs production:</strong> Your laptop can reach <code>mail.fgco.in:465</code>, but
+        GoDaddy Node.js PaaS blocks it. <code>localhost:25</code> is not cPanel mail — do not use it.
+        Set <strong>RESEND_API_KEY</strong> on GoDaddy (verify fgco.in in Resend) for reliable delivery.
+        Try <strong>Simple ping</strong> after adding the key.
       </p>
 
       <div className="space-y-3 rounded-lg border border-zinc-200 bg-white p-4">

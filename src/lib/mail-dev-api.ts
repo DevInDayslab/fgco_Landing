@@ -13,6 +13,10 @@ export type MailTemplateId =
 
 export type MailDiagnostics = {
   configured: boolean;
+  provider?: "resend" | "smtp";
+  resendConfigured?: boolean;
+  resendFrom?: string | null;
+  hostingHint?: string;
   missing: string[];
   host: string | null;
   port: number | null;
