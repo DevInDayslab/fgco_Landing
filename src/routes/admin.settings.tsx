@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
+import { MailDevTools } from "@/components/admin/MailDevTools";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { logoutAdmin } from "@/lib/admin-auth";
 import { adminFetch } from "@/lib/api-client";
@@ -131,6 +132,8 @@ function AdminSettings() {
           {submitting ? "Updating…" : "Update password"}
         </button>
       </form>
+
+      <MailDevTools />
     </div>
   );
 }
