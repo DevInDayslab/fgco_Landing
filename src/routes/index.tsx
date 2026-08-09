@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Award,
+  Car,
   ChevronDown,
   ChevronRight,
   Crown,
@@ -185,15 +186,21 @@ function Index() {
             (InViGIL), and National Recognition.
           </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <SiteLinkButton to="/technology" variant="viera" size="lg" className="w-full sm:w-auto">
-              <BrandLogo id="invigil" size="xs" /> Discover InViGIL
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <SiteLinkButton to="/technology" variant="viera" size="lg">
+              <BrandLogo id="invigil" size="xs" /> InViGIL
             </SiteLinkButton>
-            <SiteLinkButton to="/awards" variant="goldOutline" size="lg" className="w-full sm:w-auto">
-              <Award className="h-4 w-4" /> HIT ViERA Awards
+            <SiteLinkButton to="/viera" variant="viera" size="lg">
+              <BrandLogo id="viera" size="xs" /> ViERA
             </SiteLinkButton>
-            <SiteLinkButton to="/publications" variant="outline" size="lg" className="w-full sm:w-auto">
-              <Newspaper className="h-4 w-4" /> Our Publications
+            <SiteLinkButton to="/publications" variant="outline" size="lg">
+              <Newspaper className="h-4 w-4" /> Publications
+            </SiteLinkButton>
+            <SiteLinkButton to="/automobiles" variant="outline" size="lg">
+              <Car className="h-4 w-4" /> Automobiles
+            </SiteLinkButton>
+            <SiteLinkButton to="/awards" variant="goldOutline" size="lg">
+              <Award className="h-4 w-4" /> HIT ViERA National Awards
             </SiteLinkButton>
           </div>
 
