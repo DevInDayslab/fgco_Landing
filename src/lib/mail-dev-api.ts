@@ -66,8 +66,17 @@ export type MailTestResult = {
   to: string;
   subject?: string;
   messageId?: string;
+  accepted?: string[];
+  rejected?: string[];
+  smtpResponse?: string;
+  profile?: {
+    label: string;
+    host: string;
+    port: number;
+    tlsServername: string;
+  };
+  deliveryNote?: string;
   error?: string;
-  smtp?: MailDiagnostics["verify"] extends { smtp?: infer S } ? S : never;
   durationMs: number;
 };
 

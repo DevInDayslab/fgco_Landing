@@ -112,8 +112,15 @@ export function MailDevTools() {
 
           <dl className="grid gap-2 text-xs text-zinc-600 sm:grid-cols-2">
             <div>
-              <dt className="font-medium text-zinc-400">Host</dt>
+              <dt className="font-medium text-zinc-400">Configured host</dt>
               <dd className="font-mono">{status.host ?? "—"}</dd>
+            </div>
+            <div>
+              <dt className="font-medium text-zinc-400">Working host (verify)</dt>
+              <dd className="font-mono">
+                {verify?.host ? `${verify.host}:${verify.port ?? "?"}` : "—"}
+                {verify?.label ? ` (${verify.label})` : ""}
+              </dd>
             </div>
             <div>
               <dt className="font-medium text-zinc-400">Port / secure</dt>
@@ -185,6 +192,13 @@ export function MailDevTools() {
           </button>
         </div>
       )}
+
+      <p className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs leading-relaxed text-blue-900">
+        <strong>SMTP accepted ≠ inbox delivered.</strong> If tests show ok but Gmail is empty, check
+        spam/promotions, wait 5–10 min, and in cPanel open{" "}
+        <strong>Track Delivery</strong> for hitawards@fgco.in. Also ensure SPF/DKIM records exist
+        for fgco.in. Try <strong>Simple ping</strong> first (plain text) before heavy HTML templates.
+      </p>
 
       <div className="space-y-3 rounded-lg border border-zinc-200 bg-white p-4">
         <label

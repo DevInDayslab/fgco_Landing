@@ -1,4 +1,4 @@
-import { R as cn } from "./router-CMFhHr5r.mjs";
+import { R as cn } from "./router-CgckvXdb.mjs";
 import { a as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/StatusBadge-CKMCsx9p.js
 var import_jsx_runtime = require_jsx_runtime();
