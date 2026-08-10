@@ -359,17 +359,17 @@ export function isSelfNominationInput(params: {
 }
 
 export function getNominationFeeBreakdown(isSelfNomination: boolean) {
-  const baseInr = isSelfNomination
+  const totalInr = isSelfNomination
     ? paymentDetails.nominationSelfFeeInr
     : paymentDetails.nominationOtherFeeInr;
-  const gstRate = Number.parseFloat(paymentDetails.gstRate) / 100;
-  const gstInr = Math.round(baseInr * gstRate);
   return {
-    baseInr,
-    gstInr,
-    totalInr: baseInr + gstInr,
+    baseInr: totalInr,
+    gstInr: 0,
+    totalInr,
     isSelfNomination,
-    feeLabel: isSelfNomination ? "Self-nomination fee" : "Nomination fee (nominating another person)",
+    feeLabel: isSelfNomination
+      ? "Self-nomination — ₹20,000"
+      : "Nominating another person — ₹5,000",
   };
 }
 
