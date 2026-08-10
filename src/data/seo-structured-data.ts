@@ -1,6 +1,7 @@
 import { FG_CONTACT, FG_OFFICE } from "@/data/contact";
 import { AWARDS_TAGLINE, EVENT_LOCATION } from "@/data/awards";
 import type { LeaderProfile } from "@/data/leadership";
+import { RAMESH_LINKEDIN_URL, SITE_SOCIALS } from "@/data/social";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export function organizationSchema() {
@@ -21,7 +22,7 @@ export function organizationSchema() {
       postalCode: "560032",
       addressCountry: "IN",
     },
-    sameAs: [FG_CONTACT.website],
+    sameAs: [FG_CONTACT.website, ...SITE_SOCIALS.map((social) => social.href)],
   };
 }
 
@@ -39,6 +40,11 @@ export function websiteSchema() {
 }
 
 export function personSchema(leader: LeaderProfile) {
+  const sameAs =
+    leader.id === "ramesh"
+      ? [RAMESH_LINKEDIN_URL]
+      : undefined;
+
   return {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -53,6 +59,7 @@ export function personSchema(leader: LeaderProfile) {
     image: leader.image.startsWith("http")
       ? leader.image
       : `${SITE_URL}${leader.image.startsWith("/") ? leader.image : `/${leader.image}`}`,
+    ...(sameAs ? { sameAs } : {}),
   };
 }
 

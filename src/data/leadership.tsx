@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import founderPhoto from "@/assets/ramesh.png";
 import roopaPhoto from "@/assets/Roopa.jpeg";
 import sekharPhoto from "@/assets/Sekharphoto.png";
+import { RAMESH_LINKEDIN_URL, type SocialLink } from "@/data/social";
 
 export type LeaderHighlight = {
   title: string;
@@ -65,6 +66,7 @@ export type LeaderProfile = {
   closingTagline?: string;
   closingText?: string;
   footer?: ReactNode;
+  socialLinks?: SocialLink[];
   image: string;
   imageAlt: string;
   imageClassName?: string;
@@ -258,6 +260,7 @@ export const LEADERS: LeaderProfile[] = [
     closingTagline: "Recognising Excellence. Enabling Progress. Inspiring India.",
     closingText:
       "A builder of ecosystems. A pioneer of intelligent systems. A leader shaping the future of media and technology.",
+    socialLinks: [{ label: "LinkedIn", href: RAMESH_LINKEDIN_URL }],
     footer: (
       <>
         <p className="section-label">Corporate Office</p>
@@ -265,6 +268,16 @@ export const LEADERS: LeaderProfile[] = [
           #107, 2nd Main, MLA Layout, RT Nagar, Bengaluru City, Karnataka State — 560032
         </p>
         <p className="mt-3">Mobile: +91 73820 98888</p>
+        <p className="mt-3">
+          <a
+            href={RAMESH_LINKEDIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-gold hover:underline"
+          >
+            LinkedIn — linkedin.com/in/rameshceo
+          </a>
+        </p>
       </>
     ),
     image: founderPhoto,

@@ -71,6 +71,7 @@ export function LeaderProfilePage({ leader }: { leader: LeaderProfileData }) {
         quote={undefined}
         secondaryQuote={leader.secondaryQuote}
         footer={leader.footer}
+        socialLinks={leader.socialLinks}
         image={leader.image}
         imageAlt={leader.imageAlt}
         imageClassName={leader.imageClassName}

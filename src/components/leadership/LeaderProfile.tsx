@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { LeaderHighlight, LeaderSection } from "@/data/leadership";
+import type { SocialLink } from "@/data/social";
 import { ContentCard, NumberedItem } from "@/components/site/PageLayout";
 
 export type LeaderProfileProps = {
@@ -17,6 +18,7 @@ export type LeaderProfileProps = {
   quote?: string;
   secondaryQuote?: string;
   footer?: ReactNode;
+  socialLinks?: SocialLink[];
   image: string;
   imageAlt: string;
   imageClassName?: string;
@@ -149,6 +151,7 @@ export function LeaderProfile({
   quote,
   secondaryQuote,
   footer,
+  socialLinks,
   image,
   imageAlt,
   imageClassName = "object-cover object-top",
@@ -171,6 +174,21 @@ export function LeaderProfile({
             <p className="text-sm text-muted-foreground">{organization}</p>
             {tags ? (
               <p className="pt-2 text-xs leading-relaxed text-muted-foreground">{tags}</p>
+            ) : null}
+            {socialLinks && socialLinks.length > 0 ? (
+              <div className="flex flex-wrap gap-3 pt-3">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-gold hover:underline"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
             ) : null}
           </figcaption>
         </figure>

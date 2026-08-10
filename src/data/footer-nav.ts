@@ -1,3 +1,5 @@
+import { SITE_SOCIALS } from "@/data/social";
+
 export type FooterLink = {
   label: string;
   to:
@@ -52,32 +54,7 @@ export const FOOTER_LINKS = {
   ] satisfies FooterLink[],
 } as const;
 
-export const FOOTER_SOCIALS = [
-  {
-    label: "Facebook",
-    href: "https://facebook.com/invigilapp",
-  },
-  {
-    label: "Instagram",
-    href: "https://instagram.com/invigilapp",
-  },
-  {
-    label: "Threads",
-    href: "https://threads.com/InvigilApp",
-  },
-  {
-    label: "X",
-    href: "https://x.com/invigilapp",
-  },
-  {
-    label: "YouTube",
-    href: "https://youtube.com/invigilapp",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com/invigil",
-  },
-] as const;
+export const FOOTER_SOCIALS = SITE_SOCIALS;
 
 export const CERTIFICATION_TAGS = [
   "ISO/IEC 27001:2013",
