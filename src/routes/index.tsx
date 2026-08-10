@@ -8,6 +8,7 @@ import {
   Crown,
   Newspaper,
   Shield,
+  Sparkles,
   Trophy,
 } from "lucide-react";
 import type { ReactElement } from "react";
@@ -42,13 +43,6 @@ const marquee = [
   "NATIONAL ENGLISH WEEKLY",
   "TELUGU NEWS WEEKLY",
   "KANNADA NEWS WEEKLY",
-];
-
-const stats = [
-  ["3", "News Publications"],
-  ["5+", "Ventures"],
-  ["10K+", "Features in ViERA"],
-  ["195+", "Countries"],
 ];
 
 const ventures: {
@@ -145,6 +139,19 @@ function EcosystemCard({
   );
 }
 
+const heroPrimaryLinks = [
+  { to: "/awards", label: "HIT ViERA Awards", icon: Award },
+  { to: "/technology", label: "Explore InViGIL", icon: Shield },
+] as const;
+
+const heroSecondaryLinks = [
+  { to: "/viera", label: "ViERA", icon: Sparkles },
+  { to: "/publications", label: "Publications", icon: Newspaper },
+  { to: "/automobiles", label: "Automobiles", icon: Car },
+] as const;
+
+const heroButtonClass = "min-h-[3.25rem] min-w-[11rem]";
+
 function Index() {
   return (
     <div className="animate-fade-in">
@@ -180,22 +187,35 @@ function Index() {
             (InViGIL), and National Recognition.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <SiteLinkButton to="/technology" variant="viera" size="lg">
-              <BrandLogo id="invigil" size="xs" /> InViGIL
-            </SiteLinkButton>
-            <SiteLinkButton to="/viera" variant="viera" size="lg">
-              <BrandLogo id="viera" size="sm" className="max-h-8" /> ViERA
-            </SiteLinkButton>
-            <SiteLinkButton to="/publications" variant="outline" size="lg">
-              <Newspaper className="h-4 w-4" /> Publications
-            </SiteLinkButton>
-            <SiteLinkButton to="/automobiles" variant="outline" size="lg">
-              <Car className="h-4 w-4" /> Automobiles
-            </SiteLinkButton>
-            <SiteLinkButton to="/awards" variant="goldOutline" size="lg">
-              <Award className="h-4 w-4" /> HIT ViERA National Awards
-            </SiteLinkButton>
+          <div className="mt-10 flex flex-col items-center gap-4">
+            <div className="flex flex-wrap items-stretch justify-center gap-3">
+              {heroPrimaryLinks.map(({ to, label, icon: Icon }) => (
+                <SiteLinkButton
+                  key={to}
+                  to={to}
+                  variant="gold"
+                  size="lg"
+                  className={heroButtonClass}
+                >
+                  <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                  {label}
+                </SiteLinkButton>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-stretch justify-center gap-3">
+              {heroSecondaryLinks.map(({ to, label, icon: Icon }) => (
+                <SiteLinkButton
+                  key={to}
+                  to={to}
+                  variant="outline"
+                  size="lg"
+                  className={heroButtonClass}
+                >
+                  <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                  {label}
+                </SiteLinkButton>
+              ))}
+            </div>
           </div>
 
           <div className="mt-16 flex flex-col items-center gap-2 text-[0.6rem] tracking-[0.3em] text-muted-foreground">
@@ -205,7 +225,7 @@ function Index() {
         </div>
       </section>
 
-      <div className="overflow-hidden border-y border-border bg-surface py-6">
+      <div className="overflow-hidden border-t border-border bg-surface py-6">
         <div className="marquee-track flex w-max items-center gap-8 whitespace-nowrap">
           {[...marquee, ...marquee].map((m, i) => (
             <span key={i} className="flex items-center gap-8">
@@ -216,23 +236,7 @@ function Index() {
         </div>
       </div>
 
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map(([n, l]) => (
-            <GlowCard
-              key={l}
-              tone="gold"
-              className="fg-card-stat px-8 py-12 text-center"
-            >
-              <p className="fg-stat text-5xl fg-text-gradient-gold">{n}</p>
-              <p className="mt-3 text-[0.68rem] tracking-[0.2em] text-muted-foreground uppercase">
-                {l}
-              </p>
-            </GlowCard>
-          ))}
-        </div>
-        <TrustStrip className="mt-10" />
-      </section>
+      <TrustStrip className="mt-8 md:mt-12" />
 
       <section className="border-t border-border bg-surface/50 py-24">
         <div className="mx-auto max-w-7xl px-6">

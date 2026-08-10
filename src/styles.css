@@ -439,6 +439,23 @@
     z-index: 1;
   }
 
+  .fg-trust-strip {
+    background: linear-gradient(
+      90deg,
+      rgb(10 14 26 / 0.4) 0%,
+      rgb(56 189 248 / 0.05) 50%,
+      rgb(10 14 26 / 0.4) 100%
+    );
+  }
+
+  .fg-trust-stat-value {
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    text-shadow:
+      0 0 20px rgb(56 189 248 / 0.35),
+      0 0 40px rgb(56 189 248 / 0.12);
+  }
+
   .fg-icon-badge {
     display: flex;
     align-items: center;
