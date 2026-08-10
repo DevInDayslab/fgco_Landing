@@ -15,19 +15,11 @@ import {
 } from "@/components/site/PageLayout";
 import { FgLogo } from "@/components/brand/FgLogo";
 import { LEADERS } from "@/data/leadership";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About FG Media — Our Story, Vision & Mission" },
-      {
-        name: "description",
-        content:
-          "FG Media and Safety Technologies Pvt. Ltd. — an India-based technology and media enterprise building intelligent, secure and human-centred ecosystems.",
-      },
-      { property: "og:title", content: "About FG Media" },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.about),
   component: About,
 });
 

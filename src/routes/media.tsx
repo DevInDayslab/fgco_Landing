@@ -19,19 +19,11 @@ import {
   printHubs,
   publicationProfiles,
 } from "@/data/publications";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/media")({
-  head: () => ({
-    meta: [
-      { title: "Media Wing — FG Media Publications | HIT News, Happy India Times, Kurukshetra" },
-      {
-        name: "description",
-        content:
-          "FG Media Publications — HIT NEWS, Happy India Times, and Kurukshetra. 20 lakh+ weekly reach across English, Telugu, and Kannada.",
-      },
-      { property: "og:title", content: "FG Media Publications — Media Wing" },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.media),
   component: Media,
 });
 

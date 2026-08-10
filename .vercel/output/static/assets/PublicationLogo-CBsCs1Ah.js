@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-Cltr0gcK.js";import{R as t}from"./index-DxznYRAj.js";var n=e(),r={sm:`h-10 max-w-[120px]`,md:`h-16 max-w-[180px]`,lg:`h-24 max-w-[240px]`};function i({id:e,size:i=`md`,className:a=``}){let o=t[e];return(0,n.jsx)(`img`,{src:o.logo,alt:o.logoAlt,className:`w-auto object-contain ${r[i]} ${a}`})}export{i as t};

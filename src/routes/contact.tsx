@@ -15,26 +15,16 @@ import { FormPanel } from "@/components/awards/FormPrimitives";
 import { GoogleMapEmbed } from "@/components/site/GoogleMapEmbed";
 import { HeroAccent, SitePageHero } from "@/components/site/PageLayout";
 import { FG_CONTACT, inquiryTypes } from "@/data/contact";
+import { contactPageSchema } from "@/data/seo-structured-data";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Toaster } from "@/components/ui/sonner";
 import { emailField, nameField, requiredTextField, validateField } from "@/lib/form-validation";
 import { buildApiUrl, isApiConfigured, postContact } from "@/lib/api-client";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact FG Media Group — Advertising, Partnerships & Press" },
-      {
-        name: "description",
-        content:
-          "Contact FG Media Group in Bengaluru — pro@fgco.in, hitawards@fgco.in, WhatsApp +91 73820 98888.",
-      },
-      { property: "og:title", content: "Contact FG Media Group" },
-      {
-        property: "og:description",
-        content: "Email pro@fgco.in or WhatsApp +91 73820 98888 — Bengaluru, Karnataka.",
-      },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.contact),
   component: Contact,
 });
 
@@ -129,6 +119,7 @@ function Contact() {
 
   return (
     <>
+      <JsonLd data={contactPageSchema()} />
       <Toaster />
       <SitePageHero
         overline="Get In Touch"

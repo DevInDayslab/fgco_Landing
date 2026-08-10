@@ -7,8 +7,10 @@ import {
   setAdminToken,
 } from "@/lib/admin-auth";
 import { apiFetch } from "@/lib/api-client";
+import { buildNoIndexHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/login")({
+  head: () => buildNoIndexHead("Admin Login — FG Media Group"),
   component: AdminLogin,
 });
 

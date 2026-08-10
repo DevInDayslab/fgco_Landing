@@ -3,7 +3,6 @@ import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
   Award,
-  Brain,
   Car,
   Lock,
   Newspaper,
@@ -12,12 +11,14 @@ import {
   Users,
 } from "lucide-react";
 import { cardLinkClass } from "@/components/site/PageLayout";
+import { BrandLogo, type BrandLogoId } from "@/components/brand/BrandLogo";
 
 export type EcosystemPillar = {
   title: string;
   tagline?: string;
   description: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
+  brandLogoId?: BrandLogoId;
   to?: string;
   accent?: "gold" | "viera";
 };
@@ -60,9 +61,15 @@ function PillarCard({
           >
             {number}
           </span>
-          <span className="fg-icon-badge flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-            <Icon className={`h-5 w-5 ${accent.icon}`} aria-hidden />
-          </span>
+          {pillar.brandLogoId ? (
+            <div className="flex h-14 items-center">
+              <BrandLogo id={pillar.brandLogoId} size="sm" className="max-w-[7rem]" />
+            </div>
+          ) : Icon ? (
+            <span className="fg-icon-badge flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+              <Icon className={`h-5 w-5 ${accent.icon}`} aria-hidden />
+            </span>
+          ) : null}
         </div>
 
         <h3 className="mt-5 text-lg font-bold leading-snug tracking-tight md:text-xl">
@@ -124,7 +131,7 @@ export const FG_ECOSYSTEM_PILLARS: EcosystemPillar[] = [
     tagline: "VIT & ViERA",
     description:
       "Human-centred digital intelligence in which a user's digital counterpart becomes an intelligent interface between the individual and the digital world.",
-    icon: Brain,
+    brandLogoId: "viera",
     to: "/viera",
     accent: "viera",
   },

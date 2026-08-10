@@ -32,23 +32,13 @@ import {
 } from "@/lib/form-validation";
 import { isApiConfigured, postSponsorshipRegister } from "@/lib/api-client";
 import { Toaster } from "@/components/ui/sonner";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { awardsEventSchema } from "@/data/seo-structured-data";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/sponsorship")({
-  head: () => ({
-    meta: [
-      { title: "Sponsorship Proposal — HIT ViERA Awards 2026" },
-      {
-        name: "description",
-        content:
-          "Exclusive sponsorship invitation for HIT ViERA National Awards 2026 & InViGIL Global Launch Event.",
-      },
-      { property: "og:title", content: "HIT ViERA Awards 2026 Sponsorship" },
-      {
-        property: "og:description",
-        content: "An exclusive invitation to align with global excellence.",
-      },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.sponsorship),
   component: Sponsorship,
 });
 
@@ -238,6 +228,7 @@ function Sponsorship() {
 
   return (
     <>
+      <JsonLd data={awardsEventSchema()} />
       <Toaster />
       <PageHero
         variant="sponsorship"
@@ -609,6 +600,25 @@ function Sponsorship() {
                     >
                       {submitting ? "Submitting..." : "Submit Registration"}
                     </button>
+                    <p className="text-xs leading-relaxed text-gray-400">
+                      By submitting, you agree to our{" "}
+                      <Link to="/terms" className="text-gold hover:underline">
+                        Terms & Conditions
+                      </Link>
+                      ,{" "}
+                      <Link to="/privacy" className="text-gold hover:underline">
+                        Privacy Policy
+                      </Link>
+                      ,{" "}
+                      <Link to="/refund-policy" className="text-gold hover:underline">
+                        Refund Policy
+                      </Link>
+                      , and{" "}
+                      <Link to="/cancellation-policy" className="text-gold hover:underline">
+                        Cancellation Policy
+                      </Link>
+                      .
+                    </p>
                   </form>
                 </>
               )}

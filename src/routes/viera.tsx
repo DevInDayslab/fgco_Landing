@@ -32,18 +32,11 @@ import {
   vieraDifferentiators,
   vieraPrinciples,
 } from "@/data/viera-content";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/viera")({
-  head: () => ({
-    meta: [
-      { title: "ViERA — Virtual Intelligence Enabled Real Actor | FG Media" },
-      {
-        name: "description",
-        content:
-          "ViERA creates your intelligent digital replica — personalized Virtual Intelligence that protects, empowers, and guides you across InViGIL and the digital world.",
-      },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.viera),
   component: Viera,
 });
 

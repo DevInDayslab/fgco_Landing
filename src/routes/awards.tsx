@@ -8,29 +8,23 @@ import { PageHero } from "@/components/awards/PageHero";
 import { ProcessTimeline } from "@/components/awards/ProcessTimeline";
 import { SectionHeader } from "@/components/awards/SectionHeader";
 import { BrandLogo } from "@/components/brand/BrandLogo";
-import { AWARDS_TAGLINE, evaluationCriteria, excellenceAwards } from "@/data/awards";
+import { evaluationCriteria, excellenceAwards } from "@/data/awards";
+import { awardsEventSchema } from "@/data/seo-structured-data";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { HeroAccent } from "@/components/site/PageLayout";
 import { CheckCircle } from "lucide-react";
 
 export const Route = createFileRoute("/awards")({
-  head: () => ({
-    meta: [
-      { title: "HIT ViERA National Awards 2026 — FG Media Group" },
-      {
-        name: "description",
-        content:
-          "HIT ViERA National Awards 2026 & InViGIL Global Launch Event in Bengaluru. Recognising excellence across India.",
-      },
-      { property: "og:title", content: "HIT ViERA National Awards 2026" },
-      { property: "og:description", content: AWARDS_TAGLINE },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.awards),
   component: Awards,
 });
 
 function Awards() {
   return (
     <>
+      <JsonLd data={awardsEventSchema()} />
       <PageHero
         variant="awards"
         align="center"

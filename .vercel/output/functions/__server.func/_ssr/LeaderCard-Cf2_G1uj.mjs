@@ -1,6 +1,6 @@
 import { v as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
-import { ft as ArrowRight } from "../_libs/lucide-react.mjs";
+import { _t as ArrowRight } from "../_libs/lucide-react.mjs";
 import { r as getLeaderPath } from "./leadership-BZ3zHOD8.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/LeaderCard-Cf2_G1uj.js
 var import_jsx_runtime = require_jsx_runtime();

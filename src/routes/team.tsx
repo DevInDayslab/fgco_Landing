@@ -3,19 +3,11 @@ import { ArrowRight } from "lucide-react";
 import { LeaderCard } from "@/components/leadership/LeaderCard";
 import { PageSection, SitePageHero } from "@/components/site/PageLayout";
 import { LEADERS, getLeaderPath } from "@/data/leadership";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/team")({
-  head: () => ({
-    meta: [
-      { title: "Our Team — FG Media Leadership" },
-      {
-        name: "description",
-        content:
-          "Meet the leadership team of FG Media and Safety Technologies Pvt. Ltd. — technology visionaries, media leaders, and automotive safety experts.",
-      },
-      { property: "og:title", content: "FG Media Team" },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.team),
   component: Team,
 });
 

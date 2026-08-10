@@ -3,30 +3,21 @@ import { NominateBrief } from "@/components/awards/NominateBrief";
 import { NominationWizard } from "@/components/awards/NominationWizard";
 import { HeroBackdrop } from "@/components/site/PageLayout";
 import { siteHeroImages } from "@/data/site-heroes";
+import { awardsEventSchema } from "@/data/seo-structured-data";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/nominate/")({
-  head: () => ({
-    meta: [
-      { title: "Official Nomination Portal — HIT ViERA Awards 2026" },
-      {
-        name: "description",
-        content:
-          "Submit your nomination for the HIT ViERA National Awards 2026. Official portal by FG Media Group.",
-      },
-      { property: "og:title", content: "HIT Awards Nomination Portal" },
-      {
-        property: "og:description",
-        content: "HIT Awards & Special Edition — Official Nomination Portal by FG Media Group.",
-      },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.nominate),
   component: NominateIndex,
 });
 
 function NominateIndex() {
   return (
     <>
+      <JsonLd data={awardsEventSchema()} />
       <Toaster />
       <section className="relative overflow-hidden border-b border-border">
         <HeroBackdrop image={siteHeroImages.city} showBlur={false} />

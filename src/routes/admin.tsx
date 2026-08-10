@@ -2,8 +2,10 @@ import { createFileRoute, Outlet, redirect, useRouterState } from "@tanstack/rea
 import { useEffect } from "react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { isAdminAuthenticated, logoutAdmin } from "@/lib/admin-auth";
+import { buildNoIndexHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin")({
+  head: () => buildNoIndexHead("Admin — FG Media Group"),
   beforeLoad: ({ location }) => {
     if (location.pathname === "/admin/login") {
       return;

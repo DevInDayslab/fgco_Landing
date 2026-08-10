@@ -31,18 +31,11 @@ import {
   fitGarageServices,
   mobilityConnections,
 } from "@/data/automobiles";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/automobiles")({
-  head: () => ({
-    meta: [
-      { title: "Automobile Technologies — FitGaadi, FitGarage & FG EV | FG Media" },
-      {
-        name: "description",
-        content:
-          "FG Media Automobile Division — FitGaadi safety & 365° vehicle care, FitGarage global service network, and FG Electric Mobility.",
-      },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.automobiles),
   component: Automobiles,
 });
 

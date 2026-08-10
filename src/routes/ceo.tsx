@@ -1,24 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { LeaderProfilePage } from "@/components/leadership/LeaderProfilePage";
 import { getLeaderBySlug } from "@/data/leadership";
+import { personSchema } from "@/data/seo-structured-data";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/ceo")({
-  head: () => ({
-    meta: [
-      { title: "Ramesh Babu Pasupuleti — Founder & CEO, FG Media" },
-      {
-        name: "description",
-        content:
-          "Ramesh Babu Pasupuleti — Global Technology Visionary, Founder & CEO of FG Media, pioneer of ViERA, InViGIL, and Virtual Intelligence Technology.",
-      },
-      { property: "og:title", content: "Ramesh Babu Pasupuleti — CEO, FG Media" },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.ceo),
   component: CeoPage,
 });
 
 function CeoPage() {
   const leader = getLeaderBySlug("ceo");
   if (!leader) return null;
-  return <LeaderProfilePage leader={leader} />;
+  return (
+    <>
+      <JsonLd data={personSchema(leader)} />
+      <LeaderProfilePage leader={leader} />
+    </>
+  );
 }

@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Send } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -746,8 +747,24 @@ export function NominationWizard() {
               />
               <span className="text-xs leading-relaxed text-gray-300 md:text-sm">
                 I confirm that the information provided is accurate and authentic. I grant FG
-                MEDIA GROUP the rights to utilize the submitted details and media for publication
-                and the HIT Awards consideration process.
+                MEDIA GROUP the rights to utilise the submitted details and media for publication
+                and the HIT Awards consideration process. I agree to the{" "}
+                <Link to="/terms" className="text-gold hover:underline">
+                  Terms & Conditions
+                </Link>
+                ,{" "}
+                <Link to="/privacy" className="text-gold hover:underline">
+                  Privacy Policy
+                </Link>
+                ,{" "}
+                <Link to="/refund-policy" className="text-gold hover:underline">
+                  Refund Policy
+                </Link>
+                , and{" "}
+                <Link to="/cancellation-policy" className="text-gold hover:underline">
+                  Cancellation Policy
+                </Link>
+                .
               </span>
             </label>
             {errors.declaration && (

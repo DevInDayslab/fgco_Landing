@@ -4,23 +4,11 @@ import { PublicationLogo } from "@/components/brand/PublicationLogo";
 import { SiteAnchorButton, SiteLinkButton } from "@/components/site/SiteButton";
 import { PageSection, HeroAccent, SitePageHero } from "@/components/site/PageLayout";
 import { publicationProfiles } from "@/data/publications";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/publications")({
-  head: () => ({
-    meta: [
-      { title: "Our Publications — HIT News, Happy India Times, Kurukshetra" },
-      {
-        name: "description",
-        content:
-          "Three national news weeklies in English, Telugu and Kannada with a combined print run of 20 lakh+ copies across India.",
-      },
-      { property: "og:title", content: "FG Media Group Publications" },
-      {
-        property: "og:description",
-        content: "HIT News, Happy India Times and Kurukshetra — 20 lakh+ copies across India.",
-      },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.publications),
   component: Publications,
 });
 

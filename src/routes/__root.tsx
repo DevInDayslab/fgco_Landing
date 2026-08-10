@@ -10,13 +10,26 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import favicon from "../assets/favicon.jpeg?url";
+import { JsonLd } from "../components/seo/JsonLd";
+import { globalStructuredData } from "../data/seo-structured-data";
+import { FAVICON_LINKS, ROOT_META } from "../lib/seo";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Nav } from "../components/site/Nav";
 import { Footer } from "../components/site/Footer";
 import { SiteButton, SiteLinkButton } from "../components/site/SiteButton";
 
 function NotFoundComponent() {
+  useEffect(() => {
+    document.title = "Page not found — FG Media Group";
+    const robots = document.createElement("meta");
+    robots.name = "robots";
+    robots.content = "noindex, nofollow";
+    document.head.appendChild(robots);
+    return () => {
+      robots.remove();
+    };
+  }, []);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
@@ -74,29 +87,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FG Media Group — Media · Technology · India" },
-      {
-        name: "description",
-        content:
-          "FG Media Group: trusted multilingual journalism, InViGIL virtual commerce powered by ViERA, from Bengaluru, India.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
+    meta: [...ROOT_META],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600;1,700&display=swap",
       },
-      { rel: "icon", href: favicon, type: "image/jpeg" },
-      { rel: "shortcut icon", href: favicon, type: "image/jpeg" },
-      { rel: "apple-touch-icon", href: favicon },
+      ...FAVICON_LINKS,
     ],
   }),
   shellComponent: RootShell,
@@ -126,6 +127,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      {!isAdminRoute && <JsonLd data={globalStructuredData()} />}
       {!isAdminRoute && <Nav />}
       <main className={isAdminRoute ? "" : "pt-20"}>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}

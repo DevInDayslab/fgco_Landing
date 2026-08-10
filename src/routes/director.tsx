@@ -1,24 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { LeaderProfilePage } from "@/components/leadership/LeaderProfilePage";
 import { getLeaderBySlug } from "@/data/leadership";
+import { personSchema } from "@/data/seo-structured-data";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/director")({
-  head: () => ({
-    meta: [
-      { title: "Chandra Shekhar Pasupuleti — Director, FG Media" },
-      {
-        name: "description",
-        content:
-          "Chandra Shekhar Pasupuleti — Director and Senior Automobile Technical & Safety Expert at FG Media with 25+ years of automotive expertise.",
-      },
-      { property: "og:title", content: "Chandra Shekhar Pasupuleti — Director, FG Media" },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.director),
   component: DirectorPage,
 });
 
 function DirectorPage() {
   const leader = getLeaderBySlug("director");
   if (!leader) return null;
-  return <LeaderProfilePage leader={leader} />;
+  return (
+    <>
+      <JsonLd data={personSchema(leader)} />
+      <LeaderProfilePage leader={leader} />
+    </>
+  );
 }

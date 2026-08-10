@@ -15,6 +15,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ApMediaRouteImport } from './routes/ap-media'
 import { Route as AutomobilesRouteImport } from './routes/automobiles'
 import { Route as AwardsRouteImport } from './routes/awards'
+import { Route as CancellationPolicyRouteImport } from './routes/cancellation-policy'
 import { Route as CeoRouteImport } from './routes/ceo'
 import { Route as ChandrashekharRouteImport } from './routes/chandrashekhar'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -23,12 +24,15 @@ import { Route as MdRouteImport } from './routes/md'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as NominateRouteImport } from './routes/nominate'
 import { Route as OperationsRouteImport } from './routes/operations'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PublicationsRouteImport } from './routes/publications'
 import { Route as RameshbabupasupuletiRouteImport } from './routes/rameshbabupasupuleti'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as SponsorshipRouteImport } from './routes/sponsorship'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TeaserRouteImport } from './routes/teaser'
 import { Route as TechnologyRouteImport } from './routes/technology'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as VieraRouteImport } from './routes/viera'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminInquiriesRouteImport } from './routes/admin.inquiries'
@@ -77,6 +81,11 @@ const AwardsRoute = AwardsRouteImport.update({
   path: '/awards',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CancellationPolicyRoute = CancellationPolicyRouteImport.update({
+  id: '/cancellation-policy',
+  path: '/cancellation-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CeoRoute = CeoRouteImport.update({
   id: '/ceo',
   path: '/ceo',
@@ -117,6 +126,11 @@ const OperationsRoute = OperationsRouteImport.update({
   path: '/operations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PublicationsRoute = PublicationsRouteImport.update({
   id: '/publications',
   path: '/publications',
@@ -125,6 +139,11 @@ const PublicationsRoute = PublicationsRouteImport.update({
 const RameshbabupasupuletiRoute = RameshbabupasupuletiRouteImport.update({
   id: '/rameshbabupasupuleti',
   path: '/rameshbabupasupuleti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SponsorshipRoute = SponsorshipRouteImport.update({
@@ -145,6 +164,11 @@ const TeaserRoute = TeaserRouteImport.update({
 const TechnologyRoute = TechnologyRouteImport.update({
   id: '/technology',
   path: '/technology',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VieraRoute = VieraRouteImport.update({
@@ -240,6 +264,7 @@ export interface FileRoutesByFullPath {
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
   '/awards': typeof AwardsRoute
+  '/cancellation-policy': typeof CancellationPolicyRoute
   '/ceo': typeof CeoRoute
   '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
@@ -248,12 +273,15 @@ export interface FileRoutesByFullPath {
   '/media': typeof MediaRoute
   '/nominate': typeof NominateRouteWithChildren
   '/operations': typeof OperationsRoute
+  '/privacy': typeof PrivacyRoute
   '/publications': typeof PublicationsRoute
   '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/sponsorship': typeof SponsorshipRoute
   '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
   '/technology': typeof TechnologyRoute
+  '/terms': typeof TermsRoute
   '/viera': typeof VieraRoute
   '/admin/inquiries': typeof AdminInquiriesRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -278,6 +306,7 @@ export interface FileRoutesByTo {
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
   '/awards': typeof AwardsRoute
+  '/cancellation-policy': typeof CancellationPolicyRoute
   '/ceo': typeof CeoRoute
   '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
@@ -285,12 +314,15 @@ export interface FileRoutesByTo {
   '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/operations': typeof OperationsRoute
+  '/privacy': typeof PrivacyRoute
   '/publications': typeof PublicationsRoute
   '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/sponsorship': typeof SponsorshipRoute
   '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
   '/technology': typeof TechnologyRoute
+  '/terms': typeof TermsRoute
   '/viera': typeof VieraRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -313,6 +345,7 @@ export interface FileRoutesById {
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
   '/awards': typeof AwardsRoute
+  '/cancellation-policy': typeof CancellationPolicyRoute
   '/ceo': typeof CeoRoute
   '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
@@ -321,12 +354,15 @@ export interface FileRoutesById {
   '/media': typeof MediaRoute
   '/nominate': typeof NominateRouteWithChildren
   '/operations': typeof OperationsRoute
+  '/privacy': typeof PrivacyRoute
   '/publications': typeof PublicationsRoute
   '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
+  '/refund-policy': typeof RefundPolicyRoute
   '/sponsorship': typeof SponsorshipRoute
   '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
   '/technology': typeof TechnologyRoute
+  '/terms': typeof TermsRoute
   '/viera': typeof VieraRoute
   '/admin/inquiries': typeof AdminInquiriesRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -354,6 +390,7 @@ export interface FileRouteTypes {
     | '/ap-media'
     | '/automobiles'
     | '/awards'
+    | '/cancellation-policy'
     | '/ceo'
     | '/chandrashekhar'
     | '/contact'
@@ -362,12 +399,15 @@ export interface FileRouteTypes {
     | '/media'
     | '/nominate'
     | '/operations'
+    | '/privacy'
     | '/publications'
     | '/rameshbabupasupuleti'
+    | '/refund-policy'
     | '/sponsorship'
     | '/team'
     | '/teaser'
     | '/technology'
+    | '/terms'
     | '/viera'
     | '/admin/inquiries'
     | '/admin/login'
@@ -392,6 +432,7 @@ export interface FileRouteTypes {
     | '/ap-media'
     | '/automobiles'
     | '/awards'
+    | '/cancellation-policy'
     | '/ceo'
     | '/chandrashekhar'
     | '/contact'
@@ -399,12 +440,15 @@ export interface FileRouteTypes {
     | '/md'
     | '/media'
     | '/operations'
+    | '/privacy'
     | '/publications'
     | '/rameshbabupasupuleti'
+    | '/refund-policy'
     | '/sponsorship'
     | '/team'
     | '/teaser'
     | '/technology'
+    | '/terms'
     | '/viera'
     | '/admin/login'
     | '/admin/settings'
@@ -426,6 +470,7 @@ export interface FileRouteTypes {
     | '/ap-media'
     | '/automobiles'
     | '/awards'
+    | '/cancellation-policy'
     | '/ceo'
     | '/chandrashekhar'
     | '/contact'
@@ -434,12 +479,15 @@ export interface FileRouteTypes {
     | '/media'
     | '/nominate'
     | '/operations'
+    | '/privacy'
     | '/publications'
     | '/rameshbabupasupuleti'
+    | '/refund-policy'
     | '/sponsorship'
     | '/team'
     | '/teaser'
     | '/technology'
+    | '/terms'
     | '/viera'
     | '/admin/inquiries'
     | '/admin/login'
@@ -466,6 +514,7 @@ export interface RootRouteChildren {
   ApMediaRoute: typeof ApMediaRoute
   AutomobilesRoute: typeof AutomobilesRoute
   AwardsRoute: typeof AwardsRoute
+  CancellationPolicyRoute: typeof CancellationPolicyRoute
   CeoRoute: typeof CeoRoute
   ChandrashekharRoute: typeof ChandrashekharRoute
   ContactRoute: typeof ContactRoute
@@ -474,12 +523,15 @@ export interface RootRouteChildren {
   MediaRoute: typeof MediaRoute
   NominateRoute: typeof NominateRouteWithChildren
   OperationsRoute: typeof OperationsRoute
+  PrivacyRoute: typeof PrivacyRoute
   PublicationsRoute: typeof PublicationsRoute
   RameshbabupasupuletiRoute: typeof RameshbabupasupuletiRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
   SponsorshipRoute: typeof SponsorshipRoute
   TeamRoute: typeof TeamRoute
   TeaserRoute: typeof TeaserRoute
   TechnologyRoute: typeof TechnologyRoute
+  TermsRoute: typeof TermsRoute
   VieraRoute: typeof VieraRoute
 }
 
@@ -525,6 +577,13 @@ declare module '@tanstack/react-router' {
       path: '/awards'
       fullPath: '/awards'
       preLoaderRoute: typeof AwardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cancellation-policy': {
+      id: '/cancellation-policy'
+      path: '/cancellation-policy'
+      fullPath: '/cancellation-policy'
+      preLoaderRoute: typeof CancellationPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ceo': {
@@ -583,6 +642,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/publications': {
       id: '/publications'
       path: '/publications'
@@ -595,6 +661,13 @@ declare module '@tanstack/react-router' {
       path: '/rameshbabupasupuleti'
       fullPath: '/rameshbabupasupuleti'
       preLoaderRoute: typeof RameshbabupasupuletiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sponsorship': {
@@ -623,6 +696,13 @@ declare module '@tanstack/react-router' {
       path: '/technology'
       fullPath: '/technology'
       preLoaderRoute: typeof TechnologyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/viera': {
@@ -842,6 +922,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApMediaRoute: ApMediaRoute,
   AutomobilesRoute: AutomobilesRoute,
   AwardsRoute: AwardsRoute,
+  CancellationPolicyRoute: CancellationPolicyRoute,
   CeoRoute: CeoRoute,
   ChandrashekharRoute: ChandrashekharRoute,
   ContactRoute: ContactRoute,
@@ -850,12 +931,15 @@ const rootRouteChildren: RootRouteChildren = {
   MediaRoute: MediaRoute,
   NominateRoute: NominateRouteWithChildren,
   OperationsRoute: OperationsRoute,
+  PrivacyRoute: PrivacyRoute,
   PublicationsRoute: PublicationsRoute,
   RameshbabupasupuletiRoute: RameshbabupasupuletiRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
   SponsorshipRoute: SponsorshipRoute,
   TeamRoute: TeamRoute,
   TeaserRoute: TeaserRoute,
   TechnologyRoute: TechnologyRoute,
+  TermsRoute: TermsRoute,
   VieraRoute: VieraRoute,
 }
 export const routeTree = rootRouteImport

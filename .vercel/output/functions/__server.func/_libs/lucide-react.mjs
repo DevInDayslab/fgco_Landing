@@ -416,6 +416,78 @@ var ClipboardList = createLucideIcon("clipboard-list", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Cpu = createLucideIcon("cpu", [
+	["path", {
+		d: "M12 20v2",
+		key: "1lh1kg"
+	}],
+	["path", {
+		d: "M12 2v2",
+		key: "tus03m"
+	}],
+	["path", {
+		d: "M17 20v2",
+		key: "1rnc9c"
+	}],
+	["path", {
+		d: "M17 2v2",
+		key: "11trls"
+	}],
+	["path", {
+		d: "M2 12h2",
+		key: "1t8f8n"
+	}],
+	["path", {
+		d: "M2 17h2",
+		key: "7oei6x"
+	}],
+	["path", {
+		d: "M2 7h2",
+		key: "asdhe0"
+	}],
+	["path", {
+		d: "M20 12h2",
+		key: "1q8mjw"
+	}],
+	["path", {
+		d: "M20 17h2",
+		key: "1fpfkl"
+	}],
+	["path", {
+		d: "M20 7h2",
+		key: "1o8tra"
+	}],
+	["path", {
+		d: "M7 20v2",
+		key: "4gnj0m"
+	}],
+	["path", {
+		d: "M7 2v2",
+		key: "1i4yhu"
+	}],
+	["rect", {
+		x: "4",
+		y: "4",
+		width: "16",
+		height: "16",
+		rx: "2",
+		key: "1vbyd7"
+	}],
+	["rect", {
+		x: "8",
+		y: "8",
+		width: "8",
+		height: "8",
+		rx: "1",
+		key: "z9xiuo"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var CreditCard = createLucideIcon("credit-card", [["rect", {
 	width: "20",
 	height: "14",
@@ -497,6 +569,16 @@ var Eye = createLucideIcon("eye", [["path", {
 	cy: "12",
 	r: "3",
 	key: "1v7zrd"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Facebook = createLucideIcon("facebook", [["path", {
+	d: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z",
+	key: "1jg4f8"
 }]]);
 /**
 * @license lucide-react v0.575.0 - ISC
@@ -750,6 +832,34 @@ var Image = createLucideIcon("image", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Instagram = createLucideIcon("instagram", [
+	["rect", {
+		width: "20",
+		height: "20",
+		x: "2",
+		y: "2",
+		rx: "5",
+		ry: "5",
+		key: "2e1cvw"
+	}],
+	["path", {
+		d: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",
+		key: "9exkf1"
+	}],
+	["line", {
+		x1: "17.5",
+		x2: "17.51",
+		y1: "6.5",
+		y2: "6.5",
+		key: "r4j83e"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Layers = createLucideIcon("layers", [
 	["path", {
 		d: "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z",
@@ -822,6 +932,31 @@ var Lightbulb = createLucideIcon("lightbulb", [
 	["path", {
 		d: "M10 22h4",
 		key: "ceow96"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Linkedin = createLucideIcon("linkedin", [
+	["path", {
+		d: "M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z",
+		key: "c2jq9f"
+	}],
+	["rect", {
+		width: "4",
+		height: "12",
+		x: "2",
+		y: "9",
+		key: "mk3on5"
+	}],
+	["circle", {
+		cx: "4",
+		cy: "4",
+		r: "2",
+		key: "bt5ra8"
 	}]
 ]);
 /**
@@ -1436,9 +1571,22 @@ var X = createLucideIcon("x", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Youtube = createLucideIcon("youtube", [["path", {
+	d: "M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17",
+	key: "1q2vi4"
+}], ["path", {
+	d: "m10 15 5-3-5-3z",
+	key: "1jp15x"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Zap = createLucideIcon("zap", [["path", {
 	d: "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
 	key: "1xq2db"
 }]]);
 //#endregion
-export { CircleX as $, Mail as A, Handshake as B, Palette as C, MessageCircle as D, MicVocal as E, LayoutDashboard as F, FileText as G, Globe as H, Layers as I, ExternalLink as J, FileSearch as K, Image as L, Lock as M, LoaderCircle as N, Menu as O, Lightbulb as P, ClipboardList as Q, House as R, Pencil as S, Network as T, Gavel as U, GraduationCap as V, Film as W, Crown as X, Download as Y, CreditCard as Z, Send as _, User as a, Car as at, RefreshCw as b, TrendingUp as c, Brain as ct, Star as d, Award as dt, CircleCheck as et, Sparkles as f, ArrowRight as ft, Settings as g, ShieldCheck as h, Users as i, Check as it, LogOut as j, MapPin as k, Target as l, BookOpen as lt, Shield as m, X as n, ChevronRight as nt, Upload as o, Building2 as ot, ShoppingBag as p, ArrowLeft as pt, Eye as q, Wrench as r, ChevronDown as rt, Trophy as s, Briefcase as st, Zap as t, CircleCheckBig as tt, Store as u, Battery as ut, Search as v, Newspaper as w, Phone as x, SearchCheck as y, Heart as z };
+export { Download as $, MapPin as A, Image as B, Pencil as C, MicVocal as D, Network as E, Linkedin as F, Globe as G, Heart as H, Lightbulb as I, FileText as J, Gavel as K, LayoutDashboard as L, LogOut as M, Lock as N, MessageCircle as O, LoaderCircle as P, ExternalLink as Q, Layers as R, Phone as S, Newspaper as T, Handshake as U, House as V, GraduationCap as W, Facebook as X, FileSearch as Y, Eye as Z, Settings as _, ArrowRight as _t, Users as a, CircleCheck as at, SearchCheck as b, Trophy as c, ChevronDown as ct, Store as d, Building2 as dt, Crown as et, Star as f, Briefcase as ft, ShieldCheck as g, Award as gt, Shield as h, Battery as ht, Wrench as i, CircleX as it, Mail as j, Menu as k, TrendingUp as l, Check as lt, ShoppingBag as m, BookOpen as mt, Youtube as n, Cpu as nt, User as o, CircleCheckBig as ot, Sparkles as p, Brain as pt, Film as q, X as r, ClipboardList as rt, Upload as s, ChevronRight as st, Zap as t, CreditCard as tt, Target as u, Car as ut, Send as v, ArrowLeft as vt, Palette as w, RefreshCw as x, Search as y, Instagram as z };

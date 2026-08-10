@@ -3,20 +3,12 @@ import { Globe, Shield } from "lucide-react";
 import { InvigilSection } from "@/components/awards/InvigilSection";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { SiteLinkButton } from "@/components/site/SiteButton";
-import { INVIGIL_INTRO } from "@/data/awards";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 import { PageSection, HeroAccent, SitePageHero } from "@/components/site/PageLayout";
 
 export const Route = createFileRoute("/technology")({
-  head: () => ({
-    meta: [
-      { title: "InViGIL Application — World's First Virtual Commerce Platform | FG Media" },
-      {
-        name: "description",
-        content: INVIGIL_INTRO,
-      },
-      { property: "og:title", content: "InViGIL Application — Intelligence Beyond Vision" },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.technology),
   component: Technology,
 });
 

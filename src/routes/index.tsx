@@ -17,27 +17,17 @@ import { BrandLogo } from "@/components/brand/BrandLogo";
 import { FgLogo } from "@/components/brand/FgLogo";
 import { PublicationLogo } from "@/components/brand/PublicationLogo";
 import { SiteLinkButton } from "@/components/site/SiteButton";
-import { cardLinkClass, HeroAccent, SectionTitle } from "@/components/site/PageLayout";
+import { GlowCard, GlowCardLink } from "@/components/site/GlowCard";
+import { HomeCertifications } from "@/components/site/HomeCertifications";
+import { HomeFoundationSection } from "@/components/site/HomeFoundationSection";
+import { HeroAccent, SectionTitle } from "@/components/site/PageLayout";
 import { TrustStrip } from "@/components/site/TrustStrip";
 import type { BrandLogoId, PublicationId } from "@/data/brands";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "FG Media Group — Recognising Excellence. Celebrating Vision." },
-      {
-        name: "description",
-        content:
-          "Trusted multilingual journalism meets InViGIL and ViERA — pioneering media and technology from Bengaluru, India.",
-      },
-      { property: "og:title", content: "FG Media Group — Media · Technology · India" },
-      {
-        property: "og:description",
-        content:
-          "Empowering India through world-class Media, groundbreaking Virtual Intelligence (InViGIL), and National Recognition.",
-      },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.home),
   component: Index,
 });
 
@@ -124,30 +114,34 @@ function EcosystemCard({
   title,
   desc,
   to,
+  accent = "gold",
 }: {
   icon?: ReactElement<{ size?: number }>;
   logo?: ReactElement;
   title: string;
   desc: string;
   to: "/media" | "/technology" | "/viera" | "/awards" | "/operations";
+  accent?: "gold" | "viera";
 }) {
   return (
-    <Link to={to} className={`group ${cardLinkClass()}`}>
-      <div className="fg-card-inner">
-        {logo ? (
-          <div className="mb-6 flex h-16 items-center">{logo}</div>
-        ) : (
-          <div className="fg-icon-badge mb-6 flex h-14 w-14 items-center justify-center rounded-xl text-gold">
-            {icon}
-          </div>
-        )}
-        <h3 className="mb-3 text-xl">{title}</h3>
-        <p className="mb-6 text-sm leading-relaxed text-muted-foreground">{desc}</p>
-        <div className="flex items-center text-sm font-semibold text-gold transition-transform duration-300 group-hover:translate-x-2">
-          Explore <ChevronRight size={16} className="ml-1" />
+    <GlowCardLink
+      to={to}
+      tone={accent === "viera" ? "viera" : "gold"}
+      className={`group p-6 md:p-8 ${accent === "viera" ? "fg-card-viera" : ""}`}
+    >
+      {logo ? (
+        <div className="mb-6 flex h-16 items-center">{logo}</div>
+      ) : (
+        <div className="fg-icon-badge mb-6 flex h-14 w-14 items-center justify-center rounded-xl text-gold">
+          {icon}
         </div>
+      )}
+      <h3 className="fg-glow-card-title mb-3 text-xl">{title}</h3>
+      <p className="mb-6 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+      <div className="flex items-center text-sm font-semibold text-gold transition-transform duration-300 group-hover:translate-x-2">
+        Explore <ChevronRight size={16} className="ml-1" />
       </div>
-    </Link>
+    </GlowCardLink>
   );
 }
 
@@ -191,7 +185,7 @@ function Index() {
               <BrandLogo id="invigil" size="xs" /> InViGIL
             </SiteLinkButton>
             <SiteLinkButton to="/viera" variant="viera" size="lg">
-              <BrandLogo id="viera" size="xs" /> ViERA
+              <BrandLogo id="viera" size="sm" className="max-h-8" /> ViERA
             </SiteLinkButton>
             <SiteLinkButton to="/publications" variant="outline" size="lg">
               <Newspaper className="h-4 w-4" /> Publications
@@ -225,17 +219,16 @@ function Index() {
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map(([n, l]) => (
-            <div
+            <GlowCard
               key={l}
-              className={`fg-card fg-card-stat fg-card-interactive rounded-2xl px-8 py-12 text-center`}
+              tone="gold"
+              className="fg-card-stat px-8 py-12 text-center"
             >
-              <div className="fg-card-inner">
-                <p className="fg-stat text-5xl fg-text-gradient-gold">{n}</p>
-                <p className="mt-3 text-[0.68rem] tracking-[0.2em] text-muted-foreground uppercase">
-                  {l}
-                </p>
-              </div>
-            </div>
+              <p className="fg-stat text-5xl fg-text-gradient-gold">{n}</p>
+              <p className="mt-3 text-[0.68rem] tracking-[0.2em] text-muted-foreground uppercase">
+                {l}
+              </p>
+            </GlowCard>
           ))}
         </div>
         <TrustStrip className="mt-10" />
@@ -267,12 +260,14 @@ function Index() {
               title="InViGIL"
               desc="The World's First Virtual Commerce Platform — built on ViERA intelligence and security."
               to="/technology"
+              accent="viera"
             />
             <EcosystemCard
               logo={<BrandLogo id="viera" size="sm" className="max-w-[11rem]" />}
               title="ViERA"
               desc="Virtual Intelligence Enabled Real Actor — your digital replica and intelligence layer."
               to="/viera"
+              accent="viera"
             />
             <EcosystemCard
               icon={<Trophy size={28} />}
@@ -302,23 +297,27 @@ function Index() {
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {ventures.map((v) => (
-            <article
+            <GlowCard
               key={v.title}
-              className="fg-card fg-card-interactive flex flex-col rounded-2xl p-8"
+              as="article"
+              tone={v.brandLogo === "viera" || v.brandLogo === "invigil" ? "viera" : "gold"}
+              className={`h-full p-8 ${
+                v.brandLogo === "viera" || v.brandLogo === "invigil" ? "fg-card-viera" : ""
+              }`}
+              innerClassName="flex h-full flex-col"
             >
-              <div className="fg-card-inner flex flex-col flex-1">
               {v.publicationId ? (
                 <div className="mb-6 flex h-14 items-center">
                   <PublicationLogo id={v.publicationId} size="sm" />
                 </div>
               ) : v.brandLogo ? (
-                <div className="mb-6 flex h-14 items-center">
-                  <BrandLogo id={v.brandLogo} size="sm" className="max-w-[10rem]" />
+                <div className="mb-6 flex h-20 items-center">
+                  <BrandLogo id={v.brandLogo} size="md" className="max-w-[12rem]" />
                 </div>
               ) : null}
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-xl font-semibold">{v.title}</h3>
+                  <h3 className="fg-glow-card-title text-xl font-semibold">{v.title}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{v.subtitle}</p>
                 </div>
                 <span
@@ -334,8 +333,7 @@ function Index() {
               >
                 Learn more <ArrowRight className="h-3.5 w-3.5" />
               </Link>
-              </div>
-            </article>
+            </GlowCard>
           ))}
         </div>
       </section>
@@ -391,6 +389,10 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <HomeFoundationSection />
+
+      <HomeCertifications />
 
       <section className="mx-auto max-w-7xl px-6 pb-28">
         <div className="fg-card fg-card-featured rounded-3xl p-10 text-center md:p-16">

@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-Cltr0gcK.js";import{n as t}from"./leadership-DBvsEIYs.js";import{t as n}from"./LeaderProfilePage-89sF914w.js";var r=e();function i(){let e=t(`ceo`);return e?(0,r.jsx)(n,{leader:e}):null}export{i as component};

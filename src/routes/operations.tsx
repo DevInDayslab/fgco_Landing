@@ -4,18 +4,11 @@ import type { LucideIcon } from "lucide-react";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import type { BrandLogoId } from "@/data/brands";
 import { ContentCard, HeroAccent, PageSection, SitePageHero, cardLinkClass } from "@/components/site/PageLayout";
+import { SEO_PAGES } from "@/data/seo-pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/operations")({
-  head: () => ({
-    meta: [
-      { title: "Specialized Operations — FG Media Group" },
-      {
-        name: "description",
-        content:
-          "Automobiles, Supply Chain, Investigations, and hyper-secure E-commerce.",
-      },
-    ],
-  }),
+  head: () => buildPageHead(SEO_PAGES.operations),
   component: Operations,
 });
 
