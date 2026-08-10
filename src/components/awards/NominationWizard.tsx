@@ -732,20 +732,9 @@ export function NominationWizard() {
             <div className="rounded-xl border border-gold/30 bg-gold/[0.06] p-4 md:p-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-gold">Nomination fee</p>
               <p className="mt-1 text-xs text-gray-400">{feeBreakdown.feeLabel}</p>
-              <div className="mt-3 space-y-1 text-sm text-gray-200">
-                <p className="flex justify-between gap-4">
-                  <span>Application fee</span>
-                  <span>₹{feeBreakdown.baseInr.toLocaleString("en-IN")}</span>
-                </p>
-                <p className="flex justify-between gap-4">
-                  <span>GST (18%)</span>
-                  <span>₹{feeBreakdown.gstInr.toLocaleString("en-IN")}</span>
-                </p>
-                <p className="flex justify-between gap-4 border-t border-gold/20 pt-2 font-semibold text-white">
-                  <span>Total payable</span>
-                  <span>₹{feeBreakdown.totalInr.toLocaleString("en-IN")}</span>
-                </p>
-              </div>
+              <p className="mt-3 text-2xl font-semibold text-white">
+                ₹{feeBreakdown.totalInr.toLocaleString("en-IN")}
+              </p>
               <p className="mt-3 text-xs text-gray-400">
                 Payment is collected securely via Razorpay when you submit. Your nomination is only
                 finalized after successful payment.
