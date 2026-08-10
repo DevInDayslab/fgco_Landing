@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-Cltr0gcK.js";import{Q as t,x as n}from"./index-RQuuFmQJ.js";import{n as r}from"./leadership-DBvsEIYs.js";import{t as i}from"./LeaderProfilePage-89sF914w.js";var a=e();function o(){let e=r(`md`);return e?(0,a.jsxs)(a.Fragment,{children:[(0,a.jsx)(t,{data:n(e)}),(0,a.jsx)(i,{leader:e})]}):null}export{o as component};

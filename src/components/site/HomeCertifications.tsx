@@ -1,6 +1,10 @@
-import certificateImage from "@/assets/certificate.png";
+import certificateJpg from "@/assets/certificate.jpg";
+import certificateWebp from "@/assets/certificate.webp";
 import { CERTIFICATION_TAGS } from "@/data/footer-nav";
 import { HeroAccent, SectionTitle } from "@/components/site/PageLayout";
+
+const CERT_ALT =
+  "FG Media registrations, licences, trademarks, copyrights, and ISO/IEC 27001:2013 certificate of registration";
 
 export function HomeCertifications() {
   return (
@@ -20,12 +24,18 @@ export function HomeCertifications() {
         />
 
         <div className="fg-home-cert-glow mx-auto mt-14 max-w-5xl overflow-hidden rounded-2xl border border-viera/20 bg-card/80 p-2 shadow-[0_0_60px_-20px_rgba(59,130,246,0.35)] transition-shadow duration-500 hover:shadow-[0_0_80px_-16px_rgba(59,130,246,0.45)]">
-          <img
-            src={certificateImage}
-            alt="FG Media registrations, licences, trademarks, copyrights, and ISO/IEC 27001:2013 certificate of registration"
-            className="w-full rounded-xl object-contain"
-            loading="lazy"
-          />
+          <picture>
+            <source srcSet={certificateWebp} type="image/webp" />
+            <img
+              src={certificateJpg}
+              alt={CERT_ALT}
+              width={1000}
+              height={750}
+              className="w-full rounded-xl object-contain"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
         </div>
 
         <div className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-2.5">
