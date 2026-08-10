@@ -12,6 +12,7 @@ import {
   textareaClass,
 } from "@/components/awards/form-styles";
 import { FormPanel, FormSectionHeader, FormSuccessState } from "@/components/awards/FormPrimitives";
+import { SponsorshipPaymentBreakdown } from "@/components/awards/SponsorshipPaymentBreakdown";
 import { PageHero } from "@/components/awards/PageHero";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { siteButtonClass } from "@/lib/site-buttons";
@@ -31,6 +32,7 @@ import {
   validateField,
 } from "@/lib/form-validation";
 import { isApiConfigured, postSponsorshipRegister } from "@/lib/api-client";
+import { getSponsorshipPaymentPlan } from "@/lib/sponsorship-payment-plan";
 import { Toaster } from "@/components/ui/sonner";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { awardsEventSchema } from "@/data/seo-structured-data";
@@ -74,14 +76,8 @@ function Sponsorship() {
   const autoCheckoutAttempted = useRef(false);
 
   const tier = sponsorshipTiers.find((t) => t.id === selectedTier);
-  const advanceInr =
-    tier
-      ? Math.round(
-          tier.amountInr * (Number.parseFloat(paymentDetails.advancePercent) / 100),
-        )
-      : null;
-  const gstInr = advanceInr != null ? Math.round(advanceInr * 0.18) : null;
-  const totalInr = advanceInr != null && gstInr != null ? advanceInr + gstInr : null;
+  const paymentPlan =
+    tier && selectedTier ? getSponsorshipPaymentPlan(selectedTier, tier.amountInr) : null;
 
   async function startCheckout(input: SponsorshipCheckoutInput, sponsorshipReservationId: string) {
     setCheckoutLoading(true);
@@ -219,7 +215,7 @@ function Sponsorship() {
         <Toaster />
         <FormSuccessState
           title="Sponsorship Payment Successful"
-          message="Thank you — your advance payment has been received and your sponsorship slot is confirmed. A sponsorship confirmation email with your committed package value and amount paid has been sent to you. Our corporate relations team will contact you shortly."
+          message="Thank you — your Razorpay payment has been received and your sponsorship slot is confirmed. A confirmation email with the full payment breakdown has been sent. Our corporate relations team will contact you regarding the bank transfer balance."
           confirmationEmails={confirmationEmail ?? registration?.contactEmail}
         />
       </>
@@ -373,11 +369,11 @@ function Sponsorship() {
 
           <div className="space-y-8 lg:col-span-8">
             <FormPanel className="!p-6 md:!p-10">
-              {registrationReady && registration && tier && advanceInr && totalInr ? (
+              {registrationReady && registration && tier && paymentPlan ? (
                 <div className="space-y-6">
                   <FormSectionHeader
                     title="Complete Payment"
-                    subtitle="Your registration is saved. Pay the advance below to secure your sponsorship slot."
+                    subtitle="Pay ₹5,00,000 (incl. GST) via Razorpay now. Any remaining balance is settled by bank transfer — our team will contact you."
                   />
 
                   <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-4">
@@ -446,26 +442,14 @@ function Sponsorship() {
                       {tier.role}
                     </p>
                     <h3 className="mt-2 text-2xl font-bold text-foreground">{tier.name}</h3>
-                    <p className="mt-4 text-4xl font-black text-amber-400">
-                      ₹ {totalInr.toLocaleString("en-IN")}
-                      <span className="ml-2 text-sm font-normal text-gray-500">(incl. GST)</span>
-                    </p>
-                    <p className="mt-2 text-sm text-gray-400">
-                      {paymentDetails.advancePercent} advance ₹ {advanceInr.toLocaleString("en-IN")}{" "}
-                      + {paymentDetails.gstRate} GST ₹ {gstInr?.toLocaleString("en-IN")}
-                    </p>
-                    <p className="mt-3 text-sm text-gray-400">
+
+                    {paymentPlan && <SponsorshipPaymentBreakdown plan={paymentPlan} />}
+
+                    <p className="mt-5 text-sm text-gray-400">
                       {paymentStatus === "idle"
                         ? "Razorpay checkout opens automatically. If the window closed, tap below to pay again."
                         : "Use the button above or below to open Razorpay and complete your payment."}
                     </p>
-
-                    {import.meta.env.DEV && (
-                      <p className="mt-2 text-xs text-amber-500/80">
-                        Test mode: high-tier advances may charge a small test amount (₹100) via
-                        Razorpay test keys. Live keys charge the full advance.
-                      </p>
-                    )}
 
                     <button
                       type="button"
@@ -485,7 +469,8 @@ function Sponsorship() {
                   </div>
 
                   <p className="text-xs text-gray-500">
-                    GST {paymentDetails.gstRate} ({paymentDetails.gst}) · Balance due within{" "}
+                    GST {paymentDetails.gstRate} ({paymentDetails.gst}) · Razorpay limit ₹5,00,000
+                    per transaction (incl. GST) · Balance payable by bank transfer within{" "}
                     {paymentDetails.balanceDueDays} days of the event.
                   </p>
                 </div>

@@ -19,7 +19,7 @@ import {
   textareaClass,
 } from "@/components/awards/form-styles";
 import { FormPanel, FormSectionHeader, FormSuccessState } from "@/components/awards/FormPrimitives";
-import { nominationCategories, nomineeTypes, nominatorRelationshipOptions, publicationOptions, getNominationFeeBreakdown } from "@/data/awards";
+import { nominationCategories, nomineeTypes, nominatorRelationshipOptions, publicationOptions, getNominationFeeBreakdown, isSelfNominationInput } from "@/data/awards";
 import {
   emailField,
   nameField,
@@ -116,9 +116,17 @@ export function NominationWizard() {
 
   const publications = watch("publications") ?? [];
   const nomineeType = watch("nomineeType");
+  const relationship = watch("relationship");
+  const nominatorEmail = watch("nominatorEmail");
+  const nomineeEmail = watch("nomineeEmail");
   const executiveSummary = watch("executiveSummary") ?? "";
   const summaryWords = wordCount(executiveSummary);
-  const feeBreakdown = getNominationFeeBreakdown();
+  const isSelfNomination = isSelfNominationInput({
+    relationship,
+    nominatorEmail,
+    nomineeEmail,
+  });
+  const feeBreakdown = getNominationFeeBreakdown(isSelfNomination);
 
   const lastStepIndex = STEPS.length - 1;
 
@@ -227,9 +235,11 @@ export function NominationWizard() {
   }
 
   async function onSubmit(data: FormData) {
-    const selfNomination =
-      data.relationship === "Self (Nominee)" ||
-      data.nominatorEmail.trim().toLowerCase() === data.nomineeEmail.trim().toLowerCase();
+    const selfNomination = isSelfNominationInput({
+      relationship: data.relationship,
+      nominatorEmail: data.nominatorEmail,
+      nomineeEmail: data.nomineeEmail,
+    });
 
     if (!isApiConfigured()) {
       toast.error("Nomination API is not configured. Set VITE_API_BASE_URL.");
@@ -323,7 +333,9 @@ export function NominationWizard() {
           nominatorEmail: data.nominatorEmail,
           nominatorPhone: data.nominatorPhone,
           nomineeName: data.nomineeName,
+          nomineeEmail: data.nomineeEmail,
           category: data.category,
+          relationship: data.relationship,
         },
         async (paymentId) => {
           const result = await postApplication({ ...applicationPayload, paymentId });
@@ -719,6 +731,7 @@ export function NominationWizard() {
           <div className="space-y-6">
             <div className="rounded-xl border border-gold/30 bg-gold/[0.06] p-4 md:p-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-gold">Nomination fee</p>
+              <p className="mt-1 text-xs text-gray-400">{feeBreakdown.feeLabel}</p>
               <div className="mt-3 space-y-1 text-sm text-gray-200">
                 <p className="flex justify-between gap-4">
                   <span>Application fee</span>

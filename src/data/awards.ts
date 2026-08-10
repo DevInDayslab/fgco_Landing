@@ -341,17 +341,35 @@ export const paymentDetails = {
   gstRate: "18%",
   advancePercent: "50%",
   balanceDueDays: 15,
+  nominationSelfFeeInr: 20_000,
+  nominationOtherFeeInr: 5_000,
+  /** @deprecated Use nominationSelfFeeInr / nominationOtherFeeInr */
   nominationFeeInr: 20_000,
 };
 
-export function getNominationFeeBreakdown() {
-  const baseInr = paymentDetails.nominationFeeInr;
+export function isSelfNominationInput(params: {
+  relationship?: string;
+  nominatorEmail?: string;
+  nomineeEmail?: string;
+}) {
+  if (params.relationship === "Self (Nominee)") return true;
+  const nominator = params.nominatorEmail?.trim().toLowerCase();
+  const nominee = params.nomineeEmail?.trim().toLowerCase();
+  return Boolean(nominator && nominee && nominator === nominee);
+}
+
+export function getNominationFeeBreakdown(isSelfNomination: boolean) {
+  const baseInr = isSelfNomination
+    ? paymentDetails.nominationSelfFeeInr
+    : paymentDetails.nominationOtherFeeInr;
   const gstRate = Number.parseFloat(paymentDetails.gstRate) / 100;
   const gstInr = Math.round(baseInr * gstRate);
   return {
     baseInr,
     gstInr,
     totalInr: baseInr + gstInr,
+    isSelfNomination,
+    feeLabel: isSelfNomination ? "Self-nomination fee" : "Nomination fee (nominating another person)",
   };
 }
 

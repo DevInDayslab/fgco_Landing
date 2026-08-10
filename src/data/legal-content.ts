@@ -9,7 +9,8 @@ import {
   LEGAL_JURISDICTION,
 } from "@/data/legal";
 
-const nominationFee = `₹${paymentDetails.nominationFeeInr.toLocaleString("en-IN")}`;
+const nominationFeeSelf = `₹${paymentDetails.nominationSelfFeeInr.toLocaleString("en-IN")}`;
+const nominationFeeOther = `₹${paymentDetails.nominationOtherFeeInr.toLocaleString("en-IN")}`;
 const gstRate = paymentDetails.gstRate;
 
 export const termsAndConditions: LegalDocument = {
@@ -71,7 +72,7 @@ export const termsAndConditions: LegalDocument = {
           title: "5.1 Nomination submissions",
           paragraphs: [
             "The HIT ViERA National Awards nomination portal allows individuals and organisations to submit applications for consideration by an independent jury. Submission of a nomination does not guarantee selection, shortlisting, or an award.",
-            `A non-refundable nomination processing fee of ${nominationFee} plus applicable GST (${gstRate}) may be required to complete a nomination, unless otherwise stated on the portal at the time of submission.`,
+            `A non-refundable nomination processing fee may be required to complete a nomination: ${nominationFeeSelf} plus applicable GST (${gstRate}) for self-nominations, or ${nominationFeeOther} plus GST (${gstRate}) when nominating another person, unless otherwise stated on the portal at the time of submission.`,
           ],
         },
         {
@@ -379,7 +380,7 @@ export const refundPolicy: LegalDocument = {
         {
           title: "3.1 Standard policy",
           paragraphs: [
-            `The nomination processing fee of ${nominationFee} plus GST (${gstRate}) is generally non-refundable once payment is successfully completed and the nomination is submitted for jury review.`,
+            `The nomination processing fee (${nominationFeeSelf} for self-nominations or ${nominationFeeOther} when nominating another person, each plus GST at ${gstRate}) is generally non-refundable once payment is successfully completed and the nomination is submitted for jury review.`,
             "This fee covers application processing, verification, platform costs, and administrative review.",
           ],
         },

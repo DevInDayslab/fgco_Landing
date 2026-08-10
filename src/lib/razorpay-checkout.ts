@@ -146,7 +146,9 @@ export type NominationCheckoutInput = {
   nominatorEmail: string;
   nominatorPhone: string;
   nomineeName: string;
+  nomineeEmail: string;
   category: string;
+  relationship?: string;
 };
 
 export async function openNominationRazorpayCheckout(
@@ -210,7 +212,9 @@ export async function openNominationRazorpayCheckout(
             nominatorEmail: input.nominatorEmail,
             nominatorPhone: input.nominatorPhone,
             nomineeName: input.nomineeName,
+            nomineeEmail: input.nomineeEmail,
             category: input.category,
+            relationship: input.relationship,
           });
 
           await onSuccess(payment.paymentId);

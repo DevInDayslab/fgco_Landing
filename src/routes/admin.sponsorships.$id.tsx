@@ -9,6 +9,7 @@ import {
 } from "@/components/admin/DetailView";
 import { ExportCsvButton } from "@/components/admin/ExportCsvButton";
 import { PaymentBadge, StatusBadge } from "@/components/admin/StatusBadge";
+import { SponsorshipPaymentSummaryPanel } from "@/components/admin/SponsorshipPaymentSummaryPanel";
 import { useSponsorship, useUpdateSponsorship } from "@/lib/admin-api";
 
 export const Route = createFileRoute("/admin/sponsorships/$id")({
@@ -89,6 +90,36 @@ function SponsorshipDetailPage() {
           <DetailTimestamp label="Last updated" value={data.updatedAt} />
         </DetailGrid>
       </DetailSection>
+
+      {data.payment ? (
+        <DetailSection title="Payment breakdown">
+          <SponsorshipPaymentSummaryPanel
+            payment={data.payment}
+            paymentId={data.paymentId}
+            paymentPaid={data.paymentPaid}
+          />
+          {data.paymentRecord ? (
+            <div className="mt-4">
+              <DetailGrid>
+              <DetailField
+                label="Razorpay order ID"
+                value={data.paymentRecord.razorpayOrderId}
+                mono
+              />
+              <DetailField
+                label="Payment record status"
+                value={data.paymentRecord.status}
+              />
+              <DetailField
+                label="Razorpay charge (incl. GST)"
+                value={`₹${data.paymentRecord.amountInr.toLocaleString("en-IN")}`}
+              />
+              <DetailTimestamp label="Payment created" value={data.paymentRecord.createdAt} />
+              </DetailGrid>
+            </div>
+          ) : null}
+        </DetailSection>
+      ) : null}
 
       <AdminEditableSection
         title="Contact & registration"

@@ -69,6 +69,37 @@ export type InquiryRow = {
   createdAt: string;
 };
 
+export type SponsorshipAdminPaymentSummary = {
+  packageInr: number;
+  packageGstInr: number;
+  committedTotalInr: number;
+  razorpayBaseInr: number;
+  razorpayGstInr: number;
+  razorpayTotalInr: number;
+  balanceBaseInr: number;
+  balanceGstInr: number;
+  balanceTotalInr: number;
+  paidViaRazorpayInr: number;
+  razorpayPendingInr: number;
+  balancePendingInr: number;
+  totalOutstandingInr: number;
+  razorpayPaymentId: string | null;
+  paymentRecordStatus: string | null;
+};
+
+export type SponsorshipPaymentRecord = {
+  id: string | null;
+  razorpayOrderId: string;
+  razorpayPaymentId: string | null;
+  status: string;
+  amountInr: number;
+  baseInr: number;
+  gstInr: number;
+  createdAt: string;
+  updatedAt: string;
+  metadata: Record<string, unknown> | null;
+};
+
 export type SponsorshipRow = {
   id: string;
   referenceId: string | null;
@@ -82,12 +113,15 @@ export type SponsorshipRow = {
   status: "pending" | "confirmed" | "cancelled";
   paymentId: string | null;
   paymentPaid: boolean;
+  spots?: number;
+  payment: SponsorshipAdminPaymentSummary | null;
   createdAt: string;
 };
 
 export type SponsorshipDetail = SponsorshipRow & {
   spots: number;
   updatedAt: string;
+  paymentRecord: SponsorshipPaymentRecord | null;
 };
 
 export function useDashboardMetrics() {

@@ -237,7 +237,9 @@ export async function postNominationCreateOrder(payload: {
   nominatorEmail: string;
   nominatorPhone: string;
   nomineeName: string;
+  nomineeEmail: string;
   category: string;
+  relationship?: string;
 }) {
   return apiFetch<{
     orderId: string;
@@ -247,6 +249,7 @@ export async function postNominationCreateOrder(payload: {
     gstPaise: number;
     totalPaise: number;
     isTestCharge: boolean;
+    isSelfNomination: boolean;
     currency: string;
     keyId: string;
     feeLabel: string;
@@ -267,7 +270,9 @@ export async function postNominationPayment(payload: {
   nominatorEmail?: string;
   nominatorPhone?: string;
   nomineeName?: string;
+  nomineeEmail?: string;
   category?: string;
+  relationship?: string;
 }) {
   return apiFetch<{ ok: boolean; paymentId: string }>("/api/nominations/complete-payment", {
     method: "POST",

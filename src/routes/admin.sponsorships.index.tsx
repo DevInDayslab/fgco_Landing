@@ -8,6 +8,7 @@ import {
 import { ExportCsvButton } from "@/components/admin/ExportCsvButton";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { PaymentBadge } from "@/components/admin/StatusBadge";
+import { SponsorshipPaymentSummaryPanel } from "@/components/admin/SponsorshipPaymentSummaryPanel";
 import { formatAdminDate } from "@/components/admin/admin-utils";
 import { useSponsorships } from "@/lib/admin-api";
 
@@ -53,11 +54,20 @@ function AdminSponsorships() {
         searchKeys={["company", "contactName", "contactEmail", "tierName", "referenceId"]}
         searchPlaceholder="Company, contact, tier, or reference"
         entryLabel="registrations"
-        columns={["Reference", "Company", "Tier", "Contact", "Payment", "Phone", "Submitted"]}
+        columns={[
+          "Reference",
+          "Company",
+          "Tier",
+          "Contact",
+          "Payment",
+          "Breakdown",
+          "Phone",
+          "Submitted",
+        ]}
       >
         {(rows) =>
           rows.length === 0 ? (
-            <DataTableEmpty colSpan={7} message="No sponsorship registrations yet." />
+            <DataTableEmpty colSpan={8} message="No sponsorship registrations yet." />
           ) : (
             rows.map((row) => (
               <DataTableRow
@@ -83,6 +93,17 @@ function AdminSponsorships() {
                 </DataTableCell>
                 <DataTableCell>
                   <PaymentBadge paid={row.paymentPaid} />
+                </DataTableCell>
+                <DataTableCell>
+                  {row.payment ? (
+                    <SponsorshipPaymentSummaryPanel
+                      payment={row.payment}
+                      paymentPaid={row.paymentPaid}
+                      compact
+                    />
+                  ) : (
+                    <span className="text-xs text-zinc-400">—</span>
+                  )}
                 </DataTableCell>
                 <DataTableCell className="font-medium text-zinc-900">
                   {row.contactPhone}
