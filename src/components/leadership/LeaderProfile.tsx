@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
+import { Linkedin } from "lucide-react";
 import type { LeaderHighlight, LeaderSection } from "@/data/leadership";
 import type { SocialLink } from "@/data/social";
+import { SiteAnchorButton } from "@/components/site/SiteButton";
 import { ContentCard, NumberedItem } from "@/components/site/PageLayout";
 
 export type LeaderProfileProps = {
@@ -176,17 +178,20 @@ export function LeaderProfile({
               <p className="pt-2 text-xs leading-relaxed text-muted-foreground">{tags}</p>
             ) : null}
             {socialLinks && socialLinks.length > 0 ? (
-              <div className="flex flex-wrap gap-3 pt-3">
+              <div className="flex flex-wrap gap-3 pt-4">
                 {socialLinks.map((link) => (
-                  <a
+                  <SiteAnchorButton
                     key={link.href}
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-medium text-gold hover:underline"
+                    variant="goldOutline"
+                    size="sm"
+                    className="rounded-full px-4"
                   >
+                    <Linkedin aria-hidden />
                     {link.label}
-                  </a>
+                  </SiteAnchorButton>
                 ))}
               </div>
             ) : null}

@@ -268,16 +268,6 @@ export const LEADERS: LeaderProfile[] = [
           #107, 2nd Main, MLA Layout, RT Nagar, Bengaluru City, Karnataka State — 560032
         </p>
         <p className="mt-3">Mobile: +91 73820 98888</p>
-        <p className="mt-3">
-          <a
-            href={RAMESH_LINKEDIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-gold hover:underline"
-          >
-            LinkedIn — linkedin.com/in/rameshceo
-          </a>
-        </p>
       </>
     ),
     image: founderPhoto,
