@@ -70,7 +70,7 @@ export async function openSponsorshipRazorpayCheckout(
     const testInr = (order.amount / 100).toLocaleString("en-IN");
     const displayInr = (order.displayAmountPaise / 100).toLocaleString("en-IN");
     toast.message(
-      `Razorpay test mode: checkout will charge ₹${testInr} (advance shown: ₹${displayInr}).`,
+      `Checkout will charge ₹${testInr} for testing (advance shown: ₹${displayInr}).`,
     );
   }
 
@@ -165,7 +165,7 @@ export async function openNominationRazorpayCheckout(
     const testInr = (order.amount / 100).toLocaleString("en-IN");
     const displayInr = (order.displayAmountPaise / 100).toLocaleString("en-IN");
     toast.message(
-      `Razorpay test mode: checkout will charge ₹${testInr} (nomination fee shown: ₹${displayInr}).`,
+      `Checkout will charge ₹${testInr} for testing (nomination fee shown: ₹${displayInr}).`,
     );
   }
 
