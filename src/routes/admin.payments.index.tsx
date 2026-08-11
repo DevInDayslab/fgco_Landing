@@ -82,8 +82,12 @@ function AdminPayments() {
                   {row.razorpayOrderId}
                 </DataTableCell>
                 <DataTableCell>
-                  <div className="font-semibold text-zinc-900">{row.contactName ?? "—"}</div>
-                  <div className="text-xs text-zinc-500">{row.company ?? row.contactEmail ?? ""}</div>
+                  <div className="font-semibold text-zinc-900">
+                    {row.payerLabel ?? row.contactName ?? row.company ?? "—"}
+                  </div>
+                  <div className="text-xs text-zinc-500">
+                    {row.contactEmail ?? row.contactPhone ?? ""}
+                  </div>
                 </DataTableCell>
                 <DataTableCell className="font-medium text-zinc-900">
                   {row.contactPhone ?? "—"}

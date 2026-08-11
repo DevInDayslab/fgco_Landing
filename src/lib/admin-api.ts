@@ -46,6 +46,12 @@ export type PaymentRow = {
   contactPhone?: string | null;
   contactEmail?: string | null;
   company?: string | null;
+  nomineeName?: string | null;
+  nomineeEmail?: string | null;
+  category?: string | null;
+  referenceId?: string | null;
+  tierName?: string | null;
+  payerLabel?: string | null;
 };
 
 export type PaymentDetail = PaymentRow & {
@@ -57,6 +63,8 @@ export type PaymentDetail = PaymentRow & {
   currency: string;
   metadata: Record<string, unknown> | null;
   updatedAt: string;
+  linkedNominationId?: string | null;
+  linkedSponsorshipId?: string | null;
 };
 
 export type InquiryRow = {

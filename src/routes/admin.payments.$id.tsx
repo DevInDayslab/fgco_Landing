@@ -58,28 +58,21 @@ function PaymentDetailPage() {
           <DetailField label="Payment ID" value={data.id} mono />
           <DetailField label="Razorpay order ID" value={data.razorpayOrderId} mono />
           <DetailField label="Razorpay payment ID" value={data.razorpayPaymentId} mono />
-          <DetailField
-            label="Payer name"
-            value={
-              typeof data.metadata?.contactName === "string" ? data.metadata.contactName : null
-            }
-          />
-          <DetailField
-            label="Payer phone"
-            value={
-              typeof data.metadata?.contactPhone === "string" ? data.metadata.contactPhone : null
-            }
-          />
-          <DetailField
-            label="Payer email"
-            value={
-              typeof data.metadata?.contactEmail === "string" ? data.metadata.contactEmail : null
-            }
-          />
-          <DetailField
-            label="Company"
-            value={typeof data.metadata?.company === "string" ? data.metadata.company : null}
-          />
+          <DetailField label="Reference ID" value={data.referenceId} mono />
+          <DetailField label="Payer name" value={data.contactName} />
+          <DetailField label="Payer phone" value={data.contactPhone} />
+          <DetailField label="Payer email" value={data.contactEmail} />
+          <DetailField label="Company" value={data.company} />
+          {data.type === "nomination" ? (
+            <>
+              <DetailField label="Nominee name" value={data.nomineeName} />
+              <DetailField label="Nominee email" value={data.nomineeEmail} />
+              <DetailField label="Category" value={data.category} />
+            </>
+          ) : null}
+          {data.type === "sponsorship" ? (
+            <DetailField label="Sponsorship tier" value={data.tierName} />
+          ) : null}
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
               Status
