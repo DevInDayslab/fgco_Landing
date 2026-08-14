@@ -1,6 +1,6 @@
 import fgLogo from "@/assets/fglogo.png";
 import fitGaadiLogo from "@/assets/fitgaadi.png";
-import invigilLogo from "@/assets/invigil_logo.png";
+import invigilLogo from "@/assets/invigil_logo.webp";
 import vieraLogo from "@/assets/viera_logo.png";
 import hitNewsLogo from "@/assets/hitnews_logo.png";
 import happyIndiaTimesLogo from "@/assets/hit_news.png";

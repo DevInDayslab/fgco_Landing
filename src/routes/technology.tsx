@@ -21,7 +21,7 @@ function Technology() {
         leading={
           <BrandLogo
             id="invigil"
-            className="mx-auto mb-6 h-36 max-w-[min(100%,36rem)] md:h-48 lg:h-56"
+            className="mx-auto mb-6 h-40 max-w-[min(100%,40rem)] md:h-52 lg:h-60"
             size="xl"
           />
         }

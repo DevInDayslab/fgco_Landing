@@ -26,12 +26,23 @@ const sizes = {
   xl: "h-32 max-w-[320px]",
 };
 
+const invigilSizes = {
+  xs: "h-8 max-w-[88px]",
+  sm: "h-12 max-w-[144px]",
+  md: "h-20 max-w-[220px]",
+  lg: "h-28 max-w-[300px]",
+  xl: "h-36 max-w-[400px]",
+};
+
 export function BrandLogo({ id, size = "md", className = "" }: BrandLogoProps) {
+  const sizeClass = id === "invigil" ? invigilSizes[size] : sizes[size];
+  const shapeClass = id === "invigil" ? "rounded-xl" : "";
+
   return (
     <img
       src={logos[id]}
       alt={altText[id]}
-      className={`w-auto object-contain ${sizes[size]} ${className}`}
+      className={`w-auto object-contain ${sizeClass} ${shapeClass} ${className}`}
     />
   );
 }
