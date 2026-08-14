@@ -8,6 +8,7 @@ import {
   Newspaper,
 } from "lucide-react";
 import { BrandLogo } from "@/components/brand/BrandLogo";
+import { PublicationCertificateDialog } from "@/components/brand/PublicationCertificateDialog";
 import { PublicationLogo } from "@/components/brand/PublicationLogo";
 import { SiteAnchorButton, SiteLinkButton } from "@/components/site/SiteButton";
 import { ContentCard, HeroAccent, PageSection, SitePageHero } from "@/components/site/PageLayout";
@@ -190,6 +191,9 @@ function Media() {
                     </span>
                   ))}
                 </div>
+                <div className="mt-6">
+                  <PublicationCertificateDialog pub={p} />
+                </div>
                 <p className={`mt-6 text-sm font-medium italic ${p.accent}`}>{p.quote}</p>
               </div>
 
@@ -246,27 +250,14 @@ function Media() {
             </div>
             <h3 className="text-2xl">Pan-India Reach</h3>
             <ul className="mt-6 space-y-4 text-sm text-muted-foreground">
-              <li className="flex gap-3">
-                <span className="text-gold">—</span>
-                <span>
-                  <strong className="text-foreground">HIT NEWS</strong> — National English weekly
-                  with 10 lakh+ print run, pan-India coverage
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-te">—</span>
-                <span>
-                  <strong className="text-foreground">Happy India Times</strong> — Telugu weekly
-                  across Andhra Pradesh & Telangana
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-ka">—</span>
-                <span>
-                  <strong className="text-foreground">Kurukshetra</strong> — Kannada weekly
-                  empowering Karnataka communities
-                </span>
-              </li>
+              {publicationProfiles.map((pub) => (
+                <li key={pub.id} className="flex gap-3">
+                  <span className={pub.accent}>—</span>
+                  <span>
+                    <strong className="text-foreground">{pub.cardTitle}</strong> — {pub.reachLine}
+                  </span>
+                </li>
+              ))}
             </ul>
           </ContentCard>
         </div>

@@ -1,4 +1,7 @@
 import type { BrandLogoId, PublicationId } from "@/data/brands";
+import hitNewsCertificate from "@/assets/hit-news-certificate.jpeg";
+import happyIndiaTimesCertificate from "@/assets/happy-india-news-certificate.jpeg";
+import kurukshetraCertificate from "@/assets/kurukshetra-certificate.jpeg";
 
 export type PublicationProfile = {
   id: PublicationId;
@@ -15,6 +18,10 @@ export type PublicationProfile = {
   quote: string;
   print: string;
   coverage: string;
+  registrationNumber: string;
+  certificateImage: string;
+  certificateAlt: string;
+  reachLine: string;
 };
 
 export const publicationProfiles: PublicationProfile[] = [
@@ -38,6 +45,11 @@ export const publicationProfiles: PublicationProfile[] = [
     quote: '"Hit the Truth. Every Time."',
     print: "10 Lakh+",
     coverage: "Pan India",
+    registrationNumber: "APENG/2020/78874",
+    certificateImage: hitNewsCertificate,
+    certificateAlt:
+      "RNI registration certificate for HIT Happy India Techs News — APENG/2020/78874, English weekly",
+    reachLine: "National English weekly with 10 lakh+ print run, pan-India coverage",
   },
   {
     id: "happy-india-times",
@@ -54,6 +66,11 @@ export const publicationProfiles: PublicationProfile[] = [
     quote: '"సంతోషమైన భారతానికి వార్తలు"',
     print: "5 Lakh+",
     coverage: "Andhra Pradesh & Telangana",
+    registrationNumber: "APTEL/2017/75384",
+    certificateImage: happyIndiaTimesCertificate,
+    certificateAlt:
+      "RNI registration certificate for Happy India Times — APTEL/2017/75384, Telugu weekly",
+    reachLine: "Telugu weekly across Andhra Pradesh & Telangana",
   },
   {
     id: "kurukshetra",
@@ -70,6 +87,11 @@ export const publicationProfiles: PublicationProfile[] = [
     quote: '"ಕನ್ನಡ ನಾಡಿನ ದನಿ"',
     print: "5 Lakh+",
     coverage: "Karnataka State",
+    registrationNumber: "KARKAN/2018/76301",
+    certificateImage: kurukshetraCertificate,
+    certificateAlt:
+      "RNI registration certificate for Kurukshetra Varada Vybhava — KARKAN/2018/76301, Kannada weekly",
+    reachLine: "Kannada weekly empowering Karnataka communities",
   },
 ];
 
