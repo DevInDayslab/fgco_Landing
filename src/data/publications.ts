@@ -77,7 +77,7 @@ export const mediaStats = [
   { value: "20 Lakh+", label: "Weekly Print Reach" },
   { value: "3", label: "National Languages" },
   { value: "6", label: "Print Hubs" },
-  { value: "EST. 2024", label: "Publications Network" },
+  { value: "EST. 2017", label: "Publications Network" },
 ] as const;
 
 export const printHubs = [

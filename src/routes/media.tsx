@@ -114,7 +114,7 @@ function Media() {
                   <div className="absolute inset-0 bg-gradient-to-br from-gold/8 to-transparent" />
                   <PublicationLogo id={pub.id} size="md" className="relative z-10" />
                   <div className="relative z-10 mt-4 rounded-full border border-gold/25 bg-gold/10 px-3 py-1 text-xs font-bold text-gold">
-                    EST. 2024
+                    EST. 2017
                   </div>
                 </div>
                 <div className="flex flex-grow flex-col justify-between p-6">
