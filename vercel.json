@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/webmail",
+      "destination": "https://p3plzcpnl508705.prod.phx3.secureserver.net:2096/",
+      "permanent": false
+    },
+    {
+      "source": "/webmail/",
+      "destination": "https://p3plzcpnl508705.prod.phx3.secureserver.net:2096/",
+      "permanent": false
+    }
+  ]
+}
