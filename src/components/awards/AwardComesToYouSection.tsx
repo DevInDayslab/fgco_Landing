@@ -1,4 +1,11 @@
+import { Link } from "@tanstack/react-router";
 import { PullQuote, StepFlow, TagCloud } from "@/components/site/PageLayout";
+import {
+  AWARD_COMES_TO_YOU_CAMPAIGN_HASHTAGS,
+  AWARD_COMES_TO_YOU_PATH,
+  AWARD_COMES_TO_YOU_SEO_INTRO,
+  HIT_VIERA_HONOURS_HASHTAG,
+} from "@/data/award-comes-to-you";
 import {
   achievementPlaces,
   awardDeliveryPlaces,
@@ -8,24 +15,36 @@ import {
   legacyPathSteps,
 } from "@/data/circle-of-excellence";
 
-export function AwardComesToYouSection() {
+type AwardComesToYouSectionProps = {
+  variant?: "section" | "page";
+};
+
+export function AwardComesToYouSection({ variant = "section" }: AwardComesToYouSectionProps) {
+  const isPage = variant === "page";
+
   return (
     <section
-      id={AWARD_COMES_TO_YOU_HASH}
+      id={isPage ? undefined : AWARD_COMES_TO_YOU_HASH}
       className="scroll-mt-24 border-b border-border/60 py-16 md:py-20"
     >
       <div className="mx-auto max-w-5xl px-6">
-        <div className="text-center">
-          <p className="section-label">The HIT ViERA Philosophy</p>
-          <h2 className="mt-3 text-3xl leading-tight md:text-4xl lg:text-5xl">
-            Award <span className="italic fg-text-gradient-gold">Comes to You</span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
-            We don&apos;t ask excellence to come to us. HIT ViERA takes the honour to where
-            excellence lives — home, office, factory, institution, laboratory, studio, farm or
-            workplace.
+        {!isPage ? (
+          <div className="text-center">
+            <p className="section-label">The HIT ViERA Philosophy</p>
+            <h2 className="mt-3 text-3xl leading-tight md:text-4xl lg:text-5xl">
+              Award <span className="italic fg-text-gradient-gold">Comes to You</span>
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+              We don&apos;t ask excellence to come to us. HIT ViERA takes the honour to where
+              excellence lives — home, office, factory, institution, laboratory, studio, farm or
+              workplace.
+            </p>
+          </div>
+        ) : (
+          <p className="mx-auto max-w-3xl text-center text-sm leading-relaxed text-muted-foreground md:text-base">
+            {AWARD_COMES_TO_YOU_SEO_INTRO}
           </p>
-        </div>
+        )}
 
         <PullQuote tone="viera" className="mx-auto mt-10 max-w-3xl">
           <p className="text-base leading-relaxed text-foreground md:text-lg">
@@ -81,6 +100,27 @@ export function AwardComesToYouSection() {
             there.&rdquo;
           </p>
         </blockquote>
+
+        {isPage ? (
+          <div className="mt-14 border-t border-border/50 pt-14">
+            <p className="section-label text-center">Join the Conversation</p>
+            <p className="mx-auto mt-3 max-w-xl text-center text-sm text-muted-foreground">
+              Share your journey with the dedicated {HIT_VIERA_HONOURS_HASHTAG} series and campaign
+              hashtags celebrating excellence across India.
+            </p>
+            <TagCloud
+              tags={[...AWARD_COMES_TO_YOU_CAMPAIGN_HASHTAGS]}
+              tone="gold"
+              className="mt-6"
+            />
+          </div>
+        ) : (
+          <p className="mx-auto mt-10 max-w-xl text-center text-sm">
+            <Link to={AWARD_COMES_TO_YOU_PATH} className="font-medium text-gold hover:underline">
+              Learn more about Award Comes to You →
+            </Link>
+          </p>
+        )}
       </div>
     </section>
   );

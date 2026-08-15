@@ -1,3 +1,9 @@
+import {
+  AWARD_COMES_TO_YOU_DESCRIPTION,
+  AWARD_COMES_TO_YOU_KEYWORDS,
+  AWARD_COMES_TO_YOU_PATH,
+  AWARD_COMES_TO_YOU_TITLE,
+} from "@/data/award-comes-to-you";
 import { FG_CONTACT, FG_OFFICE } from "@/data/contact";
 import { AWARDS_TAGLINE, EVENT_LOCATION } from "@/data/awards";
 import type { LeaderProfile } from "@/data/leadership";
@@ -87,6 +93,55 @@ export function awardsEventSchema() {
       url: SITE_URL,
     },
     url: `${SITE_URL}/awards`,
+  };
+}
+
+export function awardComesToYouPageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: AWARD_COMES_TO_YOU_TITLE,
+    description: AWARD_COMES_TO_YOU_DESCRIPTION,
+    url: `${SITE_URL}${AWARD_COMES_TO_YOU_PATH}`,
+    keywords: AWARD_COMES_TO_YOU_KEYWORDS.join(", "),
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    about: {
+      "@type": "Event",
+      name: "HIT ViERA National Awards 2026",
+      description: AWARDS_TAGLINE,
+      organizer: {
+        "@type": "Organization",
+        name: "FG Media and Safety Technologies Pvt. Ltd.",
+        url: SITE_URL,
+      },
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "HIT ViERA National Awards 2026",
+          item: `${SITE_URL}/awards`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Award Comes to You",
+          item: `${SITE_URL}${AWARD_COMES_TO_YOU_PATH}`,
+        },
+      ],
+    },
   };
 }
 

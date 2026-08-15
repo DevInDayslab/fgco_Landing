@@ -11,10 +11,19 @@ export type PageSeoConfig = {
   description: string;
   ogTitle?: string;
   ogDescription?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  keywords?: readonly string[] | string[];
   noindex?: boolean;
-  changefreq?: "weekly" | "monthly";
+  changefreq?: "weekly" | "monthly" | "yearly";
   priority?: number;
 };
+
+function resolveOgImage(ogImage?: string): string {
+  if (!ogImage) return DEFAULT_OG_IMAGE;
+  if (ogImage.startsWith("http")) return ogImage;
+  return `${SITE_URL}${ogImage.startsWith("/") ? ogImage : `/${ogImage}`}`;
+}
 
 export type PageHeadOptions = PageSeoConfig;
 
@@ -29,11 +38,15 @@ export function buildPageHead({
   description,
   ogTitle,
   ogDescription,
+  ogImage,
+  ogImageAlt,
+  keywords,
   noindex = false,
 }: PageHeadOptions) {
   const canonical = absoluteUrl(path);
   const resolvedOgTitle = ogTitle ?? title;
   const resolvedOgDescription = ogDescription ?? description;
+  const resolvedOgImage = resolveOgImage(ogImage);
 
   const meta: Array<Record<string, string>> = [
     { title },
@@ -42,13 +55,22 @@ export function buildPageHead({
     { property: "og:description", content: resolvedOgDescription },
     { property: "og:type", content: "website" },
     { property: "og:url", content: canonical },
-    { property: "og:image", content: DEFAULT_OG_IMAGE },
+    { property: "og:image", content: resolvedOgImage },
     { property: "og:site_name", content: SITE_NAME },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: resolvedOgTitle },
     { name: "twitter:description", content: resolvedOgDescription },
-    { name: "twitter:image", content: DEFAULT_OG_IMAGE },
+    { name: "twitter:image", content: resolvedOgImage },
   ];
+
+  if (keywords?.length) {
+    meta.push({ name: "keywords", content: keywords.join(", ") });
+  }
+
+  if (ogImageAlt) {
+    meta.push({ property: "og:image:alt", content: ogImageAlt });
+    meta.push({ name: "twitter:image:alt", content: ogImageAlt });
+  }
 
   if (noindex) {
     meta.push({ name: "robots", content: "noindex, nofollow" });

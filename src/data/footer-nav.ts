@@ -14,6 +14,7 @@ export type FooterLink = {
     | "/automobiles"
     | "/operations"
     | "/awards"
+    | "/award-comes-to-you"
     | "/sponsorship"
     | "/nominate"
     | "/contact"
@@ -43,6 +44,7 @@ export const FOOTER_LINKS = {
   ] satisfies FooterLink[],
   awards: [
     { label: "HIT ViERA Awards", to: "/awards" },
+    { label: "Award Comes to You", to: "/award-comes-to-you" },
     { label: "Nominate", to: "/nominate" },
     { label: "Sponsorship", to: "/sponsorship", hash: SPONSORSHIP_TIERS_HASH },
   ] satisfies FooterLink[],

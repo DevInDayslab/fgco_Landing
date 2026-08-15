@@ -18,6 +18,7 @@ const pages = [
   { path: "/automobiles", changefreq: "monthly", priority: "0.7" },
   { path: "/operations", changefreq: "monthly", priority: "0.6" },
   { path: "/awards", changefreq: "weekly", priority: "0.9" },
+  { path: "/award-comes-to-you", changefreq: "weekly", priority: "0.85" },
   { path: "/sponsorship", changefreq: "monthly", priority: "0.7" },
   { path: "/nominate", changefreq: "weekly", priority: "0.8" },
   { path: "/contact", changefreq: "monthly", priority: "0.7" },

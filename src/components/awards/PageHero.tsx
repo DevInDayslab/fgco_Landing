@@ -1,10 +1,11 @@
 import { SitePageHero } from "@/components/site/PageLayout";
 import { siteHeroImages } from "@/data/site-heroes";
 
-type HeroVariant = "awards" | "sponsorship" | "nominate";
+type HeroVariant = "awards" | "awardComesToYou" | "sponsorship" | "nominate";
 
 const variantImage: Record<HeroVariant, string> = {
   awards: siteHeroImages.awards,
+  awardComesToYou: siteHeroImages.awardComesToYou,
   sponsorship: siteHeroImages.city,
   nominate: siteHeroImages.city,
 };

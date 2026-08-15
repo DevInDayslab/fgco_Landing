@@ -1,4 +1,11 @@
 import type { PageSeoConfig } from "@/lib/seo";
+import {
+  AWARD_COMES_TO_YOU_DESCRIPTION,
+  AWARD_COMES_TO_YOU_KEYWORDS,
+  AWARD_COMES_TO_YOU_OG_IMAGE,
+  AWARD_COMES_TO_YOU_PATH,
+  AWARD_COMES_TO_YOU_TITLE,
+} from "@/data/award-comes-to-you";
 import { AWARDS_TAGLINE } from "@/data/awards";
 import { INVIGIL_INTRO } from "@/data/awards";
 
@@ -117,6 +124,19 @@ export const SEO_PAGES = {
     ogDescription: AWARDS_TAGLINE,
     changefreq: "weekly",
     priority: 0.9,
+  },
+  awardComesToYou: {
+    path: AWARD_COMES_TO_YOU_PATH,
+    title: AWARD_COMES_TO_YOU_TITLE,
+    description: AWARD_COMES_TO_YOU_DESCRIPTION,
+    ogTitle: AWARD_COMES_TO_YOU_TITLE,
+    ogDescription: AWARD_COMES_TO_YOU_DESCRIPTION,
+    ogImage: AWARD_COMES_TO_YOU_OG_IMAGE,
+    ogImageAlt:
+      "HIT ViERA National Award 2026 — Award Comes to You initiative bringing national recognition to achievers across India",
+    keywords: AWARD_COMES_TO_YOU_KEYWORDS,
+    changefreq: "weekly",
+    priority: 0.85,
   },
   sponsorship: {
     path: "/sponsorship",

@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ApMediaRouteImport } from './routes/ap-media'
 import { Route as AutomobilesRouteImport } from './routes/automobiles'
+import { Route as AwardComesToYouRouteImport } from './routes/award-comes-to-you'
 import { Route as AwardsRouteImport } from './routes/awards'
 import { Route as CancellationPolicyRouteImport } from './routes/cancellation-policy'
 import { Route as CeoRouteImport } from './routes/ceo'
@@ -74,6 +75,11 @@ const ApMediaRoute = ApMediaRouteImport.update({
 const AutomobilesRoute = AutomobilesRouteImport.update({
   id: '/automobiles',
   path: '/automobiles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AwardComesToYouRoute = AwardComesToYouRouteImport.update({
+  id: '/award-comes-to-you',
+  path: '/award-comes-to-you',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AwardsRoute = AwardsRouteImport.update({
@@ -263,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
+  '/award-comes-to-you': typeof AwardComesToYouRoute
   '/awards': typeof AwardsRoute
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/ceo': typeof CeoRoute
@@ -305,6 +312,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
+  '/award-comes-to-you': typeof AwardComesToYouRoute
   '/awards': typeof AwardsRoute
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/ceo': typeof CeoRoute
@@ -344,6 +352,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/ap-media': typeof ApMediaRoute
   '/automobiles': typeof AutomobilesRoute
+  '/award-comes-to-you': typeof AwardComesToYouRoute
   '/awards': typeof AwardsRoute
   '/cancellation-policy': typeof CancellationPolicyRoute
   '/ceo': typeof CeoRoute
@@ -389,6 +398,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/ap-media'
     | '/automobiles'
+    | '/award-comes-to-you'
     | '/awards'
     | '/cancellation-policy'
     | '/ceo'
@@ -431,6 +441,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ap-media'
     | '/automobiles'
+    | '/award-comes-to-you'
     | '/awards'
     | '/cancellation-policy'
     | '/ceo'
@@ -469,6 +480,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/ap-media'
     | '/automobiles'
+    | '/award-comes-to-you'
     | '/awards'
     | '/cancellation-policy'
     | '/ceo'
@@ -513,6 +525,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   ApMediaRoute: typeof ApMediaRoute
   AutomobilesRoute: typeof AutomobilesRoute
+  AwardComesToYouRoute: typeof AwardComesToYouRoute
   AwardsRoute: typeof AwardsRoute
   CancellationPolicyRoute: typeof CancellationPolicyRoute
   CeoRoute: typeof CeoRoute
@@ -570,6 +583,13 @@ declare module '@tanstack/react-router' {
       path: '/automobiles'
       fullPath: '/automobiles'
       preLoaderRoute: typeof AutomobilesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/award-comes-to-you': {
+      id: '/award-comes-to-you'
+      path: '/award-comes-to-you'
+      fullPath: '/award-comes-to-you'
+      preLoaderRoute: typeof AwardComesToYouRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/awards': {
@@ -921,6 +941,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   ApMediaRoute: ApMediaRoute,
   AutomobilesRoute: AutomobilesRoute,
+  AwardComesToYouRoute: AwardComesToYouRoute,
   AwardsRoute: AwardsRoute,
   CancellationPolicyRoute: CancellationPolicyRoute,
   CeoRoute: CeoRoute,
