@@ -1,11 +1,12 @@
 import { SITE_SOCIALS } from "@/data/social";
+import { SPONSORSHIP_TIERS_HASH } from "@/data/awards";
 
 export type FooterLink = {
   label: string;
+  hash?: string;
   to:
     | "/"
     | "/about"
-    | "/team"
     | "/media"
     | "/publications"
     | "/technology"
@@ -29,7 +30,6 @@ export const FOOTER_LINKS = {
   company: [
     { label: "Home", to: "/" },
     { label: "About Us", to: "/about" },
-    { label: "Our Team", to: "/team" },
     { label: "Publications", to: "/publications" },
     { label: "Contact Us", to: "/contact" },
   ] satisfies FooterLink[],
@@ -44,7 +44,7 @@ export const FOOTER_LINKS = {
   awards: [
     { label: "HIT ViERA Awards", to: "/awards" },
     { label: "Nominate", to: "/nominate" },
-    { label: "Sponsorship", to: "/sponsorship" },
+    { label: "Sponsorship", to: "/sponsorship", hash: SPONSORSHIP_TIERS_HASH },
   ] satisfies FooterLink[],
   legal: [
     { label: "Terms & Conditions", to: "/terms" },

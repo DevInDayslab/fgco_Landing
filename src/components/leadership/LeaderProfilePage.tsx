@@ -28,11 +28,12 @@ export function LeaderProfilePage({ leader }: { leader: LeaderProfileData }) {
         }
       >
         <Link
-          to="/team"
+          to="/about"
+          hash="team"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-gold"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Team
+          Back to About Us
         </Link>
       </SitePageHero>
 

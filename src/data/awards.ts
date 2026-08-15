@@ -255,6 +255,8 @@ export const mediaReachHighlights = [
 
 export type SponsorshipTierId = "super" | "power" | "golden" | "silver";
 
+export const SPONSORSHIP_TIERS_HASH = "tiers";
+
 export const sponsorshipTiers = [
   {
     id: "super" as const,

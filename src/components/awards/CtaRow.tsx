@@ -2,8 +2,8 @@ import { ArrowRight } from "lucide-react";
 import { SiteLinkButton } from "@/components/site/SiteButton";
 
 type CtaRowProps = {
-  primary?: { to: string; label: string; variant?: "gold" | "viera" };
-  secondary?: { to: string; label: string };
+  primary?: { to: string; label: string; variant?: "gold" | "viera"; hash?: string };
+  secondary?: { to: string; label: string; hash?: string };
   className?: string;
 };
 
@@ -13,6 +13,7 @@ export function CtaRow({ primary, secondary, className = "" }: CtaRowProps) {
       {primary && (
         <SiteLinkButton
           to={primary.to}
+          hash={primary.hash}
           variant={primary.variant ?? "gold"}
           size="md"
         >
@@ -20,7 +21,7 @@ export function CtaRow({ primary, secondary, className = "" }: CtaRowProps) {
         </SiteLinkButton>
       )}
       {secondary && (
-        <SiteLinkButton to={secondary.to} variant="outline" size="md">
+        <SiteLinkButton to={secondary.to} hash={secondary.hash} variant="outline" size="md">
           {secondary.label}
         </SiteLinkButton>
       )}

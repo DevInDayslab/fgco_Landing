@@ -21,7 +21,7 @@ function FooterLinkColumn({ title, links }: { title: string; links: readonly Foo
       <ul className="mt-5 space-y-2.5 text-sm text-muted-foreground">
         {links.map((link) => (
           <li key={link.to}>
-            <Link to={link.to} className="transition-colors hover:text-gold">
+            <Link to={link.to} hash={link.hash} className="transition-colors hover:text-gold">
               {link.label}
             </Link>
           </li>

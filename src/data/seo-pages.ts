@@ -25,17 +25,6 @@ export const SEO_PAGES = {
     changefreq: "monthly",
     priority: 0.8,
   },
-  team: {
-    path: "/team",
-    title: "Our Team — FG Media Leadership",
-    description:
-      "Meet the leadership team of FG Media and Safety Technologies Pvt. Ltd. — technology visionaries, media leaders, and automotive safety experts.",
-    ogTitle: "FG Media Team",
-    ogDescription:
-      "Meet the leadership team of FG Media — technology visionaries, media leaders, and automotive safety experts.",
-    changefreq: "monthly",
-    priority: 0.7,
-  },
   ceo: {
     path: "/ceo",
     title: "Ramesh Babu Pasupuleti — Founder & CEO, FG Media",

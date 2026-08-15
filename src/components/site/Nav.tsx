@@ -3,11 +3,11 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { FgLogo } from "@/components/brand/FgLogo";
 import { SiteLinkButton } from "@/components/site/SiteButton";
+import { SPONSORSHIP_TIERS_HASH } from "@/data/awards";
 
 const links = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
-  { to: "/team", label: "Team" },
   { to: "/media", label: "Media Wing" },
   { to: "/technology", label: "InViGIL" },
   { to: "/viera", label: "ViERA" },
@@ -47,7 +47,13 @@ export function Nav() {
           </div>
 
           <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3">
-            <SiteLinkButton to="/sponsorship" variant="navSponsor" size="nav" className="hidden lg:inline-flex">
+            <SiteLinkButton
+              to="/sponsorship"
+              hash={SPONSORSHIP_TIERS_HASH}
+              variant="navSponsor"
+              size="nav"
+              className="hidden lg:inline-flex"
+            >
               Sponsor
             </SiteLinkButton>
             <SiteLinkButton to="/nominate" variant="navNominate" size="nav" className="hidden lg:inline-flex">
@@ -79,6 +85,7 @@ export function Nav() {
           ))}
           <SiteLinkButton
             to="/sponsorship"
+            hash={SPONSORSHIP_TIERS_HASH}
             variant="navSponsor"
             size="md"
             className="block w-full px-3 py-3 lg:hidden"

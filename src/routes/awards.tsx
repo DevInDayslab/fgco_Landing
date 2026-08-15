@@ -8,7 +8,7 @@ import { PageHero } from "@/components/awards/PageHero";
 import { ProcessTimeline } from "@/components/awards/ProcessTimeline";
 import { SectionHeader } from "@/components/awards/SectionHeader";
 import { BrandLogo } from "@/components/brand/BrandLogo";
-import { evaluationCriteria, excellenceAwards } from "@/data/awards";
+import { evaluationCriteria, excellenceAwards, SPONSORSHIP_TIERS_HASH } from "@/data/awards";
 import { awardsEventSchema } from "@/data/seo-structured-data";
 import { SEO_PAGES } from "@/data/seo-pages";
 import { buildPageHead } from "@/lib/seo";
@@ -44,7 +44,7 @@ function Awards() {
         </div>
         <CtaRow
           primary={{ to: "/nominate", label: "Submit Nomination" }}
-          secondary={{ to: "/sponsorship", label: "Sponsorship Tiers" }}
+          secondary={{ to: "/sponsorship", label: "Sponsorship Tiers", hash: SPONSORSHIP_TIERS_HASH }}
           className="justify-center"
         />
       </PageHero>
@@ -163,7 +163,7 @@ function Awards() {
           </p>
           <CtaRow
             primary={{ to: "/nominate", label: "Submit Nomination" }}
-            secondary={{ to: "/sponsorship", label: "View Sponsorship" }}
+            secondary={{ to: "/sponsorship", label: "View Sponsorship", hash: SPONSORSHIP_TIERS_HASH }}
             className="mt-8 justify-center"
           />
           </div>

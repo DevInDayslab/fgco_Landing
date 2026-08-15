@@ -8,7 +8,6 @@ const lastmod = new Date().toISOString().slice(0, 10);
 const pages = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.8" },
-  { path: "/team", changefreq: "monthly", priority: "0.7" },
   { path: "/ceo", changefreq: "monthly", priority: "0.7" },
   { path: "/md", changefreq: "monthly", priority: "0.7" },
   { path: "/director", changefreq: "monthly", priority: "0.7" },

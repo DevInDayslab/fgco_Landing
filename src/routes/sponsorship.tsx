@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
 import { Building2, CheckCircle2, CreditCard, RefreshCw, Star, XCircle } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
@@ -19,7 +19,7 @@ import { siteButtonClass } from "@/lib/site-buttons";
 import { HeroAccent } from "@/components/site/PageLayout";
 import { SectionHeader } from "@/components/awards/SectionHeader";
 import { SponsorshipTierCard } from "@/components/awards/SponsorshipTierCard";
-import { mediaReachHighlights, paymentDetails, sponsorshipTiers, type SponsorshipTierId } from "@/data/awards";
+import { mediaReachHighlights, paymentDetails, sponsorshipTiers, SPONSORSHIP_TIERS_HASH, type SponsorshipTierId } from "@/data/awards";
 import {
   openSponsorshipRazorpayCheckout,
   type SponsorshipCheckoutInput,
@@ -74,6 +74,21 @@ function Sponsorship() {
   const [paymentStatus, setPaymentStatus] = useState<"idle" | "failed" | "cancelled">("idle");
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const autoCheckoutAttempted = useRef(false);
+  const hash = useRouterState({ select: (state) => state.location.hash });
+
+  useEffect(() => {
+    if (hash !== SPONSORSHIP_TIERS_HASH) return;
+
+    const scrollToTiers = () => {
+      document.getElementById(SPONSORSHIP_TIERS_HASH)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    };
+
+    const frame = requestAnimationFrame(scrollToTiers);
+    return () => cancelAnimationFrame(frame);
+  }, [hash]);
 
   const tier = sponsorshipTiers.find((t) => t.id === selectedTier);
   const paymentPlan =
@@ -267,7 +282,10 @@ function Sponsorship() {
         </div>
       </section>
 
-      <section className="border-y border-border bg-surface/40 py-20 md:py-24">
+      <section
+        id={SPONSORSHIP_TIERS_HASH}
+        className="scroll-mt-24 border-y border-border bg-surface/40 py-20 md:py-24"
+      >
         <div className="mx-auto max-w-7xl px-6">
           <SectionHeader
             overline="Sponsorship Tiers"
