@@ -253,7 +253,7 @@ export const mediaReachHighlights = [
   },
 ];
 
-export type SponsorshipTierId = "super" | "power" | "golden" | "silver";
+export type SponsorshipTierId = "super" | "power" | "golden" | "silver" | "circle";
 
 export const SPONSORSHIP_TIERS_HASH = "tiers";
 
@@ -330,6 +330,25 @@ export const sponsorshipTiers = [
       "Quarter-Page Color Ad in all three special editions",
       "Inclusion in sponsor shout-outs across social media",
       "InViGIL Starter Package — 1-Year Free Subscription",
+    ],
+  },
+  {
+    id: "circle" as const,
+    name: "HIT ViERA Circle of Excellence",
+    role: "Circle Membership",
+    investment: "₹ 50,000",
+    amountInr: 50000,
+    spots: 100,
+    featured: false,
+    gradient: "from-viera/25 via-blue-500/15 to-gold/15",
+    ring: "ring-viera/45",
+    benefits: [
+      "Leadership interaction & professional networking",
+      "Knowledge exchange & speaking opportunities",
+      "Innovation showcases & business connections",
+      "Mentorship, collaboration & media visibility",
+      "Social-impact initiatives across the HIT ViERA network",
+      "Invitation to National HIT ViERA Leadership Meets",
     ],
   },
 ];

@@ -32,8 +32,9 @@ export function getSponsorshipPaymentPlan(
   const packageGstInr = Math.round(packageInr * GST_RATE);
   const committedTotalInr = packageInr + packageGstInr;
 
-  const razorpay = splitInrInclGst(RAZORPAY_SPONSORSHIP_MAX_INR);
-  const balanceTotalInr = committedTotalInr - RAZORPAY_SPONSORSHIP_MAX_INR;
+  const razorpayTotalInr = Math.min(committedTotalInr, RAZORPAY_SPONSORSHIP_MAX_INR);
+  const razorpay = splitInrInclGst(razorpayTotalInr);
+  const balanceTotalInr = Math.max(0, committedTotalInr - razorpayTotalInr);
   const balance = splitInrInclGst(balanceTotalInr);
 
   return {

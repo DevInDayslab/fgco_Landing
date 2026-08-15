@@ -27,10 +27,12 @@ export function SponsorshipTierCard({ tier, selected, onSelect }: SponsorshipTie
       type="button"
       onClick={() => onSelect(tier.id)}
       className={`group relative flex h-full w-full flex-col rounded-2xl border p-6 text-left transition-all md:p-7 ${
-        featured
-          ? "border-gold/50 bg-gradient-to-b from-gold/[0.12] to-gold/[0.03]"
-          : "border-border bg-card hover:border-gold/25"
-      } ${selected ? "ring-2 ring-gold/50" : ""}`}
+        tier.id === "circle"
+          ? "border-viera/35 bg-gradient-to-b from-viera/[0.1] to-viera/[0.02] hover:border-viera/50"
+          : featured
+            ? "border-gold/50 bg-gradient-to-b from-gold/[0.12] to-gold/[0.03]"
+            : "border-border bg-card hover:border-gold/25"
+      } ${selected ? (tier.id === "circle" ? "ring-2 ring-viera/50" : "ring-2 ring-gold/50") : ""}`}
     >
       {featured && (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-0.5 text-[0.6rem] font-semibold tracking-[0.12em] text-primary-foreground uppercase">
@@ -62,10 +64,14 @@ export function SponsorshipTierCard({ tier, selected, onSelect }: SponsorshipTie
       <span
         className={`mt-6 block w-full rounded-xl py-3 text-center text-xs font-semibold transition-colors ${
           selected
-            ? "bg-gold text-primary-foreground"
-            : featured
-              ? "border border-gold/50 text-gold group-hover:bg-gold/10"
-              : "border border-border text-muted-foreground group-hover:border-gold/30 group-hover:text-gold"
+            ? tier.id === "circle"
+              ? "bg-viera text-white"
+              : "bg-gold text-primary-foreground"
+            : tier.id === "circle"
+              ? "border border-viera/40 text-viera group-hover:bg-viera/10"
+              : featured
+                ? "border border-gold/50 text-gold group-hover:bg-gold/10"
+                : "border border-border text-muted-foreground group-hover:border-gold/30 group-hover:text-gold"
         }`}
       >
         {selected ? "Selected" : "Select Tier"}

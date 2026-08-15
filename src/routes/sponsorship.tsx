@@ -11,10 +11,12 @@ import {
   submitButtonClass,
   textareaClass,
 } from "@/components/awards/form-styles";
+import { AwardComesToYouSection } from "@/components/awards/AwardComesToYouSection";
+import { CircleOfExcellenceSection } from "@/components/awards/CircleOfExcellenceSection";
+import { SponsorshipPresentationIntro } from "@/components/awards/SponsorshipPresentationIntro";
 import { FormPanel, FormSectionHeader, FormSuccessState } from "@/components/awards/FormPrimitives";
 import { SponsorshipPaymentBreakdown } from "@/components/awards/SponsorshipPaymentBreakdown";
 import { PageHero } from "@/components/awards/PageHero";
-import { BrandLogo } from "@/components/brand/BrandLogo";
 import { siteButtonClass } from "@/lib/site-buttons";
 import { HeroAccent } from "@/components/site/PageLayout";
 import { SectionHeader } from "@/components/awards/SectionHeader";
@@ -89,6 +91,23 @@ function Sponsorship() {
     const frame = requestAnimationFrame(scrollToTiers);
     return () => cancelAnimationFrame(frame);
   }, [hash]);
+
+  const corporateSponsorshipTiers = sponsorshipTiers.filter((tierItem) => tierItem.id !== "circle");
+  const circleOfExcellenceTier = sponsorshipTiers.find((tierItem) => tierItem.id === "circle");
+
+  function scrollToRegistration() {
+    document.getElementById("sponsorship-register")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
+  function handleSelectTier(tierId: SponsorshipTierId) {
+    setSelectedTier(tierId);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(scrollToRegistration);
+    });
+  }
 
   const tier = sponsorshipTiers.find((t) => t.id === selectedTier);
   const paymentPlan =
@@ -251,15 +270,11 @@ function Sponsorship() {
           </>
         }
         subtitle="Partner with the HIT ViERA National Awards 2026 and the official global launch of InViGIL — India's most prestigious national recognition platform."
-      >
-        <div className="mb-2 flex flex-wrap items-center justify-center gap-6 md:gap-10">
-          <BrandLogo id="hitNews" size="sm" />
-          <BrandLogo id="viera" size="sm" />
-          <BrandLogo id="invigil" size="sm" />
-        </div>
-      </PageHero>
+      />
 
-      <section className="mx-auto max-w-7xl px-6 py-20 md:py-24">
+      <SponsorshipPresentationIntro />
+
+      <section className="mx-auto max-w-7xl px-6 py-16 md:py-20">
         <SectionHeader
           overline="Media Reach"
           title={
@@ -282,35 +297,54 @@ function Sponsorship() {
         </div>
       </section>
 
+      <AwardComesToYouSection />
+
       <section
         id={SPONSORSHIP_TIERS_HASH}
-        className="scroll-mt-24 border-y border-border bg-surface/40 py-20 md:py-24"
+        className="scroll-mt-24 border-y border-border bg-surface/40 py-16 md:py-20"
       >
         <div className="mx-auto max-w-7xl px-6">
-          <SectionHeader
-            overline="Sponsorship Tiers"
-            title={
-              <>
-                Choose Your <span className="italic text-gold">Partnership Level</span>
-              </>
-            }
-            description="Select a tier below. Spots are limited and awarded first-come, first-served."
-            className="mx-auto text-center"
-          />
+          <div className="mx-auto max-w-3xl text-center">
+            <SectionHeader
+              overline="Corporate Sponsorship"
+              title={
+                <>
+                  Choose Your <span className="italic text-gold">Partnership Level</span>
+                </>
+              }
+              description="Partner with the World's Real Super App InViGIL launch and the prestigious HIT Awards. Unlock unparalleled visibility, media dominance, and exclusive InViGIL ecosystem benefits."
+              className="mx-auto text-center"
+            />
+            <p className="mt-4 text-sm text-muted-foreground">
+              Select a tier to continue to registration. Spots are limited — first-come,
+              first-served.
+            </p>
+          </div>
           <div className="mt-12 grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            {sponsorshipTiers.map((tierItem) => (
+            {corporateSponsorshipTiers.map((tierItem) => (
               <SponsorshipTierCard
                 key={tierItem.id}
                 tier={tierItem}
                 selected={selectedTier === tierItem.id}
-                onSelect={setSelectedTier}
+                onSelect={handleSelectTier}
               />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-28 pt-12 sm:px-6">
+      {circleOfExcellenceTier ? (
+        <CircleOfExcellenceSection
+          circleTier={circleOfExcellenceTier}
+          selected={selectedTier === "circle"}
+          onSelect={handleSelectTier}
+        />
+      ) : null}
+
+      <section
+        id="sponsorship-register"
+        className="scroll-mt-24 mx-auto max-w-7xl px-4 pb-28 pt-12 sm:px-6"
+      >
         <Link
           to="/awards"
           className="mb-8 flex items-center text-sm font-medium text-amber-500 hover:underline"
@@ -319,11 +353,11 @@ function Sponsorship() {
         </Link>
 
         <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Corporate Sponsorship</h2>
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Complete Your Registration</h2>
           <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-gray-400 md:text-lg">
-            Partner with the World&apos;s Real Super App &quot;InViGIL&quot; Launch and the
-            prestigious HIT Awards. Unlock unparalleled visibility, media dominance, and exclusive
-            InViGIL ecosystem benefits.
+            {tier
+              ? `You selected ${tier.name}. Fill in your details below to reserve your slot and proceed to payment.`
+              : "Partner with InViGIL and the HIT ViERA Awards — select a corporate tier or Circle of Excellence membership above to continue."}
           </p>
         </div>
 
@@ -391,7 +425,11 @@ function Sponsorship() {
                 <div className="space-y-6">
                   <FormSectionHeader
                     title="Complete Payment"
-                    subtitle="Pay ₹5,00,000 (incl. GST) via Razorpay now. Any remaining balance is settled by bank transfer — our team will contact you."
+                    subtitle={
+                      paymentPlan.balanceTotalInr > 0
+                        ? `Pay ₹${paymentPlan.razorpayTotalInr.toLocaleString("en-IN")} (incl. GST) via Razorpay now. Remaining balance of ₹${paymentPlan.balanceTotalInr.toLocaleString("en-IN")} is settled by bank transfer — our team will contact you.`
+                        : `Pay ₹${paymentPlan.razorpayTotalInr.toLocaleString("en-IN")} (incl. GST) via Razorpay to complete your registration.`
+                    }
                   />
 
                   <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-4">
@@ -487,9 +525,10 @@ function Sponsorship() {
                   </div>
 
                   <p className="text-xs text-gray-500">
-                    GST {paymentDetails.gstRate} ({paymentDetails.gst}) · Razorpay limit ₹5,00,000
-                    per transaction (incl. GST) · Balance payable by bank transfer within{" "}
-                    {paymentDetails.balanceDueDays} days of the event.
+                    GST {paymentDetails.gstRate} ({paymentDetails.gst})
+                    {paymentPlan.balanceTotalInr > 0
+                      ? ` · Razorpay limit ₹5,00,000 per transaction (incl. GST) · Balance payable by bank transfer within ${paymentDetails.balanceDueDays} days of the event.`
+                      : " · Full amount collected via Razorpay (incl. GST)."}
                   </p>
                 </div>
               ) : (

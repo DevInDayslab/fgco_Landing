@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { paymentDetails, sponsorshipTiers, type SponsorshipTierId } from "@/data/awards";
 
-const tierIds = ["super", "power", "golden", "silver"] as const;
+const tierIds = ["super", "power", "golden", "silver", "circle"] as const;
 
 const createOrderInput = z.object({
   tierId: z.enum(tierIds),
