@@ -1,14 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
-  Award,
-  Car,
   ChevronDown,
   ChevronRight,
   Crown,
   Newspaper,
   Shield,
-  Sparkles,
   Trophy,
 } from "lucide-react";
 import type { ReactElement } from "react";
@@ -17,6 +14,7 @@ import founderPhoto from "@/assets/ramesh.png";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { FgLogo } from "@/components/brand/FgLogo";
 import { PublicationLogo } from "@/components/brand/PublicationLogo";
+import { HeroCtaButtons } from "@/components/site/HeroCtaButtons";
 import { SiteLinkButton } from "@/components/site/SiteButton";
 import { GlowCard, GlowCardLink } from "@/components/site/GlowCard";
 import { HomeCertifications } from "@/components/site/HomeCertifications";
@@ -87,7 +85,7 @@ const ventures: {
     tagClass: "border-viera/50 bg-viera/15 text-viera",
     title: "ViERA",
     subtitle: "Virtual Intelligence Engine",
-    text: "Virtual Intelligence Enabled Real Actor — powering InViGIL beyond conventional AI.",
+    text: "Virtual Intelligence Enabled Real Avatar — powering InViGIL beyond conventional AI.",
     to: "/viera",
     brandLogo: "viera",
   },
@@ -95,8 +93,8 @@ const ventures: {
     tag: "INV",
     tagClass: "border-gold/40 bg-gold/10 text-gold",
     title: "InViGIL",
-    subtitle: "Virtual Commerce Platform",
-    text: "World's First Virtual Commerce Platform — built on ViERA intelligence and end-to-end security.",
+    subtitle: "Digital Security & Intelligence Platform",
+    text: "A next-generation Digital Security, Intelligence, Investigation and Vigilance platform — powered by ViERA.",
     to: "/technology",
     brandLogo: "invigil",
   },
@@ -139,19 +137,6 @@ function EcosystemCard({
   );
 }
 
-const heroPrimaryLinks = [
-  { to: "/awards", label: "HIT ViERA Awards", icon: Award },
-  { to: "/technology", label: "Explore InViGIL", icon: Shield },
-] as const;
-
-const heroSecondaryLinks = [
-  { to: "/viera", label: "ViERA", icon: Sparkles },
-  { to: "/publications", label: "Publications", icon: Newspaper },
-  { to: "/automobiles", label: "Automobiles", icon: Car },
-] as const;
-
-const heroButtonClass = "min-h-[3.25rem] min-w-[11rem]";
-
 function Index() {
   return (
     <div className="animate-fade-in">
@@ -187,36 +172,7 @@ function Index() {
             (InViGIL), and National Recognition.
           </p>
 
-          <div className="mt-10 flex flex-col items-center gap-4">
-            <div className="flex flex-wrap items-stretch justify-center gap-3">
-              {heroPrimaryLinks.map(({ to, label, icon: Icon }) => (
-                <SiteLinkButton
-                  key={to}
-                  to={to}
-                  variant="gold"
-                  size="lg"
-                  className={heroButtonClass}
-                >
-                  <Icon className="h-4 w-4 shrink-0" aria-hidden />
-                  {label}
-                </SiteLinkButton>
-              ))}
-            </div>
-            <div className="flex flex-wrap items-stretch justify-center gap-3">
-              {heroSecondaryLinks.map(({ to, label, icon: Icon }) => (
-                <SiteLinkButton
-                  key={to}
-                  to={to}
-                  variant="outline"
-                  size="lg"
-                  className={heroButtonClass}
-                >
-                  <Icon className="h-4 w-4 shrink-0" aria-hidden />
-                  {label}
-                </SiteLinkButton>
-              ))}
-            </div>
-          </div>
+          <HeroCtaButtons />
 
           <div className="mt-16 flex flex-col items-center gap-2 text-[0.6rem] tracking-[0.3em] text-muted-foreground">
             SCROLL
@@ -262,7 +218,7 @@ function Index() {
             <EcosystemCard
               logo={<BrandLogo id="invigil" size="sm" className="max-w-[11rem]" />}
               title="InViGIL"
-              desc="The World's First Virtual Commerce Platform — built on ViERA intelligence and security."
+              desc="Digital Security, Intelligence, Investigation and Vigilance — powered by ViERA."
               to="/technology"
               accent="viera"
             />
@@ -372,7 +328,7 @@ function Index() {
             </p>
             <p>
               From three respected news weeklies reaching millions of readers across India, to
-              pioneering InViGIL — the world's first Virtual Commerce Platform powered by ViERA — we
+              pioneering InViGIL — a next-generation digital security and intelligence platform powered by ViERA — we
               build solutions that are safe, user-friendly, and meaningful.
             </p>
             <div className="flex flex-wrap gap-4">

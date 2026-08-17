@@ -141,7 +141,7 @@ export const editorialPillars = [
 export const digitalExtensions = [
   {
     title: "InViGIL Platform",
-    text: "Decentralized media, commerce, and spatial journalism — the digital extension of FG Media's print legacy.",
+    text: "Digital security, intelligence, investigation and vigilance ecosystem — the digital extension of FG Media's commitment to safety and awareness.",
     to: "/technology" as const,
     tag: "Digital Media",
     brandLogo: "invigil" as const satisfies BrandLogoId,

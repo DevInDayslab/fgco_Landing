@@ -40,7 +40,7 @@ const timeline = [
     tag: "Technology",
     date: "2021",
     title: "ViERA & InViGIL Born",
-    text: "Development of the world's first virtual commerce platform powered by ViERA (Virtual Intelligence Enabled Real Actor), unveiled by Hon'ble Vice President of India.",
+    text: "Development of InViGIL — a next-generation digital security and intelligence platform powered by ViERA (Virtual Intelligence Enabled Real Avatar), unveiled by Hon'ble Vice President of India.",
   },
   {
     tag: "Expansion",

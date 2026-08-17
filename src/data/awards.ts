@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Award, Globe, Network, Brain, Layers, Store, Home, ShieldCheck } from "lucide-react";
+import { Award, Globe, Network } from "lucide-react";
 import heroAwards from "@/assets/award_hero.jpg";
 import heroCity from "@/assets/hero-city.jpg";
 
@@ -109,39 +109,6 @@ export const excellenceAwards = [
   "ViERA Traditional Heritage Award 2026",
   "ViERA Excellence in Public Administration Award 2026",
 ];
-
-export const invigilFeatures = [
-  {
-    icon: Brain,
-    color: "text-viera",
-    title: "Core Engines",
-    text: "Powered by ViERA (Virtual Intelligence Enabled Real Avatar) verification and a proprietary Fact Score Engine, ensuring deterministically calculated payouts every 5 minutes.",
-  },
-  {
-    icon: Layers,
-    color: "text-gold",
-    title: "Spatial Evidentiary Journalism",
-    text: "Integrates Augmented Reality (AR), WebXR, and multimodal RAG pipelines to project 3D investigative scenes directly into physical living environments.",
-  },
-  {
-    icon: Store,
-    color: "text-ka",
-    title: "The Show Room & Events Engine",
-    text: "A unique digital storefront equipped with an autonomous ViERA Business Manager, Tharangam audio podcasts, E-Papers, and C2PA-verified cryptographic event ticketing.",
-  },
-  {
-    icon: Home,
-    color: "text-te",
-    title: "ViERA Family & Smart Home IoT",
-    text: "Connects family micro-networks to smart home appliances and enables interactive Smart TV tuitions backed by real-time AR posture and focus telemetry.",
-  },
-  {
-    icon: ShieldCheck,
-    color: "text-en",
-    title: "Comprehensive Governance",
-    text: "Features an omni-channel Ads Manager, automated penalty loops for deepfakes, and a cascading legal defense matrix spanning up to the Supreme Court.",
-  },
-] as const;
 
 export const influencerPerks: { icon: LucideIcon; title: string; text: string }[] = [
   {
@@ -393,11 +360,6 @@ export function getNominationFeeBreakdown(isSelfNomination: boolean) {
       : "Nominating another person — ₹5,000",
   };
 }
-
-export const INVIGIL_INTRO =
-  "InViGIL is the world's first and most advanced decentralized media, commerce, spatial journalism, and event management ecosystem. By replacing opaque, clickbait-driven legacy models with an architecture anchored to the ViERA Engine Core and an immutable PostgreSQL ledger, InViGIL shifts economic incentives strictly toward high-integrity content generation based on Truth, Telemetry, and Real-World Impact.";
-
-export const invigilPillars = ["Truth", "Telemetry", "Real-World Impact"] as const;
 
 export const INFLUENCER_INTRO =
   "The HIT ViERA National Jury will identify and recognise the Top 100 Influencers of India 2026 across business, entrepreneurship, technology, governance, education, healthcare, media, arts, sports, innovation and social leadership.";

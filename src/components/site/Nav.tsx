@@ -13,6 +13,7 @@ const links = [
   { to: "/viera", label: "ViERA" },
   { to: "/automobiles", label: "Automobiles" },
   { to: "/operations", label: "Operations" },
+  { to: "/foundation", label: "Foundation" },
   { to: "/awards", label: "HIT ViERA Awards" },
 ] as const;
 

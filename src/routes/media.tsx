@@ -67,7 +67,7 @@ function Media() {
             <p className="mt-5 text-sm leading-relaxed text-muted-foreground md:text-base">
               Founded alongside FG Media Group in 2020, our publications have grown into nationally
               respected weeklies — combining rigorous reporting with regional language pride, while
-              pioneering the bridge from print journalism to virtual commerce through InViGIL and
+              pioneering the bridge from print journalism to digital security and intelligence through InViGIL and
               ViERA.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
@@ -270,7 +270,7 @@ function Media() {
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground">
           FG Media Group bridges traditional journalism with next-generation platforms — from
-          spatial journalism on InViGIL to the Tharangam podcast network and award special editions.
+          digital security and intelligence on InViGIL to the Tharangam podcast network and award special editions.
         </p>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">

@@ -7,7 +7,6 @@ import {
   Lock,
   Newspaper,
   Shield,
-  ShoppingBag,
   Users,
 } from "lucide-react";
 import { cardLinkClass } from "@/components/site/PageLayout";
@@ -139,21 +138,13 @@ export const FG_ECOSYSTEM_PILLARS: EcosystemPillar[] = [
     title: "InViGIL",
     tagline: "Intelligence Beyond Vision",
     description:
-      "An emerging ecosystem for virtual intelligence, digital safety, security, investigation, intelligent interaction and virtual commerce.",
+      "A next-generation Digital Security, Intelligence, Investigation and Vigilance platform combining virtual intelligence with human-oriented security services.",
     icon: Shield,
     to: "/technology",
     accent: "viera",
   },
   {
-    title: "Virtual Commerce",
-    description:
-      "Connecting creators, businesses, entrepreneurs and consumers through immersive and intelligent digital interactions — direct, transparent and accessible.",
-    icon: ShoppingBag,
-    to: "/technology",
-    accent: "gold",
-  },
-  {
-    title: "Social & Digital Empowerment",
+    title: "Digital Empowerment",
     description:
       "Empowering farmers, rural entrepreneurs, creators and small businesses to present their products and capabilities to wider markets through digital platforms.",
     icon: Users,

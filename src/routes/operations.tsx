@@ -38,8 +38,8 @@ const wings: {
   },
   {
     icon: ImageIcon,
-    title: "E-Commerce",
-    desc: "Hyper-secure, middleman-free Virtual Commerce enabling real-time test, engage, and buy.",
+    title: "Digital Security",
+    desc: "InViGIL-powered digital security, investigation support, and intelligent vigilance across the ecosystem.",
     brandLogo: "invigil",
   },
 ];

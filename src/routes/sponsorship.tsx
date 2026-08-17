@@ -312,7 +312,7 @@ function Sponsorship() {
                   Choose Your <span className="italic text-gold">Partnership Level</span>
                 </>
               }
-              description="Partner with the World's Real Super App InViGIL launch and the prestigious HIT Awards. Unlock unparalleled visibility, media dominance, and exclusive InViGIL ecosystem benefits."
+              description="Partner with the InViGIL global launch and the prestigious HIT Awards. Unlock unparalleled visibility, media dominance, and exclusive InViGIL ecosystem benefits."
               className="mx-auto text-center"
             />
             <p className="mt-4 text-sm text-muted-foreground">

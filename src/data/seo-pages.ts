@@ -6,8 +6,9 @@ import {
   AWARD_COMES_TO_YOU_PATH,
   AWARD_COMES_TO_YOU_TITLE,
 } from "@/data/award-comes-to-you";
+import { FOUNDATION_INTRO, FOUNDATION_TAGLINE } from "@/data/foundation";
 import { AWARDS_TAGLINE } from "@/data/awards";
-import { INVIGIL_INTRO } from "@/data/awards";
+import { INVIGIL_INTRO, INVIGIL_TAGLINE } from "@/data/invigil-content";
 
 export const SEO_PAGES = {
   home: {
@@ -82,9 +83,9 @@ export const SEO_PAGES = {
   },
   technology: {
     path: "/technology",
-    title: "InViGIL Application — World's First Virtual Commerce Platform | FG Media",
+    title: "InViGIL — Digital Security & Intelligence Platform | FG Media",
     description: INVIGIL_INTRO,
-    ogTitle: "InViGIL Application — Intelligence Beyond Vision",
+    ogTitle: `InViGIL — ${INVIGIL_TAGLINE}`,
     ogDescription: INVIGIL_INTRO,
     changefreq: "monthly",
     priority: 0.8,
@@ -167,6 +168,15 @@ export const SEO_PAGES = {
     ogDescription: "Email pro@fgco.in or WhatsApp +91 73820 98888 — Bengaluru, Karnataka.",
     changefreq: "monthly",
     priority: 0.7,
+  },
+  foundation: {
+    path: "/foundation",
+    title: "AP MEDIA Foundation — Social Impact | FG Media Group",
+    description: FOUNDATION_INTRO,
+    ogTitle: `AP MEDIA Foundation — ${FOUNDATION_TAGLINE}`,
+    ogDescription: FOUNDATION_INTRO,
+    changefreq: "monthly",
+    priority: 0.75,
   },
   terms: {
     path: "/terms",

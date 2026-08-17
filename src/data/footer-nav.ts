@@ -18,6 +18,7 @@ export type FooterLink = {
     | "/sponsorship"
     | "/nominate"
     | "/contact"
+    | "/foundation"
     | "/terms"
     | "/privacy"
     | "/refund-policy"
@@ -32,6 +33,7 @@ export const FOOTER_LINKS = {
     { label: "Home", to: "/" },
     { label: "About Us", to: "/about" },
     { label: "Publications", to: "/publications" },
+    { label: "AP MEDIA Foundation", to: "/foundation" },
     { label: "Contact Us", to: "/contact" },
   ] satisfies FooterLink[],
   platforms: [

@@ -1,5 +1,4 @@
 import { ArrowRight, ChevronDown } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 import { FeatureGrid } from "@/components/awards/FeatureGrid";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { SiteLinkButton } from "@/components/site/SiteButton";
@@ -191,22 +190,21 @@ export function InvigilSection() {
         </div>
       </PageSection>
 
-      <PageSection id="vision">
+      <PageSection>
         <SectionTitle
           overline="BUILT FOR EVERYONE"
           title="A Security Ecosystem For All"
           description="InViGIL is designed for a broad security ecosystem serving individuals, families, professionals, private businesses, security agencies, investigation organisations, institutions and communities."
         />
         <TagCloud tags={invigilAudiences} tone="viera" />
+      </PageSection>
 
-        <div className="mt-16">
-          <SectionTitle
-            overline="OUR PURPOSE"
-            title="Vision, Mission & Promise"
-            className="mb-10"
-          />
-          <PurposeCards />
-        </div>
+      <PageSection id="vision">
+        <SectionTitle
+          overline="OUR PURPOSE"
+          title="Vision, Mission & Promise"
+        />
+        <PurposeCards />
       </PageSection>
 
       <PageSection id="contact" tone="muted">

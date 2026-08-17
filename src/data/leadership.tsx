@@ -102,7 +102,7 @@ export const LEADERS: LeaderProfile[] = [
     paragraphs: [
       "Ramesh Babu Pasupuleti represents a rare convergence of technology, digital transformation, media, innovation, and social impact. His journey has been guided by one enduring principle: Technology should not merely automate life; it should empower humanity.",
       "A seasoned professional with a strong background in both Media and Information Technology, his rare dual expertise gave him a unique perspective — seeing the convergence of journalism and technology before it became inevitable.",
-      "He founded FG Media Group on 14th January 2020 at Bengaluru with a clear mission: to provide the safest, most user-friendly, and productive information technology solutions that are both creative and meaningful. Under his leadership, the company has grown into a respected multilingual media house with three national publications and a technology innovator — pioneering the world's first Virtual Commerce Platform through InViGIL, powered by ViERA.",
+      "He founded FG Media Group on 14th January 2020 at Bengaluru with a clear mission: to provide the safest, most user-friendly, and productive information technology solutions that are both creative and meaningful. Under his leadership, the company has grown into a respected multilingual media house with three national publications and a technology innovator — pioneering InViGIL, a next-generation digital security and intelligence platform powered by ViERA.",
     ],
     highlights: [
       {
@@ -169,16 +169,14 @@ export const LEADERS: LeaderProfile[] = [
             title: "InViGIL",
             tagline: "Intelligence Beyond Vision",
             bullets: [
-              "Virtual Intelligence systems",
-              "Digital security frameworks",
-              "Virtual commerce infrastructure",
-              "Talent discovery platforms",
-              "Intelligent interaction systems",
-              "Fraud detection mechanisms",
-              "Facial recognition technologies",
-              "Cybersecurity solutions",
-              "Investigative intelligence capabilities",
-              "Digital empowerment tools",
+              "Digital security and cybersecurity frameworks",
+              "Identity and professional verification",
+              "Investigation and vigilance support",
+              "Risk awareness and alerts",
+              "Incident reporting",
+              "Intelligent security assistance",
+              "Community and organisational security",
+              "Live intelligence",
             ],
           },
         ],

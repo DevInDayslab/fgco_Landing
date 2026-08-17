@@ -73,13 +73,13 @@ export function HomeFoundationSection() {
             {FOUNDATION_VISION.title}
           </h3>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            {FOUNDATION_VISION.text}
+            {FOUNDATION_VISION.paragraphs[0]}
           </p>
         </GlowCard>
         <GlowCard tone="gold" className="p-8">
           <p className="section-label">Our Mission</p>
           <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-            {FOUNDATION_MISSION.map((item) => (
+            {FOUNDATION_MISSION.slice(0, 8).map((item) => (
               <li key={item} className="flex gap-2">
                 <Heart className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden />
                 <span>{item}</span>
@@ -140,15 +140,19 @@ export function HomeFoundationSection() {
       <div className="fg-card fg-card-featured mx-auto mt-16 max-w-4xl rounded-3xl p-8 text-center md:p-12">
         <div className="fg-card-inner">
           <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
-            {FOUNDATION_CLOSING}
+            {FOUNDATION_CLOSING.tagline} {FOUNDATION_CLOSING.paragraphs[0]}
           </p>
           <p className="mt-4 text-xs tracking-[0.18em] text-gold uppercase">
-            Empowering the Needy · Educating Communities · Bridging the Digital Divide ·
-            Recognising Changemakers
+            {FOUNDATION_CLOSING.footerLine}
           </p>
-          <SiteLinkButton to="/contact" variant="gold" size="lg" className="mt-8">
-            Partner With the Foundation
-          </SiteLinkButton>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <SiteLinkButton to="/foundation" variant="goldOutline" size="lg">
+              Explore the Foundation
+            </SiteLinkButton>
+            <SiteLinkButton to="/contact" variant="gold" size="lg">
+              Partner With the Foundation
+            </SiteLinkButton>
+          </div>
         </div>
       </div>
     </PageSection>

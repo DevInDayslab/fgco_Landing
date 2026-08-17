@@ -21,6 +21,7 @@ import { Route as CeoRouteImport } from './routes/ceo'
 import { Route as ChandrashekharRouteImport } from './routes/chandrashekhar'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DirectorRouteImport } from './routes/director'
+import { Route as FoundationRouteImport } from './routes/foundation'
 import { Route as MdRouteImport } from './routes/md'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as NominateRouteImport } from './routes/nominate'
@@ -110,6 +111,11 @@ const ContactRoute = ContactRouteImport.update({
 const DirectorRoute = DirectorRouteImport.update({
   id: '/director',
   path: '/director',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundationRoute = FoundationRouteImport.update({
+  id: '/foundation',
+  path: '/foundation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MdRoute = MdRouteImport.update({
@@ -276,6 +282,7 @@ export interface FileRoutesByFullPath {
   '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
   '/director': typeof DirectorRoute
+  '/foundation': typeof FoundationRoute
   '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/nominate': typeof NominateRouteWithChildren
@@ -319,6 +326,7 @@ export interface FileRoutesByTo {
   '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
   '/director': typeof DirectorRoute
+  '/foundation': typeof FoundationRoute
   '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/operations': typeof OperationsRoute
@@ -359,6 +367,7 @@ export interface FileRoutesById {
   '/chandrashekhar': typeof ChandrashekharRoute
   '/contact': typeof ContactRoute
   '/director': typeof DirectorRoute
+  '/foundation': typeof FoundationRoute
   '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/nominate': typeof NominateRouteWithChildren
@@ -405,6 +414,7 @@ export interface FileRouteTypes {
     | '/chandrashekhar'
     | '/contact'
     | '/director'
+    | '/foundation'
     | '/md'
     | '/media'
     | '/nominate'
@@ -448,6 +458,7 @@ export interface FileRouteTypes {
     | '/chandrashekhar'
     | '/contact'
     | '/director'
+    | '/foundation'
     | '/md'
     | '/media'
     | '/operations'
@@ -487,6 +498,7 @@ export interface FileRouteTypes {
     | '/chandrashekhar'
     | '/contact'
     | '/director'
+    | '/foundation'
     | '/md'
     | '/media'
     | '/nominate'
@@ -532,6 +544,7 @@ export interface RootRouteChildren {
   ChandrashekharRoute: typeof ChandrashekharRoute
   ContactRoute: typeof ContactRoute
   DirectorRoute: typeof DirectorRoute
+  FoundationRoute: typeof FoundationRoute
   MdRoute: typeof MdRoute
   MediaRoute: typeof MediaRoute
   NominateRoute: typeof NominateRouteWithChildren
@@ -632,6 +645,13 @@ declare module '@tanstack/react-router' {
       path: '/director'
       fullPath: '/director'
       preLoaderRoute: typeof DirectorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/foundation': {
+      id: '/foundation'
+      path: '/foundation'
+      fullPath: '/foundation'
+      preLoaderRoute: typeof FoundationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/md': {
@@ -948,6 +968,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChandrashekharRoute: ChandrashekharRoute,
   ContactRoute: ContactRoute,
   DirectorRoute: DirectorRoute,
+  FoundationRoute: FoundationRoute,
   MdRoute: MdRoute,
   MediaRoute: MediaRoute,
   NominateRoute: NominateRouteWithChildren,

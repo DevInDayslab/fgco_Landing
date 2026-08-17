@@ -105,7 +105,7 @@ export const ROOT_META = [
   {
     name: "description",
     content:
-      "FG Media Group: trusted multilingual journalism, InViGIL virtual commerce powered by ViERA, from Bengaluru, India.",
+      "FG Media Group: trusted multilingual journalism, InViGIL digital security powered by ViERA, from Bengaluru, India.",
   },
   { name: "author", content: SITE_NAME },
   { name: "theme-color", content: THEME_COLOR },

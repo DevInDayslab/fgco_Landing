@@ -68,10 +68,9 @@ export const vieraPrinciples = [
 
 export const invigilVieraStack = [
   "Investigations",
-  "News",
   "Virtual Intelligence",
   "Guard Intelligence",
-  "Live Technology",
+  "Live Intelligence",
 ];
 
 export const vieraComparisonRows = [

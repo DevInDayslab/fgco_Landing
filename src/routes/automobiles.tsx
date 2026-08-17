@@ -172,7 +172,7 @@ function Automobiles() {
               <span className="italic text-viera">Safety</span>
             </>
           }
-          description="InViGIL brings virtual showrooms, fleet tracking and connected commerce to the automobile division."
+          description="InViGIL brings virtual showrooms, fleet tracking and connected security services to the automobile division."
         />
         <TagCloud tags={mobilityConnections} tone="viera" />
         <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-muted-foreground">
