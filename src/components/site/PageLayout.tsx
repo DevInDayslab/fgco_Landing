@@ -223,14 +223,17 @@ export function PageSection({
   className = "",
   border = false,
   tone = "default",
+  id,
 }: {
   children: ReactNode;
   className?: string;
   border?: boolean;
   tone?: SectionTone;
+  id?: string;
 }) {
   return (
     <section
+      id={id}
       className={`mx-auto max-w-7xl px-6 py-16 md:py-20 ${border ? "border-y border-border" : ""} ${sectionToneClass[tone]} ${className}`}
     >
       {children}
