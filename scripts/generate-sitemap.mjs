@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const SITE_URL = "https://www.fgco.in";
 const lastmod = new Date().toISOString().slice(0, 10);
 
+/** Keep in sync with frontend/src/data/seo-pages.ts */
 const pages = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/about", changefreq: "monthly", priority: "0.8" },
@@ -14,6 +15,7 @@ const pages = [
   { path: "/media", changefreq: "monthly", priority: "0.8" },
   { path: "/publications", changefreq: "monthly", priority: "0.6" },
   { path: "/technology", changefreq: "monthly", priority: "0.8" },
+  { path: "/teaser", changefreq: "monthly", priority: "0.8" },
   { path: "/viera", changefreq: "monthly", priority: "0.8" },
   { path: "/automobiles", changefreq: "monthly", priority: "0.7" },
   { path: "/operations", changefreq: "monthly", priority: "0.6" },
@@ -22,6 +24,7 @@ const pages = [
   { path: "/sponsorship", changefreq: "monthly", priority: "0.7" },
   { path: "/nominate", changefreq: "weekly", priority: "0.8" },
   { path: "/contact", changefreq: "monthly", priority: "0.7" },
+  { path: "/foundation", changefreq: "monthly", priority: "0.75" },
   { path: "/terms", changefreq: "yearly", priority: "0.4" },
   { path: "/privacy", changefreq: "yearly", priority: "0.4" },
   { path: "/refund-policy", changefreq: "yearly", priority: "0.4" },

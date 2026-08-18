@@ -42,6 +42,15 @@ export const invigilStats = [
 
 export const invigilPillars = invigilHighlights;
 
+export const invigilTeaserAction = {
+  overline: "TEASER INSIDE INVIGIL",
+  title: "Create Intelligent Short Video",
+  subtitle:
+    "TEASER is the next-generation short-video engine powered by ViERA — purpose-driven visual experiences for products, talent, business, and commerce.",
+  badge: "Powered by ViERA",
+  highlights: ["Create", "Perform", "Promote", "Connect"],
+};
+
 export const invigilVieraAction = {
   overline: "VIERA IN ACTION",
   title: "Meet ViERA",

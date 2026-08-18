@@ -10,6 +10,7 @@ export type FooterLink = {
     | "/media"
     | "/publications"
     | "/technology"
+    | "/teaser"
     | "/viera"
     | "/automobiles"
     | "/operations"
@@ -37,6 +38,7 @@ export const FOOTER_LINKS = {
     { label: "Contact Us", to: "/contact" },
   ] satisfies FooterLink[],
   platforms: [
+    { label: "TEASER", to: "/teaser" },
     { label: "InViGIL", to: "/technology" },
     { label: "ViERA", to: "/viera" },
     { label: "Media Wing", to: "/media" },

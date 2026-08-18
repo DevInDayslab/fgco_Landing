@@ -1,8 +1,9 @@
 import { FG_CONTACT } from "@/data/contact";
+import { DEFAULT_OG_IMAGE } from "@/data/seo-og-images";
 
 export const SITE_URL = FG_CONTACT.website.replace(/\/$/, "");
 export const SITE_NAME = "FG Media Group";
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+export { DEFAULT_OG_IMAGE };
 export const THEME_COLOR = "#0f1f14";
 
 export type PageSeoConfig = {

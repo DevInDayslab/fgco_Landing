@@ -1,4 +1,5 @@
 import { ArrowRight, ChevronDown } from "lucide-react";
+import teaserLogo from "@/assets/logo_text.png";
 import { FeatureGrid } from "@/components/awards/FeatureGrid";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { SiteLinkButton } from "@/components/site/SiteButton";
@@ -20,6 +21,7 @@ import {
   invigilNavAnchors,
   invigilPurpose,
   invigilStats,
+  invigilTeaserAction,
   invigilVieraAction,
 } from "@/data/invigil-content";
 
@@ -41,6 +43,9 @@ function AnchorNav() {
       <SiteLinkButton to="/contact" variant="viera" size="sm" className="ml-1">
         GET ACCESS
       </SiteLinkButton>
+      <SiteLinkButton to="/teaser" variant="vieraOutline" size="sm">
+        TEASER
+      </SiteLinkButton>
     </nav>
   );
 }
@@ -59,6 +64,51 @@ function StatsGrid() {
           </p>
         </div>
       ))}
+    </div>
+  );
+}
+
+function TeaserActionPanel() {
+  return (
+    <div className="fg-panel rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-500/[0.08] via-card to-background p-8 md:p-12">
+      <div className="fg-card-inner grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div>
+          <p className="section-label text-violet-300">{invigilTeaserAction.overline}</p>
+          <h2 className="mt-3 text-3xl font-bold md:text-4xl">{invigilTeaserAction.title}</h2>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
+            {invigilTeaserAction.subtitle}
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <span className="rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-200">
+              {invigilTeaserAction.badge}
+            </span>
+            {invigilTeaserAction.highlights.map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+          <SiteLinkButton to="/teaser" variant="viera" size="md" className="mt-8">
+            Explore TEASER <ArrowRight className="h-4 w-4" />
+          </SiteLinkButton>
+        </div>
+
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative flex h-64 w-full max-w-sm items-center justify-center overflow-hidden rounded-3xl border border-violet-500/25 bg-black/40 p-8 shadow-[0_0_40px_rgba(168,85,247,0.12)] md:h-72">
+            <img
+              src={teaserLogo}
+              alt="TEASER"
+              className="h-24 w-auto object-contain md:h-28"
+            />
+          </div>
+          <p className="text-center text-xs tracking-[0.2em] text-muted-foreground">
+            SHORT VIDEO · VIRTUAL COMMERCE · AR
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -162,6 +212,10 @@ export function InvigilSection() {
 
       <PageSection className="py-0">
         <VieraActionPanel />
+      </PageSection>
+
+      <PageSection className="py-0">
+        <TeaserActionPanel />
       </PageSection>
 
       <PageSection id="capabilities" border>

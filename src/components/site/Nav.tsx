@@ -9,6 +9,7 @@ const links = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
   { to: "/media", label: "Media Wing" },
+  { to: "/teaser", label: "TEASER" },
   { to: "/technology", label: "InViGIL" },
   { to: "/viera", label: "ViERA" },
   { to: "/automobiles", label: "Automobiles" },

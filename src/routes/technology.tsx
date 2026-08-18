@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { InvigilSection } from "@/components/awards/InvigilSection";
 import { BrandLogo } from "@/components/brand/BrandLogo";
-import { SiteAnchorButton } from "@/components/site/SiteButton";
+import { SiteAnchorButton, SiteLinkButton } from "@/components/site/SiteButton";
 import { INVIGIL_HERO } from "@/data/invigil-content";
 import { SEO_PAGES } from "@/data/seo-pages";
 import { buildPageHead } from "@/lib/seo";
@@ -42,6 +42,9 @@ function Technology() {
         <SiteAnchorButton href="#capabilities" variant="viera" size="lg">
           EXPLORE PLATFORM <ArrowRight className="h-4 w-4" />
         </SiteAnchorButton>
+        <SiteLinkButton to="/teaser" variant="vieraOutline" size="lg">
+          EXPLORE TEASER <ArrowRight className="h-4 w-4" />
+        </SiteLinkButton>
         <SiteAnchorButton href="#capabilities" variant="vieraOutline" size="lg">
           VIEW CAPABILITIES
         </SiteAnchorButton>
