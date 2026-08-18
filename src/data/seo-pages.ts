@@ -208,6 +208,8 @@ export const SEO_PAGES = {
       "HIT ViERA National Awards 2026 and the InViGIL Global Launch Event in Bengaluru — recognising excellence and vision across India.",
     ogTitle: "HIT ViERA National Awards 2026",
     ogDescription: AWARDS_TAGLINE,
+    ogImage: SEO_OG_IMAGES.awards,
+    ogImageAlt: SEO_OG_IMAGE_ALT.awards,
     keywords: [
       "HIT ViERA Awards",
       "National Awards India 2026",
@@ -270,6 +272,8 @@ export const SEO_PAGES = {
     description: FOUNDATION_INTRO,
     ogTitle: `AP MEDIA Foundation — ${FOUNDATION_TAGLINE}`,
     ogDescription: FOUNDATION_INTRO,
+    ogImage: SEO_OG_IMAGES.foundation,
+    ogImageAlt: SEO_OG_IMAGE_ALT.foundation,
     keywords: [
       "AP MEDIA Foundation",
       "social impact",
