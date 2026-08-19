@@ -63,6 +63,9 @@ function Publications() {
                 ))}
               </div>
               <p className={`mt-6 text-sm font-medium italic ${p.accent}`}>{p.quote}</p>
+              <SiteLinkButton to={p.href} variant="gold" size="md" className="mt-6">
+                Read the full page <ArrowRight className="h-4 w-4" />
+              </SiteLinkButton>
             </div>
 
             <div className="grid border-border lg:border-l">

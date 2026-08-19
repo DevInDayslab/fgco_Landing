@@ -22,6 +22,7 @@ export type PublicationProfile = {
   certificateImage: string;
   certificateAlt: string;
   reachLine: string;
+  href: "/hit-news" | "/happy-india-times" | "/kurukshetra";
 };
 
 export const publicationProfiles: PublicationProfile[] = [
@@ -31,7 +32,7 @@ export const publicationProfiles: PublicationProfile[] = [
     accent: "text-en",
     badge: "border-en/40 bg-en/10 text-en",
     kicker: "National English Weekly",
-    title: "HIT News",
+    title: "HIT NEWS",
     cardTitle: "HIT NEWS",
     native: "Happy India Techs News",
     focus: "Science, Technology, Culture, and Indian Heritage.",
@@ -50,6 +51,7 @@ export const publicationProfiles: PublicationProfile[] = [
     certificateAlt:
       "RNI registration certificate for HIT Happy India Techs News — APENG/2020/78874, English weekly",
     reachLine: "National English weekly with 10 lakh+ print run, pan-India coverage",
+    href: "/hit-news",
   },
   {
     id: "happy-india-times",
@@ -71,6 +73,7 @@ export const publicationProfiles: PublicationProfile[] = [
     certificateAlt:
       "RNI registration certificate for Happy India Times — APTEL/2017/75384, Telugu weekly",
     reachLine: "Telugu weekly across Andhra Pradesh & Telangana",
+    href: "/happy-india-times",
   },
   {
     id: "kurukshetra",
@@ -92,6 +95,7 @@ export const publicationProfiles: PublicationProfile[] = [
     certificateAlt:
       "RNI registration certificate for Kurukshetra Varada Vybhava — KARKAN/2018/76301, Kannada weekly",
     reachLine: "Kannada weekly empowering Karnataka communities",
+    href: "/kurukshetra",
   },
 ];
 

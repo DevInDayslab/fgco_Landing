@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import {
   Award,
+  Briefcase,
   Car,
   Heart,
   Newspaper,
@@ -38,6 +39,13 @@ const heroLinks: {
     label: "Automobiles",
     shortLabel: "Automobiles",
     icon: Car,
+    accent: "gold",
+  },
+  {
+    to: "/operations",
+    label: "Operations",
+    shortLabel: "Operations",
+    icon: Briefcase,
     accent: "gold",
   },
   {

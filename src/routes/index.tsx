@@ -49,17 +49,17 @@ const ventures: {
   title: string;
   subtitle: string;
   text: string;
-  to: "/publications" | "/viera" | "/technology";
+  to: "/hit-news" | "/happy-india-times" | "/kurukshetra" | "/viera" | "/technology";
   publicationId?: PublicationId;
   brandLogo?: BrandLogoId;
 }[] = [
   {
     tag: "EN",
     tagClass: "border-en/40 bg-en/10 text-en",
-    title: "HIT News",
+    title: "HIT NEWS",
     subtitle: "National English Weekly",
     text: "Comprehensive national coverage — politics, technology, business, culture, and investigative journalism.",
-    to: "/publications",
+    to: "/hit-news",
     publicationId: "hit-news",
   },
   {
@@ -68,7 +68,7 @@ const ventures: {
     title: "Happy India Times",
     subtitle: "National Telugu Weekly",
     text: "Quality news for Telugu-speaking communities — progress, innovation, and human interest stories.",
-    to: "/publications",
+    to: "/happy-india-times",
     publicationId: "happy-india-times",
   },
   {
@@ -77,7 +77,7 @@ const ventures: {
     title: "Kurukshetra",
     subtitle: "National Kannada Weekly",
     text: "Empowering Kannada-speaking audiences with quality news and promotional support.",
-    to: "/publications",
+    to: "/kurukshetra",
     publicationId: "kurukshetra",
   },
   {
@@ -242,6 +242,36 @@ function Index() {
               to="/operations"
             />
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-24">
+        <SectionTitle
+          overline="Operations"
+          title={
+            <>
+              Specialized <HeroAccent>Operations</HeroAccent>
+            </>
+          }
+          description="Automobiles, supply chain, investigations, and intelligent digital security — expanding FG Media beyond publishing."
+        />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {[
+            { title: "Automobile Wing", text: "FitGaadi vehicle care, FitGarage service network, and next-generation mobility." },
+            { title: "Supply Chain", text: "Transparent logistics and farmer-to-buyer agricultural supply systems." },
+            { title: "Investigations", text: "Proactive fraud prevention, cyber security, and investigation support." },
+            { title: "Digital Security", text: "InViGIL-powered vigilance and intelligent digital security across the ecosystem." },
+          ].map((item) => (
+            <GlowCard key={item.title} className="h-full p-6">
+              <h3 className="fg-glow-card-title text-lg font-semibold">{item.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+            </GlowCard>
+          ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <SiteLinkButton to="/operations" variant="gold" size="lg">
+            Explore Operations <ArrowRight className="h-4 w-4" />
+          </SiteLinkButton>
         </div>
       </section>
 

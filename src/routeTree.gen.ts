@@ -22,6 +22,9 @@ import { Route as ChandrashekharRouteImport } from './routes/chandrashekhar'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DirectorRouteImport } from './routes/director'
 import { Route as FoundationRouteImport } from './routes/foundation'
+import { Route as HappyIndiaTimesRouteImport } from './routes/happy-india-times'
+import { Route as HitNewsRouteImport } from './routes/hit-news'
+import { Route as KurukshetraRouteImport } from './routes/kurukshetra'
 import { Route as MdRouteImport } from './routes/md'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as NominateRouteImport } from './routes/nominate'
@@ -116,6 +119,21 @@ const DirectorRoute = DirectorRouteImport.update({
 const FoundationRoute = FoundationRouteImport.update({
   id: '/foundation',
   path: '/foundation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HappyIndiaTimesRoute = HappyIndiaTimesRouteImport.update({
+  id: '/happy-india-times',
+  path: '/happy-india-times',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HitNewsRoute = HitNewsRouteImport.update({
+  id: '/hit-news',
+  path: '/hit-news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KurukshetraRoute = KurukshetraRouteImport.update({
+  id: '/kurukshetra',
+  path: '/kurukshetra',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MdRoute = MdRouteImport.update({
@@ -283,6 +301,9 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/director': typeof DirectorRoute
   '/foundation': typeof FoundationRoute
+  '/happy-india-times': typeof HappyIndiaTimesRoute
+  '/hit-news': typeof HitNewsRoute
+  '/kurukshetra': typeof KurukshetraRoute
   '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/nominate': typeof NominateRouteWithChildren
@@ -327,6 +348,9 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/director': typeof DirectorRoute
   '/foundation': typeof FoundationRoute
+  '/happy-india-times': typeof HappyIndiaTimesRoute
+  '/hit-news': typeof HitNewsRoute
+  '/kurukshetra': typeof KurukshetraRoute
   '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/operations': typeof OperationsRoute
@@ -368,6 +392,9 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/director': typeof DirectorRoute
   '/foundation': typeof FoundationRoute
+  '/happy-india-times': typeof HappyIndiaTimesRoute
+  '/hit-news': typeof HitNewsRoute
+  '/kurukshetra': typeof KurukshetraRoute
   '/md': typeof MdRoute
   '/media': typeof MediaRoute
   '/nominate': typeof NominateRouteWithChildren
@@ -415,6 +442,9 @@ export interface FileRouteTypes {
     | '/contact'
     | '/director'
     | '/foundation'
+    | '/happy-india-times'
+    | '/hit-news'
+    | '/kurukshetra'
     | '/md'
     | '/media'
     | '/nominate'
@@ -459,6 +489,9 @@ export interface FileRouteTypes {
     | '/contact'
     | '/director'
     | '/foundation'
+    | '/happy-india-times'
+    | '/hit-news'
+    | '/kurukshetra'
     | '/md'
     | '/media'
     | '/operations'
@@ -499,6 +532,9 @@ export interface FileRouteTypes {
     | '/contact'
     | '/director'
     | '/foundation'
+    | '/happy-india-times'
+    | '/hit-news'
+    | '/kurukshetra'
     | '/md'
     | '/media'
     | '/nominate'
@@ -545,6 +581,9 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DirectorRoute: typeof DirectorRoute
   FoundationRoute: typeof FoundationRoute
+  HappyIndiaTimesRoute: typeof HappyIndiaTimesRoute
+  HitNewsRoute: typeof HitNewsRoute
+  KurukshetraRoute: typeof KurukshetraRoute
   MdRoute: typeof MdRoute
   MediaRoute: typeof MediaRoute
   NominateRoute: typeof NominateRouteWithChildren
@@ -652,6 +691,27 @@ declare module '@tanstack/react-router' {
       path: '/foundation'
       fullPath: '/foundation'
       preLoaderRoute: typeof FoundationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/happy-india-times': {
+      id: '/happy-india-times'
+      path: '/happy-india-times'
+      fullPath: '/happy-india-times'
+      preLoaderRoute: typeof HappyIndiaTimesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hit-news': {
+      id: '/hit-news'
+      path: '/hit-news'
+      fullPath: '/hit-news'
+      preLoaderRoute: typeof HitNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kurukshetra': {
+      id: '/kurukshetra'
+      path: '/kurukshetra'
+      fullPath: '/kurukshetra'
+      preLoaderRoute: typeof KurukshetraRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/md': {
@@ -969,6 +1029,9 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DirectorRoute: DirectorRoute,
   FoundationRoute: FoundationRoute,
+  HappyIndiaTimesRoute: HappyIndiaTimesRoute,
+  HitNewsRoute: HitNewsRoute,
+  KurukshetraRoute: KurukshetraRoute,
   MdRoute: MdRoute,
   MediaRoute: MediaRoute,
   NominateRoute: NominateRouteWithChildren,

@@ -9,6 +9,9 @@ export type FooterLink = {
     | "/about"
     | "/media"
     | "/publications"
+    | "/hit-news"
+    | "/happy-india-times"
+    | "/kurukshetra"
     | "/technology"
     | "/teaser"
     | "/viera"
@@ -38,6 +41,9 @@ export const FOOTER_LINKS = {
     { label: "Contact Us", to: "/contact" },
   ] satisfies FooterLink[],
   platforms: [
+    { label: "HIT NEWS", to: "/hit-news" },
+    { label: "Happy India Times", to: "/happy-india-times" },
+    { label: "Kurukshetra", to: "/kurukshetra" },
     { label: "TEASER", to: "/teaser" },
     { label: "InViGIL", to: "/technology" },
     { label: "ViERA", to: "/viera" },

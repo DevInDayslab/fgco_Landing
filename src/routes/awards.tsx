@@ -7,7 +7,8 @@ import { InfluencerBlock } from "@/components/awards/InfluencerBlock";
 import { PageHero } from "@/components/awards/PageHero";
 import { ProcessTimeline } from "@/components/awards/ProcessTimeline";
 import { SectionHeader } from "@/components/awards/SectionHeader";
-import { BrandLogo } from "@/components/brand/BrandLogo";
+import awardsVideo from "@/assets/awardsVideo.mp4";
+import awardsTitleImage from "@/assets/Hit Awards OG Icon.png";
 import { evaluationCriteria, excellenceAwards, SPONSORSHIP_TIERS_HASH } from "@/data/awards";
 import { awardsEventSchema } from "@/data/seo-structured-data";
 import { SEO_PAGES } from "@/data/seo-pages";
@@ -28,6 +29,28 @@ function Awards() {
       <PageHero
         variant="awards"
         align="center"
+        className="!min-h-0"
+        leading={
+          <div className="mb-8 w-full max-w-5xl">
+            <div className="overflow-hidden rounded-2xl border border-gold/25 shadow-[0_24px_80px_-28px_rgba(245,158,11,0.45)] md:rounded-3xl">
+              <video
+                src={awardsVideo}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="aspect-video w-full object-cover"
+                aria-label="HIT ViERA National Awards 2026"
+              />
+            </div>
+            <img
+              src={awardsTitleImage}
+              alt="HIT ViERA National Awards 2026"
+              className="mx-auto mt-8 w-full max-w-xl object-contain drop-shadow-[0_12px_40px_rgba(245,158,11,0.28)] md:max-w-2xl"
+            />
+          </div>
+        }
         overline="HIT ViERA National Awards 2026"
         title={
           <>
@@ -37,20 +60,6 @@ function Awards() {
         subtitle="HIT ViERA National Awards 2026 & InViGIL Global Launch Event — Bengaluru, Karnataka."
         showEventBar
       >
-        <div className="flex items-center justify-center gap-4 sm:gap-6">
-          <div className="flex h-11 items-center sm:h-12">
-            <BrandLogo id="hitNews" size="sm" className="h-full w-auto max-w-[7.5rem] object-contain sm:max-w-[8.5rem]" />
-          </div>
-          <span
-            className="select-none text-lg font-light leading-none text-muted-foreground/60 sm:text-xl"
-            aria-hidden
-          >
-            ×
-          </span>
-          <div className="flex h-11 items-center sm:h-12">
-            <BrandLogo id="viera" size="sm" className="h-full w-auto max-w-[7.5rem] object-contain sm:max-w-[8.5rem]" />
-          </div>
-        </div>
         <CtaRow
           primary={{ to: "/nominate", label: "Submit Nomination" }}
           secondary={{ to: "/sponsorship", label: "Sponsorship Tiers", hash: SPONSORSHIP_TIERS_HASH }}

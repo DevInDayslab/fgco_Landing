@@ -5,6 +5,9 @@ import invigilOg from "@/assets/InvigilOG.png";
 import teaserOg from "@/assets/Teaser SEO OG.png";
 import vieraOg from "@/assets/ViERA SEO OG Image.png";
 import fitGaadiOg from "@/assets/Fit Gaadi SEO OG.png";
+import hitNewsOg from "@/assets/HIT_NEWS_1200x630-1.png";
+import happyIndiaTimesOg from "@/assets/Happy India Times logo 1200x630.png";
+import kurukshetraOg from "@/assets/KURUKSHETRA_1200x630.png";
 import { FG_CONTACT } from "@/data/contact";
 
 const SITE_URL = FG_CONTACT.website.replace(/\/$/, "");
@@ -21,6 +24,9 @@ export const SEO_OG_IMAGES = {
   fitGaadi: assetUrl(fitGaadiOg),
   foundation: assetUrl(foundationOg),
   awards: assetUrl(awardsOg),
+  hitNews: assetUrl(hitNewsOg),
+  happyIndiaTimes: assetUrl(happyIndiaTimesOg),
+  kurukshetra: assetUrl(kurukshetraOg),
 } as const;
 
 export const DEFAULT_OG_IMAGE = SEO_OG_IMAGES.default;
@@ -35,4 +41,7 @@ export const SEO_OG_IMAGE_ALT = {
     "AP MEDIA Foundation — Enlight, Empower and Engage. Social impact initiative of FG Media Group",
   awards:
     "HIT ViERA National Awards 2026 — Elite achievements and national recognition presented by FG Media Group",
+  hitNews: "HIT NEWS — English National News Weekly. Happy India Techs.",
+  happyIndiaTimes: "Happy India Times — Telugu National News Weekly",
+  kurukshetra: "Kurukshetra — Kannada National News Weekly. Kurukshetra Varada Vybhava.",
 } as const;

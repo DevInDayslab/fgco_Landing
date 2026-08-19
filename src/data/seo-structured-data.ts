@@ -1,3 +1,4 @@
+import type { NewspaperSeoConfig } from "@/data/newspaper-seo";
 import {
   AWARD_COMES_TO_YOU_DESCRIPTION,
   AWARD_COMES_TO_YOU_KEYWORDS,
@@ -143,6 +144,71 @@ export function awardComesToYouPageSchema() {
       ],
     },
   };
+}
+
+export function newspaperPageSchema(page: NewspaperSeoConfig) {
+  const url = `${SITE_URL}${page.path}`;
+  const keywords = page.keywords?.join(", ");
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsMediaOrganization",
+      name: page.name,
+      ...(page.alternateName ? { alternateName: page.alternateName } : {}),
+      url,
+      image: page.ogImage,
+      description: page.description,
+      inLanguage: page.inLanguage,
+      parentOrganization: {
+        "@type": "Organization",
+        name: "FG Media and Safety Technologies Pvt. Ltd.",
+        url: SITE_URL,
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: page.title,
+      description: page.description,
+      url,
+      inLanguage: page.inLanguage,
+      ...(keywords ? { keywords } : {}),
+      isPartOf: {
+        "@type": "WebSite",
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
+      about: {
+        "@type": "NewsMediaOrganization",
+        name: page.name,
+        url,
+      },
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Publications",
+            item: `${SITE_URL}/publications`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: page.name,
+            item: url,
+          },
+        ],
+      },
+    },
+  ];
 }
 
 export function contactPageSchema() {

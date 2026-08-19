@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Eye, Globe, Heart, Shield, Sparkles, Target } from "lucide-react";
+import { MediaWingSection } from "@/components/media/MediaWingSection";
 import { LeaderCard } from "@/components/leadership/LeaderCard";
 import {
   EcosystemPillarGrid,
@@ -217,7 +218,9 @@ function About() {
         </div>
       </PageSection>
 
-      <PageSection border className="bg-surface/30">
+      <MediaWingSection />
+
+      <PageSection border className="bg-surface/25">
         <p className="section-label text-center">Media Powered by Technology</p>
         <h2 className="mt-4 text-center text-3xl md:text-4xl">Informed Communities</h2>
         <StepFlow

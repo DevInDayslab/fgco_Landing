@@ -8,13 +8,12 @@ import { SPONSORSHIP_TIERS_HASH } from "@/data/awards";
 const links = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
-  { to: "/media", label: "Media Wing" },
+  { to: "/hit-news", label: "HIT NEWS" },
+  { to: "/happy-india-times", label: "Happy India Times" },
+  { to: "/kurukshetra", label: "Kurukshetra" },
   { to: "/teaser", label: "TEASER" },
   { to: "/technology", label: "InViGIL" },
   { to: "/viera", label: "ViERA" },
-  { to: "/automobiles", label: "Automobiles" },
-  { to: "/operations", label: "Operations" },
-  { to: "/foundation", label: "Foundation" },
   { to: "/awards", label: "HIT ViERA Awards" },
 ] as const;
 

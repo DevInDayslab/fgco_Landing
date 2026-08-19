@@ -12,6 +12,11 @@ import { INVIGIL_INTRO, INVIGIL_TAGLINE } from "@/data/invigil-content";
 import { SEO_OG_IMAGE_ALT, SEO_OG_IMAGES } from "@/data/seo-og-images";
 import { TEASER_INTRO, TEASER_TAGLINE } from "@/data/teaser-content";
 import { VIERA_HERO } from "@/data/viera-content";
+import {
+  HAPPY_INDIA_TIMES_SEO,
+  HIT_NEWS_SEO,
+  KURUKSHETRA_SEO,
+} from "@/data/newspaper-seo";
 
 const VIERA_DESCRIPTION =
   "ViERA creates your intelligent digital replica — personalized Virtual Intelligence that protects, empowers, and guides you across InViGIL and the digital world.";
@@ -110,6 +115,9 @@ export const SEO_PAGES = {
     changefreq: "monthly",
     priority: 0.6,
   },
+  hitNews: HIT_NEWS_SEO,
+  happyIndiaTimes: HAPPY_INDIA_TIMES_SEO,
+  kurukshetra: KURUKSHETRA_SEO,
   technology: {
     path: "/technology",
     title: "InViGIL — Digital Security & Intelligence Platform | FG Media",

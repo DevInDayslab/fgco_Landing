@@ -191,7 +191,10 @@ function Media() {
                     </span>
                   ))}
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <SiteLinkButton to={p.href} variant="gold" size="md">
+                    Read the full page <ArrowRight className="h-4 w-4" />
+                  </SiteLinkButton>
                   <PublicationCertificateDialog pub={p} />
                 </div>
                 <p className={`mt-6 text-sm font-medium italic ${p.accent}`}>{p.quote}</p>

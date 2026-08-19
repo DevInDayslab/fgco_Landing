@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { SitePageHero } from "@/components/site/PageLayout";
 import { siteHeroImages } from "@/data/site-heroes";
 
@@ -17,6 +18,8 @@ type PageHeroProps = {
   showEventBar?: boolean;
   variant?: HeroVariant;
   align?: "left" | "center";
+  leading?: ReactNode;
+  className?: string;
   children?: React.ReactNode;
 };
 
@@ -27,6 +30,8 @@ export function PageHero({
   showEventBar = false,
   variant = "awards",
   align = "left",
+  leading,
+  className = "",
   children,
 }: PageHeroProps) {
   return (
@@ -38,6 +43,8 @@ export function PageHero({
       align={align}
       size="large"
       showEventBar={showEventBar}
+      leading={leading}
+      className={className}
     >
       {children}
     </SitePageHero>
