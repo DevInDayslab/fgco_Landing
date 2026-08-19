@@ -163,7 +163,9 @@ export function SitePageHero({
           </div>
         )}
         {children && (
-          <div className={`mt-8 ${isCenter ? "flex flex-wrap justify-center gap-4" : ""}`}>
+          <div
+            className={`mt-8 w-full ${isCenter ? "flex flex-col items-center gap-6" : ""}`}
+          >
             {children}
           </div>
         )}

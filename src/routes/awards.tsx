@@ -37,15 +37,24 @@ function Awards() {
         subtitle="HIT ViERA National Awards 2026 & InViGIL Global Launch Event — Bengaluru, Karnataka."
         showEventBar
       >
-        <div className="mb-8 flex flex-wrap items-center justify-center gap-6 md:gap-10">
-          <BrandLogo id="hitNews" size="sm" />
-          <span className="text-xl font-light text-muted-foreground">×</span>
-          <BrandLogo id="viera" size="sm" />
+        <div className="flex items-center justify-center gap-4 sm:gap-6">
+          <div className="flex h-11 items-center sm:h-12">
+            <BrandLogo id="hitNews" size="sm" className="h-full w-auto max-w-[7.5rem] object-contain sm:max-w-[8.5rem]" />
+          </div>
+          <span
+            className="select-none text-lg font-light leading-none text-muted-foreground/60 sm:text-xl"
+            aria-hidden
+          >
+            ×
+          </span>
+          <div className="flex h-11 items-center sm:h-12">
+            <BrandLogo id="viera" size="sm" className="h-full w-auto max-w-[7.5rem] object-contain sm:max-w-[8.5rem]" />
+          </div>
         </div>
         <CtaRow
           primary={{ to: "/nominate", label: "Submit Nomination" }}
           secondary={{ to: "/sponsorship", label: "Sponsorship Tiers", hash: SPONSORSHIP_TIERS_HASH }}
-          className="justify-center"
+          size="lg"
         />
       </PageHero>
 
@@ -164,7 +173,8 @@ function Awards() {
           <CtaRow
             primary={{ to: "/nominate", label: "Submit Nomination" }}
             secondary={{ to: "/sponsorship", label: "View Sponsorship", hash: SPONSORSHIP_TIERS_HASH }}
-            className="mt-8 justify-center"
+            size="lg"
+            className="mt-8"
           />
           </div>
         </div>
