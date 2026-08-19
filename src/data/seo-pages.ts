@@ -2,7 +2,6 @@ import type { PageSeoConfig } from "@/lib/seo";
 import {
   AWARD_COMES_TO_YOU_DESCRIPTION,
   AWARD_COMES_TO_YOU_KEYWORDS,
-  AWARD_COMES_TO_YOU_OG_IMAGE,
   AWARD_COMES_TO_YOU_PATH,
   AWARD_COMES_TO_YOU_TITLE,
 } from "@/data/award-comes-to-you";
@@ -226,7 +225,7 @@ export const SEO_PAGES = {
     description: AWARD_COMES_TO_YOU_DESCRIPTION,
     ogTitle: AWARD_COMES_TO_YOU_TITLE,
     ogDescription: AWARD_COMES_TO_YOU_DESCRIPTION,
-    ogImage: AWARD_COMES_TO_YOU_OG_IMAGE,
+    ogImage: SEO_OG_IMAGES.awards,
     ogImageAlt:
       "HIT ViERA National Award 2026 — Award Comes to You initiative bringing national recognition to achievers across India",
     keywords: AWARD_COMES_TO_YOU_KEYWORDS,
@@ -241,6 +240,8 @@ export const SEO_PAGES = {
     ogTitle: "HIT ViERA Awards 2026 Sponsorship",
     ogDescription:
       "Partner with HIT ViERA National Awards 2026 — an exclusive invitation to align your brand with national excellence.",
+    ogImage: SEO_OG_IMAGES.awards,
+    ogImageAlt: SEO_OG_IMAGE_ALT.awards,
     changefreq: "monthly",
     priority: 0.7,
   },
@@ -252,6 +253,8 @@ export const SEO_PAGES = {
     ogTitle: "HIT ViERA Awards 2026 — Nomination Portal",
     ogDescription:
       "Nominate outstanding achievers for the HIT ViERA National Awards 2026 through the official FG Media Group portal.",
+    ogImage: SEO_OG_IMAGES.awards,
+    ogImageAlt: SEO_OG_IMAGE_ALT.awards,
     changefreq: "weekly",
     priority: 0.8,
   },

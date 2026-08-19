@@ -1,10 +1,9 @@
-import ogImageAsset from "@/assets/OG_img.png";
-import { SITE_URL } from "@/lib/seo";
+import { SEO_OG_IMAGES } from "@/data/seo-og-images";
 
 export const AWARD_COMES_TO_YOU_PATH = "/award-comes-to-you";
 
-/** Absolute URL for Open Graph / Twitter cards (sourced from src/assets/OG_img.png). */
-export const AWARD_COMES_TO_YOU_OG_IMAGE = `${SITE_URL}${ogImageAsset}`;
+/** Absolute URL for Open Graph / Twitter cards on awards-related pages. */
+export const AWARD_COMES_TO_YOU_OG_IMAGE = SEO_OG_IMAGES.awards;
 
 export const AWARD_COMES_TO_YOU_TITLE = "Award Comes to You | HIT ViERA National Awards 2026";
 

@@ -10,7 +10,6 @@ import {
   Youtube,
 } from "lucide-react";
 import { FgLogo } from "@/components/brand/FgLogo";
-import { GoogleMapEmbed } from "@/components/site/GoogleMapEmbed";
 import { FG_CONTACT, FG_OFFICE } from "@/data/contact";
 import { FOOTER_LINKS, FOOTER_SOCIALS, type FooterLink } from "@/data/footer-nav";
 
@@ -144,11 +143,6 @@ export function Footer() {
           <FooterLinkColumn title="Platforms" links={FOOTER_LINKS.platforms} />
           <FooterLinkColumn title="Awards & Events" links={FOOTER_LINKS.awards} />
           <FooterLinkColumn title="Legal" links={FOOTER_LINKS.legal} />
-        </div>
-
-        <div className="mt-14">
-          <h3 className="section-label font-sans">Find Us</h3>
-          <GoogleMapEmbed className="mt-5 max-w-xl" heightClass="h-48" showHeader={false} />
         </div>
       </div>
 
