@@ -124,7 +124,6 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isAdminRoute = pathname.startsWith("/admin");
-  const isTeaserRoute = pathname === "/teaser";
   const showSiteChrome = !isAdminRoute;
 
   return (
@@ -135,7 +134,7 @@ function RootComponent() {
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </main>
-      {showSiteChrome && !isTeaserRoute && <Footer />}
+      {showSiteChrome && <Footer />}
     </QueryClientProvider>
   );
 }

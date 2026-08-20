@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import teaserLogo from "@/assets/logo_text.png";
+import teaserGif from "@/assets/Teaser_GIF.gif";
 import { SiteAnchorButton, SiteLinkButton } from "@/components/site/SiteButton";
 import {
   TEASER_ACTION_WORDS,
@@ -29,8 +29,6 @@ import {
   TEASER_CTA_LINES,
   TEASER_EQUATION,
   TEASER_FARM_PRODUCTS,
-  TEASER_FOOTER_CATEGORIES,
-  TEASER_FOOTER_PLATFORM,
   TEASER_FORMATS,
   TEASER_GENERATION_COMPARE,
   TEASER_GENERATION_TRAITS,
@@ -69,32 +67,6 @@ function TeaserCtaRow({ className = "" }: { className?: string }) {
   );
 }
 
-function TeaserLogo({
-  compact = false,
-  size = "md",
-  showTagline = true,
-  className = "",
-}: {
-  compact?: boolean;
-  size?: "sm" | "md" | "lg";
-  showTagline?: boolean;
-  className?: string;
-}) {
-  const heights = { sm: "h-8", md: "h-12", lg: "h-20 md:h-24" };
-  return (
-    <div className={`flex flex-col items-start gap-1 ${className}`}>
-      <img
-        src={teaserLogo}
-        alt="TEASER"
-        className={`${heights[size]} w-auto object-contain`}
-      />
-      {!compact && showTagline && (
-        <p className="text-[0.6rem] tracking-[0.22em] text-white/45">POWERED BY VIERA</p>
-      )}
-    </div>
-  );
-}
-
 function TeaserHero() {
   return (
     <section className="relative min-h-[min(88vh,760px)] overflow-hidden border-b border-white/8">
@@ -107,8 +79,14 @@ function TeaserHero() {
           INSIDE INVIGIL — INTELLIGENCE BEYOND VISION
         </SiteLinkButton>
 
-        <TeaserLogo size="lg" showTagline={false} className="mx-auto items-center" />
-        <p className="mt-4 text-2xl font-semibold fg-text-gradient-teaser md:text-3xl">
+        <img
+          src={teaserGif}
+          alt="TEASER — Global Talent Capital"
+          width={256}
+          height={256}
+          className="h-40 w-40 rounded-3xl object-cover shadow-[0_0_70px_rgba(220,38,38,0.35)] md:h-52 md:w-52"
+        />
+        <p className="mt-5 text-2xl font-semibold fg-text-gradient-teaser md:text-3xl">
           Powered by ViERA
         </p>
         <p className="mt-4 max-w-2xl text-base text-white/65 md:text-lg">
@@ -632,80 +610,6 @@ function CtaSection() {
   );
 }
 
-function TeaserPageFooter() {
-  return (
-    <footer className="border-t border-white/8 bg-black py-16">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-start justify-between gap-10 md:flex-row">
-          <div>
-            <TeaserLogo />
-            <p className="mt-4 max-w-sm text-sm text-white/55">
-              The Intelligent Short-Video & Virtual Commerce Experience. Inside InViGiL —
-              Intelligence Beyond Vision.
-            </p>
-            <div className="mt-6 space-y-1 text-xs text-white/45">
-              <p>InViGiL Protects.</p>
-              <p>ViERA Empowers.</p>
-              <p>TEASER Communicates.</p>
-              <p>AR Immerses.</p>
-            </div>
-          </div>
-
-          <div className="grid gap-10 sm:grid-cols-2">
-            <div>
-              <p className="text-xs font-semibold tracking-[0.2em] text-white/40">PLATFORM</p>
-              <ul className="mt-4 space-y-2">
-                {TEASER_FOOTER_PLATFORM.map((link) => (
-                  <li key={link.label}>
-                    {link.href.startsWith("#") ? (
-                      <a href={link.href} className="text-sm text-white/60 hover:text-white">
-                        {link.label}
-                      </a>
-                    ) : link.href.startsWith("/") ? (
-                      <Link to={link.href} className="text-sm text-white/60 hover:text-white">
-                        {link.label}
-                      </Link>
-                    ) : (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-sm text-white/60 hover:text-white"
-                      >
-                        {link.label}
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <p className="text-xs font-semibold tracking-[0.2em] text-white/40">CATEGORIES</p>
-              <ul className="mt-4 space-y-2">
-                {TEASER_FOOTER_CATEGORIES.map((cat) => (
-                  <li key={cat}>
-                    <Link to="/teaser" hash="categories" className="text-sm text-white/60 hover:text-white">
-                      {cat}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-12 border-t border-white/8 pt-8 text-center text-xs text-white/35">
-          <p>© 2026 TEASER · Powered by ViERA · Inside InViGiL</p>
-          <p className="mt-2">
-            TEASER — The Intelligent Short-Video & Virtual Commerce Experience. Virtual Intelligence
-            Enabled Real Actor.
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 export function TeaserPage() {
   return (
     <div className="teaser-page animate-fade-in bg-black text-white">
@@ -720,7 +624,6 @@ export function TeaserPage() {
       <MicroMediaSection />
       <NewGenerationSection />
       <CtaSection />
-      <TeaserPageFooter />
     </div>
   );
 }

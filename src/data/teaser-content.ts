@@ -190,21 +190,3 @@ export const TEASER_CTA_LINES = [
   "Your story deserves a Teaser.",
   "Your next opportunity could begin with a Teaser.",
 ] as const;
-
-export const TEASER_FOOTER_PLATFORM = [
-  { label: "What is TEASER", href: "/teaser" },
-  { label: "InViGIL Platform", href: "/technology" },
-  { label: "ViERA Engine", href: "/viera" },
-  { label: "AR Experiences", href: "#ar" },
-  { label: "Virtual Commerce", href: "#commerce" },
-  { label: "For Creators", href: "https://teaser.live" },
-] as const;
-
-export const TEASER_FOOTER_CATEGORIES = [
-  "Entertainment",
-  "Business",
-  "Education",
-  "Agriculture",
-  "Real Estate",
-  "Professional",
-] as const;
