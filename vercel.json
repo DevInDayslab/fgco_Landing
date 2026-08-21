@@ -2,7 +2,7 @@
   "redirects": [
     {
       "source": "/webmail",
-      "destination": "https://p3plzcpnl508705.prod.phx3.secureserver.net:2096",
+      "destination": "https://p3plzcpnl508705.prod.phx3.secureserver.net:2096/login?logout=1",
       "permanent": false
     }
   ]
