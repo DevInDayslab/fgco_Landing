@@ -257,9 +257,15 @@ export async function postNominationCreateOrder(payload: {
   nomineeEmail: string;
   category: string;
   relationship?: string;
+  passcodeCode?: string;
+  employeeName?: string;
+  employeeEmail?: string;
+  employeePhone?: string;
 }) {
   return apiFetch<{
-    orderId: string;
+    orderId?: string;
+    freeBypass?: boolean;
+    paymentId?: string;
     amount: number;
     displayAmountPaise: number;
     basePaise: number;
@@ -270,6 +276,7 @@ export async function postNominationCreateOrder(payload: {
     currency: string;
     keyId: string;
     feeLabel: string;
+    passcodeId?: string;
   }>("/api/nominations/create-order", {
     method: "POST",
     body: JSON.stringify(payload),
@@ -290,6 +297,7 @@ export async function postNominationPayment(payload: {
   nomineeEmail?: string;
   category?: string;
   relationship?: string;
+  passcodeId?: string;
 }) {
   return apiFetch<{ ok: boolean; paymentId: string }>("/api/nominations/complete-payment", {
     method: "POST",
@@ -304,9 +312,15 @@ export async function postSponsorshipCreateOrder(payload: {
   contactEmail: string;
   contactPhone: string;
   reservationId?: string;
+  passcodeCode?: string;
+  employeeName?: string;
+  employeeEmail?: string;
+  employeePhone?: string;
 }) {
   return apiFetch<{
-    orderId: string;
+    orderId?: string;
+    freeBypass?: boolean;
+    paymentId?: string;
     amount: number;
     displayAmountPaise: number;
     basePaise: number;
@@ -317,6 +331,7 @@ export async function postSponsorshipCreateOrder(payload: {
     keyId: string;
     tierName: string;
     advanceLabel: string;
+    passcodeId?: string;
   }>("/api/sponsorship/create-order", {
     method: "POST",
     body: JSON.stringify(payload),
@@ -346,9 +361,40 @@ export async function postSponsorshipPayment(payload: {
   amountPaise: number;
   basePaise?: number;
   gstPaise?: number;
+  passcodeId?: string;
 }) {
   return apiFetch<{ ok: boolean; paymentId: string }>("/api/sponsorship/complete-payment", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
+
+export async function postPasscodesCheck(payload: { code: string }) {
+  return apiFetch<{ valid: true }>("/api/passcodes/check", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function postPasscodesValidate(payload: {
+  code: string;
+  employeeName: string;
+  employeeEmail: string;
+  employeePhone: string;
+}) {
+  return apiFetch<{
+    valid: true;
+    discountType: "PERCENTAGE" | "FREE";
+    discountValue: number;
+  }>("/api/passcodes/validate", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export type PasscodeReferralPayload = {
+  passcodeCode: string;
+  employeeName: string;
+  employeeEmail: string;
+  employeePhone: string;
+};

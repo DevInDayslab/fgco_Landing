@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import {
   CreditCard,
   Handshake,
+  KeyRound,
   LayoutDashboard,
   LogOut,
   Mail,
@@ -16,6 +17,7 @@ const navItems = [
   { to: "/admin/nominations", label: "Nominations", icon: Trophy },
   { to: "/admin/sponsorships", label: "Sponsorships", icon: Handshake },
   { to: "/admin/payments", label: "Payments", icon: CreditCard },
+  { to: "/admin/passcodes", label: "Passcodes", icon: KeyRound },
   { to: "/admin/inquiries", label: "Inquiries", icon: Mail },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;

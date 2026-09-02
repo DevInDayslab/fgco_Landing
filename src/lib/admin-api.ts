@@ -284,3 +284,29 @@ export function useSponsorship(id: string) {
     retry: 1,
   });
 }
+
+export type GeneratedPasscode = {
+  id: string;
+  code: string;
+  discountType: "PERCENTAGE" | "FREE";
+  discountValue: number;
+};
+
+export type PasscodeGenerateResult = {
+  batchId: string;
+  codes: GeneratedPasscode[];
+};
+
+export async function postAdminPasscodesGenerate(payload: {
+  employeeName: string;
+  employeeEmail: string;
+  employeePhone: string;
+  discountType: "PERCENTAGE" | "FREE";
+  discountValue: number;
+  count: number;
+}) {
+  return adminFetch<PasscodeGenerateResult>("/api/admin/passcodes/generate", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}

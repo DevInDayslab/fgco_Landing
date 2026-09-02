@@ -43,6 +43,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminInquiriesRouteImport } from './routes/admin.inquiries'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminNominationsRouteImport } from './routes/admin.nominations'
+import { Route as AdminPasscodesRouteImport } from './routes/admin.passcodes'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminSponsorshipsRouteImport } from './routes/admin.sponsorships'
@@ -226,6 +227,11 @@ const AdminNominationsRoute = AdminNominationsRouteImport.update({
   path: '/nominations',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminPasscodesRoute = AdminPasscodesRouteImport.update({
+  id: '/passcodes',
+  path: '/passcodes',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
   id: '/payments',
   path: '/payments',
@@ -321,6 +327,7 @@ export interface FileRoutesByFullPath {
   '/admin/inquiries': typeof AdminInquiriesRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/nominations': typeof AdminNominationsRouteWithChildren
+  '/admin/passcodes': typeof AdminPasscodesRoute
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
@@ -365,6 +372,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/viera': typeof VieraRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/passcodes': typeof AdminPasscodesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin': typeof AdminIndexRoute
   '/nominate': typeof NominateIndexRoute
@@ -412,6 +420,7 @@ export interface FileRoutesById {
   '/admin/inquiries': typeof AdminInquiriesRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/nominations': typeof AdminNominationsRouteWithChildren
+  '/admin/passcodes': typeof AdminPasscodesRoute
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
@@ -462,6 +471,7 @@ export interface FileRouteTypes {
     | '/admin/inquiries'
     | '/admin/login'
     | '/admin/nominations'
+    | '/admin/passcodes'
     | '/admin/payments'
     | '/admin/settings'
     | '/admin/sponsorships'
@@ -506,6 +516,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/viera'
     | '/admin/login'
+    | '/admin/passcodes'
     | '/admin/settings'
     | '/admin'
     | '/nominate'
@@ -552,6 +563,7 @@ export interface FileRouteTypes {
     | '/admin/inquiries'
     | '/admin/login'
     | '/admin/nominations'
+    | '/admin/passcodes'
     | '/admin/payments'
     | '/admin/settings'
     | '/admin/sponsorships'
@@ -840,6 +852,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminNominationsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/passcodes': {
+      id: '/admin/passcodes'
+      path: '/passcodes'
+      fullPath: '/admin/passcodes'
+      preLoaderRoute: typeof AdminPasscodesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/payments': {
       id: '/admin/payments'
       path: '/payments'
@@ -985,6 +1004,7 @@ interface AdminRouteChildren {
   AdminInquiriesRoute: typeof AdminInquiriesRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   AdminNominationsRoute: typeof AdminNominationsRouteWithChildren
+  AdminPasscodesRoute: typeof AdminPasscodesRoute
   AdminPaymentsRoute: typeof AdminPaymentsRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSponsorshipsRoute: typeof AdminSponsorshipsRouteWithChildren
@@ -995,6 +1015,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminInquiriesRoute: AdminInquiriesRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   AdminNominationsRoute: AdminNominationsRouteWithChildren,
+  AdminPasscodesRoute: AdminPasscodesRoute,
   AdminPaymentsRoute: AdminPaymentsRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSponsorshipsRoute: AdminSponsorshipsRouteWithChildren,

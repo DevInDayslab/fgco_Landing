@@ -7,6 +7,10 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { FileDropzone } from "@/components/awards/FileDropzone";
 import {
+  PasscodeReferralPanel,
+  type VerifiedPasscodeReferral,
+} from "@/components/awards/PasscodeReferralPanel";
+import {
   checkboxBoxClass,
   errorClass,
   fieldClass,
@@ -34,6 +38,10 @@ import {
   uploadNominationFile,
 } from "@/lib/api-client";
 import { openNominationRazorpayCheckout } from "@/lib/razorpay-checkout";
+import {
+  applyPasscodeDiscountToInr,
+  formatPasscodeDiscountLabel,
+} from "@/lib/passcode-discount";
 import { formatMaxUploadSize, UPLOAD_MAX_BYTES, VIDEO_MAX_DURATION_SEC } from "@/lib/upload-limits";
 import { prepareNominationUpload } from "@/lib/file-compress";
 
@@ -95,6 +103,7 @@ export function NominationWizard() {
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
   const [supportingDocs, setSupportingDocs] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [passcodeReferral, setPasscodeReferral] = useState<VerifiedPasscodeReferral | null>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -127,6 +136,13 @@ export function NominationWizard() {
     nomineeEmail,
   });
   const feeBreakdown = getNominationFeeBreakdown(isSelfNomination);
+  const payableTotalInr = passcodeReferral
+    ? applyPasscodeDiscountToInr(
+        feeBreakdown.totalInr,
+        passcodeReferral.discountType,
+        passcodeReferral.discountValue,
+      )
+    : feeBreakdown.totalInr;
 
   const lastStepIndex = STEPS.length - 1;
 
@@ -289,6 +305,18 @@ export function NominationWizard() {
         profilePhotoKey: profileUpload.key,
         formData: {
           ...data,
+          ...(passcodeReferral
+            ? {
+                passcodeReferral: {
+                  code: passcodeReferral.code,
+                  employeeName: passcodeReferral.employeeName,
+                  employeeEmail: passcodeReferral.employeeEmail,
+                  employeePhone: passcodeReferral.employeePhone,
+                  discountType: passcodeReferral.discountType,
+                  discountValue: passcodeReferral.discountValue,
+                },
+              }
+            : {}),
           attachments: {
             profilePhoto: {
               key: profileUpload.key,
@@ -336,6 +364,16 @@ export function NominationWizard() {
           nomineeEmail: data.nomineeEmail,
           category: data.category,
           relationship: data.relationship,
+          ...(passcodeReferral
+            ? {
+                passcodeReferral: {
+                  passcodeCode: passcodeReferral.code,
+                  employeeName: passcodeReferral.employeeName,
+                  employeeEmail: passcodeReferral.employeeEmail,
+                  employeePhone: passcodeReferral.employeePhone,
+                },
+              }
+            : {}),
         },
         async (paymentId) => {
           const result = await postApplication({ ...applicationPayload, paymentId });
@@ -729,12 +767,33 @@ export function NominationWizard() {
 
         {step === 5 && (
           <div className="space-y-6">
+            <PasscodeReferralPanel
+              onVerified={setPasscodeReferral}
+              onClear={() => setPasscodeReferral(null)}
+            />
             <div className="rounded-xl border border-gold/30 bg-gold/[0.06] p-4 md:p-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-gold">Nomination fee</p>
               <p className="mt-1 text-xs text-gray-400">{feeBreakdown.feeLabel}</p>
-              <p className="mt-3 text-2xl font-semibold text-white">
-                ₹{feeBreakdown.totalInr.toLocaleString("en-IN")}
-              </p>
+              {passcodeReferral && payableTotalInr < feeBreakdown.totalInr ? (
+                <div className="mt-3 space-y-1">
+                  <p className="text-sm text-gray-400 line-through">
+                    ₹{feeBreakdown.totalInr.toLocaleString("en-IN")}
+                  </p>
+                  <p className="text-2xl font-semibold text-emerald-400">
+                    ₹{payableTotalInr.toLocaleString("en-IN")}
+                  </p>
+                  <p className="text-xs text-emerald-300/90">
+                    {formatPasscodeDiscountLabel(
+                      passcodeReferral.discountType,
+                      passcodeReferral.discountValue,
+                    )}
+                  </p>
+                </div>
+              ) : (
+                <p className="mt-3 text-2xl font-semibold text-white">
+                  ₹{payableTotalInr.toLocaleString("en-IN")}
+                </p>
+              )}
               <p className="mt-3 text-xs text-gray-400">
                 Payment is collected securely via Razorpay when you submit. Your nomination is only
                 finalized after successful payment.
@@ -792,7 +851,9 @@ export function NominationWizard() {
                 <Send className="h-4 w-4" />
                 {submitting
                   ? "Processing..."
-                  : `Pay ₹${feeBreakdown.totalInr.toLocaleString("en-IN")} & Submit`}
+                  : payableTotalInr === 0
+                    ? "Submit nomination"
+                    : `Pay ₹${payableTotalInr.toLocaleString("en-IN")} & Submit`}
               </span>
             </button>
           )}

@@ -1,4 +1,4 @@
-import { postNominationCreateOrder, postNominationPayment, postSponsorshipCreateOrder, postSponsorshipPayment } from "@/lib/api-client";
+import { postNominationCreateOrder, postNominationPayment, postSponsorshipCreateOrder, postSponsorshipPayment, type PasscodeReferralPayload } from "@/lib/api-client";
 import type { SponsorshipTierId } from "@/data/awards";
 import { toast } from "sonner";
 
@@ -48,6 +48,7 @@ export type SponsorshipCheckoutInput = {
   contactName: string;
   contactEmail: string;
   contactPhone: string;
+  passcodeReferral?: PasscodeReferralPayload;
 };
 
 export async function openSponsorshipRazorpayCheckout(
@@ -56,15 +57,29 @@ export async function openSponsorshipRazorpayCheckout(
   onSuccess: () => void,
   onDismiss?: () => void,
 ): Promise<void> {
+  const order = await postSponsorshipCreateOrder({
+    tierId: input.tierId,
+    company: input.company,
+    contactName: input.contactName,
+    contactEmail: input.contactEmail,
+    contactPhone: input.contactPhone,
+    reservationId,
+    ...(input.passcodeReferral ?? {}),
+  });
+
+  if (order.freeBypass && order.paymentId) {
+    onSuccess();
+    return;
+  }
+
   const scriptLoaded = await loadRazorpayScript();
   if (!scriptLoaded || !window.Razorpay) {
     throw new Error("Unable to load Razorpay checkout. Please try again.");
   }
 
-  const order = await postSponsorshipCreateOrder({
-    ...input,
-    reservationId,
-  });
+  if (!order.orderId) {
+    throw new Error("Unable to create payment order.");
+  }
 
   if (order.isTestCharge) {
     const testInr = (order.amount / 100).toLocaleString("en-IN");
@@ -112,6 +127,7 @@ export async function openSponsorshipRazorpayCheckout(
             amountPaise: order.totalPaise ?? order.displayAmountPaise,
             basePaise: order.basePaise,
             gstPaise: order.gstPaise,
+            passcodeId: order.passcodeId,
           });
 
           onSuccess();
@@ -149,6 +165,7 @@ export type NominationCheckoutInput = {
   nomineeEmail: string;
   category: string;
   relationship?: string;
+  passcodeReferral?: PasscodeReferralPayload;
 };
 
 export async function openNominationRazorpayCheckout(
@@ -156,12 +173,30 @@ export async function openNominationRazorpayCheckout(
   onSuccess: (paymentId: string) => void | Promise<void>,
   onDismiss?: () => void,
 ): Promise<void> {
+  const order = await postNominationCreateOrder({
+    nominatorName: input.nominatorName,
+    nominatorEmail: input.nominatorEmail,
+    nominatorPhone: input.nominatorPhone,
+    nomineeName: input.nomineeName,
+    nomineeEmail: input.nomineeEmail,
+    category: input.category,
+    relationship: input.relationship,
+    ...(input.passcodeReferral ?? {}),
+  });
+
+  if (order.freeBypass && order.paymentId) {
+    await onSuccess(order.paymentId);
+    return;
+  }
+
   const scriptLoaded = await loadRazorpayScript();
   if (!scriptLoaded || !window.Razorpay) {
     throw new Error("Unable to load Razorpay checkout. Please try again.");
   }
 
-  const order = await postNominationCreateOrder(input);
+  if (!order.orderId) {
+    throw new Error("Unable to create payment order.");
+  }
 
   if (order.isTestCharge) {
     const testInr = (order.amount / 100).toLocaleString("en-IN");
@@ -215,6 +250,7 @@ export async function openNominationRazorpayCheckout(
             nomineeEmail: input.nomineeEmail,
             category: input.category,
             relationship: input.relationship,
+            passcodeId: order.passcodeId,
           });
 
           await onSuccess(payment.paymentId);

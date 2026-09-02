@@ -16,6 +16,10 @@ import { CircleOfExcellenceSection } from "@/components/awards/CircleOfExcellenc
 import { SponsorshipPresentationIntro } from "@/components/awards/SponsorshipPresentationIntro";
 import { FormPanel, FormSectionHeader, FormSuccessState } from "@/components/awards/FormPrimitives";
 import { SponsorshipPaymentBreakdown } from "@/components/awards/SponsorshipPaymentBreakdown";
+import {
+  PasscodeReferralPanel,
+  type VerifiedPasscodeReferral,
+} from "@/components/awards/PasscodeReferralPanel";
 import { PageHero } from "@/components/awards/PageHero";
 import { siteButtonClass } from "@/lib/site-buttons";
 import { HeroAccent } from "@/components/site/PageLayout";
@@ -34,7 +38,8 @@ import {
   validateField,
 } from "@/lib/form-validation";
 import { isApiConfigured, postSponsorshipRegister } from "@/lib/api-client";
-import { getSponsorshipPaymentPlan } from "@/lib/sponsorship-payment-plan";
+import { getSponsorshipPaymentPlan, applyPasscodeToSponsorshipPlan } from "@/lib/sponsorship-payment-plan";
+import { formatPasscodeDiscountLabel } from "@/lib/passcode-discount";
 import { Toaster } from "@/components/ui/sonner";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { awardsEventSchema } from "@/data/seo-structured-data";
@@ -75,6 +80,7 @@ function Sponsorship() {
   const [referenceId, setReferenceId] = useState<string | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<"idle" | "failed" | "cancelled">("idle");
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [passcodeReferral, setPasscodeReferral] = useState<VerifiedPasscodeReferral | null>(null);
   const autoCheckoutAttempted = useRef(false);
   const hash = useRouterState({ select: (state) => state.location.hash });
 
@@ -110,8 +116,16 @@ function Sponsorship() {
   }
 
   const tier = sponsorshipTiers.find((t) => t.id === selectedTier);
-  const paymentPlan =
+  const basePaymentPlan =
     tier && selectedTier ? getSponsorshipPaymentPlan(selectedTier, tier.amountInr) : null;
+  const paymentPlan =
+    basePaymentPlan && passcodeReferral
+      ? applyPasscodeToSponsorshipPlan(
+          basePaymentPlan,
+          passcodeReferral.discountType,
+          passcodeReferral.discountValue,
+        )
+      : basePaymentPlan;
 
   async function startCheckout(input: SponsorshipCheckoutInput, sponsorshipReservationId: string) {
     setCheckoutLoading(true);
@@ -190,6 +204,16 @@ function Sponsorship() {
       contactName,
       contactEmail,
       contactPhone,
+      ...(passcodeReferral
+        ? {
+            passcodeReferral: {
+              passcodeCode: passcodeReferral.code,
+              employeeName: passcodeReferral.employeeName,
+              employeeEmail: passcodeReferral.employeeEmail,
+              employeePhone: passcodeReferral.employeePhone,
+            },
+          }
+        : {}),
     };
 
     try {
@@ -534,6 +558,37 @@ function Sponsorship() {
               ) : (
                 <>
                   <FormSectionHeader title="Registration Form" />
+
+                  {selectedTier && tier && (
+                    <PasscodeReferralPanel
+                      onVerified={setPasscodeReferral}
+                      onClear={() => setPasscodeReferral(null)}
+                    />
+                  )}
+
+                  {selectedTier && tier && paymentPlan && passcodeReferral && (
+                    <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-4">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+                        Referral pricing preview
+                      </p>
+                      <p className="mt-2 text-sm text-gray-300">
+                        {formatPasscodeDiscountLabel(
+                          passcodeReferral.discountType,
+                          passcodeReferral.discountValue,
+                        )}
+                      </p>
+                      <p className="mt-2 text-xl font-semibold text-emerald-300">
+                        Razorpay due now: ₹{paymentPlan.razorpayTotalInr.toLocaleString("en-IN")}{" "}
+                        (incl. GST)
+                      </p>
+                      {paymentPlan.balanceTotalInr > 0 && (
+                        <p className="mt-1 text-xs text-gray-400">
+                          Balance via bank transfer: ₹
+                          {paymentPlan.balanceTotalInr.toLocaleString("en-IN")}
+                        </p>
+                      )}
+                    </div>
+                  )}
 
                   <form onSubmit={onInquirySubmit} className="space-y-6">
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

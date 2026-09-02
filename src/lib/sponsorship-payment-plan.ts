@@ -1,5 +1,9 @@
 import { paymentDetails } from "@/data/awards";
 import type { SponsorshipTierId } from "@/data/awards";
+import {
+  applyPasscodeDiscountToInr,
+  type PasscodeDiscountType,
+} from "@/lib/passcode-discount";
 
 const GST_RATE = Number.parseFloat(paymentDetails.gstRate) / 100;
 
@@ -41,6 +45,35 @@ export function getSponsorshipPaymentPlan(
     tierId,
     packageInr,
     packageGstInr,
+    committedTotalInr,
+    razorpayBaseInr: razorpay.baseInr,
+    razorpayGstInr: razorpay.gstInr,
+    razorpayTotalInr: razorpay.totalInr,
+    balanceBaseInr: balance.baseInr,
+    balanceGstInr: balance.gstInr,
+    balanceTotalInr: balance.totalInr,
+  };
+}
+
+export function applyPasscodeToSponsorshipPlan(
+  plan: SponsorshipPaymentPlan,
+  discountType: PasscodeDiscountType,
+  discountValue: number,
+): SponsorshipPaymentPlan {
+  const committedTotalInr = applyPasscodeDiscountToInr(
+    plan.committedTotalInr,
+    discountType,
+    discountValue,
+  );
+  const razorpayTotalInr = Math.min(committedTotalInr, RAZORPAY_SPONSORSHIP_MAX_INR);
+  const razorpay = splitInrInclGst(razorpayTotalInr);
+  const balanceTotalInr = Math.max(0, committedTotalInr - razorpayTotalInr);
+  const balance = splitInrInclGst(balanceTotalInr);
+
+  return {
+    tierId: plan.tierId,
+    packageInr: plan.packageInr,
+    packageGstInr: plan.packageGstInr,
     committedTotalInr,
     razorpayBaseInr: razorpay.baseInr,
     razorpayGstInr: razorpay.gstInr,
