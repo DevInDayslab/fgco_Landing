@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
-import { useQuery } from "@tanstack/react-query";
 import {
   clearAdminLogoutMessage,
   getAdminLogoutMessage,
@@ -9,12 +8,6 @@ import {
 } from "@/lib/admin-auth";
 import { apiFetch } from "@/lib/api-client";
 import { buildNoIndexHead } from "@/lib/seo";
-
-type DevAccessInfo = {
-  enabled: boolean;
-  username?: string;
-  password?: string | null;
-};
 
 export const Route = createFileRoute("/admin/login")({
   head: () => buildNoIndexHead("Admin Login — FG Media Group"),
@@ -28,14 +21,6 @@ function AdminLogin() {
   const [error, setError] = useState("");
   const [sessionNotice, setSessionNotice] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  const devAccessQuery = useQuery({
-    queryKey: ["admin", "dev-access"],
-    queryFn: () => apiFetch<DevAccessInfo>("/api/admin/dev-access"),
-    retry: 1,
-  });
-
-  const devAccess = devAccessQuery.data?.enabled ? devAccessQuery.data : null;
 
   useEffect(() => {
     const notice = getAdminLogoutMessage();
@@ -150,29 +135,6 @@ function AdminLogin() {
             {submitting ? "Signing in…" : "Sign in"}
           </button>
         </form>
-
-        {devAccess?.username && devAccess.password && (
-          <div className="mt-4 rounded-xl border border-emerald-200/80 bg-emerald-50/50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
-              Dev access
-            </p>
-            <p className="mt-2 text-sm text-emerald-950">
-              Username: <span className="font-mono font-medium">{devAccess.username}</span>
-              <br />
-              Password: <span className="font-mono font-medium">{devAccess.password}</span>
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setUsername(devAccess.username ?? "dev");
-                setPassword(devAccess.password ?? "");
-              }}
-              className="mt-3 rounded-lg border border-emerald-300 bg-white px-3 py-2 text-xs font-medium text-emerald-900 hover:bg-emerald-50"
-            >
-              Fill dev credentials
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -292,10 +292,32 @@ export type GeneratedPasscode = {
   discountValue: number;
 };
 
+export type PasscodeRow = {
+  id: string;
+  code: string;
+  employeeName: string;
+  employeeEmail: string;
+  employeePhone: string;
+  discountType: "PERCENTAGE" | "FREE";
+  discountValue: number;
+  isUsed: boolean;
+  usedAt: string | null;
+  batchId: string;
+  createdAt: string;
+};
+
 export type PasscodeGenerateResult = {
   batchId: string;
   codes: GeneratedPasscode[];
 };
+
+export function usePasscodes() {
+  return useQuery({
+    queryKey: ["admin", "passcodes"],
+    queryFn: () => adminFetch<{ items: PasscodeRow[] }>("/api/admin/passcodes"),
+    retry: 1,
+  });
+}
 
 export async function postAdminPasscodesGenerate(payload: {
   employeeName: string;

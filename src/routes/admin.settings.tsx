@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { MailDevTools } from "@/components/admin/MailDevTools";
-import { DevAccessPanel } from "@/components/admin/DevAccessPanel";
 import { NotificationDevTools } from "@/components/admin/NotificationDevTools";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { logoutAdmin } from "@/lib/admin-auth";
@@ -135,7 +134,6 @@ function AdminSettings() {
         </button>
       </form>
 
-      <DevAccessPanel />
       <MailDevTools />
       <NotificationDevTools />
     </div>

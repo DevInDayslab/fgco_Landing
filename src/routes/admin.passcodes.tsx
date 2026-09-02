@@ -1,12 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
+import {
+  DataTableCell,
+  DataTableEmpty,
+  DataTableRow,
+  DataTableShell,
+} from "@/components/admin/DataTable";
 import { PageHeader } from "@/components/admin/PageHeader";
+import { StatusBadge } from "@/components/admin/StatusBadge";
+import { formatAdminDate } from "@/components/admin/admin-utils";
 import { formatPasscodeDiscountLabel } from "@/lib/passcode-discount";
 import {
   postAdminPasscodesGenerate,
+  usePasscodes,
   type GeneratedPasscode,
   type PasscodeGenerateResult,
+  type PasscodeRow,
 } from "@/lib/admin-api";
 
 export const Route = createFileRoute("/admin/passcodes")({
@@ -15,7 +26,18 @@ export const Route = createFileRoute("/admin/passcodes")({
 
 const COUNT_PRESETS = [10, 20, 30] as const;
 
+type StatusFilter = "all" | "available" | "used";
+
+function filterPasscodes(items: PasscodeRow[], status: StatusFilter) {
+  if (status === "available") return items.filter((item) => !item.isUsed);
+  if (status === "used") return items.filter((item) => item.isUsed);
+  return items;
+}
+
 function AdminPasscodes() {
+  const queryClient = useQueryClient();
+  const { data, isLoading, error } = usePasscodes();
+
   const [employeeName, setEmployeeName] = useState("");
   const [employeeEmail, setEmployeeEmail] = useState("");
   const [employeePhone, setEmployeePhone] = useState("");
@@ -23,12 +45,18 @@ function AdminPasscodes() {
   const [discountValue, setDiscountValue] = useState(20);
   const [count, setCount] = useState(10);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [formError, setFormError] = useState("");
   const [result, setResult] = useState<PasscodeGenerateResult | null>(null);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+
+  const items = data?.items ?? [];
+  const filteredItems = filterPasscodes(items, statusFilter);
+  const availableCount = items.filter((item) => !item.isUsed).length;
+  const usedCount = items.filter((item) => item.isUsed).length;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    setError("");
+    setFormError("");
     setSubmitting(true);
 
     try {
@@ -43,9 +71,10 @@ function AdminPasscodes() {
 
       const generated = await postAdminPasscodesGenerate(payload);
       setResult(generated);
+      await queryClient.invalidateQueries({ queryKey: ["admin", "passcodes"] });
       toast.success(`Generated ${generated.codes.length} passcodes.`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to generate passcodes");
+      setFormError(err instanceof Error ? err.message : "Failed to generate passcodes");
     } finally {
       setSubmitting(false);
     }
@@ -209,9 +238,9 @@ function AdminPasscodes() {
           </div>
         </div>
 
-        {error && (
+        {formError && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-            {error}
+            {formError}
           </div>
         )}
 
@@ -268,6 +297,96 @@ function AdminPasscodes() {
           </ul>
         </div>
       )}
+
+      <div className="mt-10">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-base font-semibold text-zinc-900">All passcodes</h2>
+            <p className="mt-1 text-sm text-zinc-500">
+              {availableCount} available · {usedCount} used
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(
+              [
+                ["all", "All"],
+                ["available", "Available"],
+                ["used", "Used"],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setStatusFilter(value)}
+                className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
+                  statusFilter === value
+                    ? "border-zinc-900 bg-zinc-900 text-white"
+                    : "border-zinc-200 text-zinc-600 hover:border-zinc-300"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {isLoading ? (
+          <p className="text-sm text-zinc-500">Loading passcodes…</p>
+        ) : error ? (
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error.message}
+          </div>
+        ) : (
+          <DataTableShell
+            items={filteredItems}
+            searchKeys={["code", "employeeName", "employeeEmail", "employeePhone", "batchId"]}
+            searchPlaceholder="Code, employee, email, phone, or batch ID"
+            entryLabel="passcodes"
+            columns={["Created", "Code", "Employee", "Discount", "Status", "Used at"]}
+          >
+            {(rows) =>
+              rows.length === 0 ? (
+                <DataTableEmpty colSpan={6} message="No passcodes match this filter." />
+              ) : (
+                rows.map((row) => (
+                  <DataTableRow key={row.id}>
+                    <DataTableCell className="text-zinc-500">
+                      {formatAdminDate(row.createdAt)}
+                    </DataTableCell>
+                    <DataTableCell>
+                      <div className="flex items-center gap-2">
+                        <code className="font-mono text-zinc-900">{row.code}</code>
+                        <button
+                          type="button"
+                          onClick={() => void copyCode(row.code)}
+                          className="text-xs font-medium text-zinc-400 hover:text-zinc-700"
+                        >
+                          Copy
+                        </button>
+                      </div>
+                    </DataTableCell>
+                    <DataTableCell>
+                      <div className="font-medium text-zinc-900">{row.employeeName}</div>
+                      <div className="text-xs text-zinc-500">{row.employeeEmail}</div>
+                    </DataTableCell>
+                    <DataTableCell>
+                      {formatPasscodeDiscountLabel(row.discountType, row.discountValue)}
+                    </DataTableCell>
+                    <DataTableCell>
+                      <StatusBadge variant={row.isUsed ? "neutral" : "success"}>
+                        {row.isUsed ? "Used" : "Available"}
+                      </StatusBadge>
+                    </DataTableCell>
+                    <DataTableCell className="text-zinc-500">
+                      {row.usedAt ? formatAdminDate(row.usedAt) : "—"}
+                    </DataTableCell>
+                  </DataTableRow>
+                ))
+              )
+            }
+          </DataTableShell>
+        )}
+      </div>
     </div>
   );
 }
