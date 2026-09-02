@@ -8,22 +8,36 @@ export {
 } from "./admin-auth";
 
 const PRODUCTION_API = "https://api.fgco.in";
+const LOCAL_API = "http://localhost:3000";
 
 function isFgcoProductionHost(hostname: string): boolean {
   return hostname === "fgco.in" || hostname === "www.fgco.in";
 }
 
-/** API origin for browser requests. Empty string = same-origin /api proxy on fgco.in. */
-export function getApiBaseUrl(): string {
-  const envBase = import.meta.env.VITE_API_BASE_URL?.trim();
-  const configured = envBase ? envBase.replace(/\/$/, "") : "";
+function isLocalDevHost(hostname: string): boolean {
+  return hostname === "localhost" || hostname === "127.0.0.1";
+}
 
+/** API origin for browser requests. Empty string = same-origin /api proxy. */
+export function getApiBaseUrl(): string {
   if (typeof window !== "undefined" && isFgcoProductionHost(window.location.hostname)) {
     return "";
   }
 
+  // Browser dev: same-origin /api requests are proxied to localhost:3000 (vite.config.ts).
+  if (import.meta.env.DEV && typeof window !== "undefined" && isLocalDevHost(window.location.hostname)) {
+    return "";
+  }
+
+  const envBase = import.meta.env.VITE_API_BASE_URL?.trim();
+  const configured = envBase ? envBase.replace(/\/$/, "") : "";
+
   if (configured.includes("localhost") || configured.includes("127.0.0.1")) {
     return configured;
+  }
+
+  if (import.meta.env.DEV) {
+    return LOCAL_API;
   }
 
   return configured || PRODUCTION_API;
@@ -36,7 +50,7 @@ function resolveApiUrl(path: string): string {
 
   const base = getApiBaseUrl();
   if (!base) {
-    throw new Error("VITE_API_BASE_URL is not configured");
+    return path;
   }
 
   return `${base}${path}`;
@@ -44,6 +58,9 @@ function resolveApiUrl(path: string): string {
 
 export function isApiConfigured(): boolean {
   if (typeof window !== "undefined" && isFgcoProductionHost(window.location.hostname)) {
+    return true;
+  }
+  if (import.meta.env.DEV) {
     return true;
   }
   return Boolean(import.meta.env.VITE_API_BASE_URL?.trim());
