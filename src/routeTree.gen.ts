@@ -33,6 +33,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PublicationsRouteImport } from './routes/publications'
 import { Route as RameshbabupasupuletiRouteImport } from './routes/rameshbabupasupuleti'
 import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as ReserveSeatRouteImport } from './routes/reserve-seat'
 import { Route as SponsorshipRouteImport } from './routes/sponsorship'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TeaserRouteImport } from './routes/teaser'
@@ -45,6 +46,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminNominationsRouteImport } from './routes/admin.nominations'
 import { Route as AdminPasscodesRouteImport } from './routes/admin.passcodes'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
+import { Route as AdminSeatReservationsRouteImport } from './routes/admin.seat-reservations'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminSponsorshipsRouteImport } from './routes/admin.sponsorships'
 import { Route as NominateIndexRouteImport } from './routes/nominate.index'
@@ -54,6 +56,8 @@ import { Route as AdminNominationsIndexRouteImport } from './routes/admin.nomina
 import { Route as AdminNominationsIdRouteImport } from './routes/admin.nominations.$id'
 import { Route as AdminPaymentsIndexRouteImport } from './routes/admin.payments.index'
 import { Route as AdminPaymentsIdRouteImport } from './routes/admin.payments.$id'
+import { Route as AdminSeatReservationsIndexRouteImport } from './routes/admin.seat-reservations.index'
+import { Route as AdminSeatReservationsIdRouteImport } from './routes/admin.seat-reservations.$id'
 import { Route as AdminSponsorshipsIndexRouteImport } from './routes/admin.sponsorships.index'
 import { Route as AdminSponsorshipsIdRouteImport } from './routes/admin.sponsorships.$id'
 
@@ -177,6 +181,11 @@ const RefundPolicyRoute = RefundPolicyRouteImport.update({
   path: '/refund-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReserveSeatRoute = ReserveSeatRouteImport.update({
+  id: '/reserve-seat',
+  path: '/reserve-seat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SponsorshipRoute = SponsorshipRouteImport.update({
   id: '/sponsorship',
   path: '/sponsorship',
@@ -237,6 +246,11 @@ const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
   path: '/payments',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSeatReservationsRoute = AdminSeatReservationsRouteImport.update({
+  id: '/seat-reservations',
+  path: '/seat-reservations',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -282,6 +296,17 @@ const AdminPaymentsIdRoute = AdminPaymentsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminPaymentsRoute,
 } as any)
+const AdminSeatReservationsIndexRoute =
+  AdminSeatReservationsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AdminSeatReservationsRoute,
+  } as any)
+const AdminSeatReservationsIdRoute = AdminSeatReservationsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminSeatReservationsRoute,
+} as any)
 const AdminSponsorshipsIndexRoute = AdminSponsorshipsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -318,6 +343,7 @@ export interface FileRoutesByFullPath {
   '/publications': typeof PublicationsRoute
   '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/reserve-seat': typeof ReserveSeatRoute
   '/sponsorship': typeof SponsorshipRoute
   '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
@@ -329,6 +355,7 @@ export interface FileRoutesByFullPath {
   '/admin/nominations': typeof AdminNominationsRouteWithChildren
   '/admin/passcodes': typeof AdminPasscodesRoute
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
+  '/admin/seat-reservations': typeof AdminSeatReservationsRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
   '/admin/': typeof AdminIndexRoute
@@ -336,10 +363,12 @@ export interface FileRoutesByFullPath {
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
   '/admin/nominations/$id': typeof AdminNominationsIdRoute
   '/admin/payments/$id': typeof AdminPaymentsIdRoute
+  '/admin/seat-reservations/$id': typeof AdminSeatReservationsIdRoute
   '/admin/sponsorships/$id': typeof AdminSponsorshipsIdRoute
   '/admin/inquiries/': typeof AdminInquiriesIndexRoute
   '/admin/nominations/': typeof AdminNominationsIndexRoute
   '/admin/payments/': typeof AdminPaymentsIndexRoute
+  '/admin/seat-reservations/': typeof AdminSeatReservationsIndexRoute
   '/admin/sponsorships/': typeof AdminSponsorshipsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -365,6 +394,7 @@ export interface FileRoutesByTo {
   '/publications': typeof PublicationsRoute
   '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/reserve-seat': typeof ReserveSeatRoute
   '/sponsorship': typeof SponsorshipRoute
   '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
@@ -379,10 +409,12 @@ export interface FileRoutesByTo {
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
   '/admin/nominations/$id': typeof AdminNominationsIdRoute
   '/admin/payments/$id': typeof AdminPaymentsIdRoute
+  '/admin/seat-reservations/$id': typeof AdminSeatReservationsIdRoute
   '/admin/sponsorships/$id': typeof AdminSponsorshipsIdRoute
   '/admin/inquiries': typeof AdminInquiriesIndexRoute
   '/admin/nominations': typeof AdminNominationsIndexRoute
   '/admin/payments': typeof AdminPaymentsIndexRoute
+  '/admin/seat-reservations': typeof AdminSeatReservationsIndexRoute
   '/admin/sponsorships': typeof AdminSponsorshipsIndexRoute
 }
 export interface FileRoutesById {
@@ -411,6 +443,7 @@ export interface FileRoutesById {
   '/publications': typeof PublicationsRoute
   '/rameshbabupasupuleti': typeof RameshbabupasupuletiRoute
   '/refund-policy': typeof RefundPolicyRoute
+  '/reserve-seat': typeof ReserveSeatRoute
   '/sponsorship': typeof SponsorshipRoute
   '/team': typeof TeamRoute
   '/teaser': typeof TeaserRoute
@@ -422,6 +455,7 @@ export interface FileRoutesById {
   '/admin/nominations': typeof AdminNominationsRouteWithChildren
   '/admin/passcodes': typeof AdminPasscodesRoute
   '/admin/payments': typeof AdminPaymentsRouteWithChildren
+  '/admin/seat-reservations': typeof AdminSeatReservationsRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/sponsorships': typeof AdminSponsorshipsRouteWithChildren
   '/admin/': typeof AdminIndexRoute
@@ -429,10 +463,12 @@ export interface FileRoutesById {
   '/admin/inquiries/$id': typeof AdminInquiriesIdRoute
   '/admin/nominations/$id': typeof AdminNominationsIdRoute
   '/admin/payments/$id': typeof AdminPaymentsIdRoute
+  '/admin/seat-reservations/$id': typeof AdminSeatReservationsIdRoute
   '/admin/sponsorships/$id': typeof AdminSponsorshipsIdRoute
   '/admin/inquiries/': typeof AdminInquiriesIndexRoute
   '/admin/nominations/': typeof AdminNominationsIndexRoute
   '/admin/payments/': typeof AdminPaymentsIndexRoute
+  '/admin/seat-reservations/': typeof AdminSeatReservationsIndexRoute
   '/admin/sponsorships/': typeof AdminSponsorshipsIndexRoute
 }
 export interface FileRouteTypes {
@@ -462,6 +498,7 @@ export interface FileRouteTypes {
     | '/publications'
     | '/rameshbabupasupuleti'
     | '/refund-policy'
+    | '/reserve-seat'
     | '/sponsorship'
     | '/team'
     | '/teaser'
@@ -473,6 +510,7 @@ export interface FileRouteTypes {
     | '/admin/nominations'
     | '/admin/passcodes'
     | '/admin/payments'
+    | '/admin/seat-reservations'
     | '/admin/settings'
     | '/admin/sponsorships'
     | '/admin/'
@@ -480,10 +518,12 @@ export interface FileRouteTypes {
     | '/admin/inquiries/$id'
     | '/admin/nominations/$id'
     | '/admin/payments/$id'
+    | '/admin/seat-reservations/$id'
     | '/admin/sponsorships/$id'
     | '/admin/inquiries/'
     | '/admin/nominations/'
     | '/admin/payments/'
+    | '/admin/seat-reservations/'
     | '/admin/sponsorships/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -509,6 +549,7 @@ export interface FileRouteTypes {
     | '/publications'
     | '/rameshbabupasupuleti'
     | '/refund-policy'
+    | '/reserve-seat'
     | '/sponsorship'
     | '/team'
     | '/teaser'
@@ -523,10 +564,12 @@ export interface FileRouteTypes {
     | '/admin/inquiries/$id'
     | '/admin/nominations/$id'
     | '/admin/payments/$id'
+    | '/admin/seat-reservations/$id'
     | '/admin/sponsorships/$id'
     | '/admin/inquiries'
     | '/admin/nominations'
     | '/admin/payments'
+    | '/admin/seat-reservations'
     | '/admin/sponsorships'
   id:
     | '__root__'
@@ -554,6 +597,7 @@ export interface FileRouteTypes {
     | '/publications'
     | '/rameshbabupasupuleti'
     | '/refund-policy'
+    | '/reserve-seat'
     | '/sponsorship'
     | '/team'
     | '/teaser'
@@ -565,6 +609,7 @@ export interface FileRouteTypes {
     | '/admin/nominations'
     | '/admin/passcodes'
     | '/admin/payments'
+    | '/admin/seat-reservations'
     | '/admin/settings'
     | '/admin/sponsorships'
     | '/admin/'
@@ -572,10 +617,12 @@ export interface FileRouteTypes {
     | '/admin/inquiries/$id'
     | '/admin/nominations/$id'
     | '/admin/payments/$id'
+    | '/admin/seat-reservations/$id'
     | '/admin/sponsorships/$id'
     | '/admin/inquiries/'
     | '/admin/nominations/'
     | '/admin/payments/'
+    | '/admin/seat-reservations/'
     | '/admin/sponsorships/'
   fileRoutesById: FileRoutesById
 }
@@ -604,6 +651,7 @@ export interface RootRouteChildren {
   PublicationsRoute: typeof PublicationsRoute
   RameshbabupasupuletiRoute: typeof RameshbabupasupuletiRoute
   RefundPolicyRoute: typeof RefundPolicyRoute
+  ReserveSeatRoute: typeof ReserveSeatRoute
   SponsorshipRoute: typeof SponsorshipRoute
   TeamRoute: typeof TeamRoute
   TeaserRoute: typeof TeaserRoute
@@ -782,6 +830,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RefundPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reserve-seat': {
+      id: '/reserve-seat'
+      path: '/reserve-seat'
+      fullPath: '/reserve-seat'
+      preLoaderRoute: typeof ReserveSeatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sponsorship': {
       id: '/sponsorship'
       path: '/sponsorship'
@@ -866,6 +921,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPaymentsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/seat-reservations': {
+      id: '/admin/seat-reservations'
+      path: '/seat-reservations'
+      fullPath: '/admin/seat-reservations'
+      preLoaderRoute: typeof AdminSeatReservationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/settings'
@@ -929,6 +991,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPaymentsIdRouteImport
       parentRoute: typeof AdminPaymentsRoute
     }
+    '/admin/seat-reservations/': {
+      id: '/admin/seat-reservations/'
+      path: '/'
+      fullPath: '/admin/seat-reservations/'
+      preLoaderRoute: typeof AdminSeatReservationsIndexRouteImport
+      parentRoute: typeof AdminSeatReservationsRoute
+    }
+    '/admin/seat-reservations/$id': {
+      id: '/admin/seat-reservations/$id'
+      path: '/$id'
+      fullPath: '/admin/seat-reservations/$id'
+      preLoaderRoute: typeof AdminSeatReservationsIdRouteImport
+      parentRoute: typeof AdminSeatReservationsRoute
+    }
     '/admin/sponsorships/': {
       id: '/admin/sponsorships/'
       path: '/'
@@ -987,6 +1063,21 @@ const AdminPaymentsRouteWithChildren = AdminPaymentsRoute._addFileChildren(
   AdminPaymentsRouteChildren,
 )
 
+interface AdminSeatReservationsRouteChildren {
+  AdminSeatReservationsIdRoute: typeof AdminSeatReservationsIdRoute
+  AdminSeatReservationsIndexRoute: typeof AdminSeatReservationsIndexRoute
+}
+
+const AdminSeatReservationsRouteChildren: AdminSeatReservationsRouteChildren = {
+  AdminSeatReservationsIdRoute: AdminSeatReservationsIdRoute,
+  AdminSeatReservationsIndexRoute: AdminSeatReservationsIndexRoute,
+}
+
+const AdminSeatReservationsRouteWithChildren =
+  AdminSeatReservationsRoute._addFileChildren(
+    AdminSeatReservationsRouteChildren,
+  )
+
 interface AdminSponsorshipsRouteChildren {
   AdminSponsorshipsIdRoute: typeof AdminSponsorshipsIdRoute
   AdminSponsorshipsIndexRoute: typeof AdminSponsorshipsIndexRoute
@@ -1006,6 +1097,7 @@ interface AdminRouteChildren {
   AdminNominationsRoute: typeof AdminNominationsRouteWithChildren
   AdminPasscodesRoute: typeof AdminPasscodesRoute
   AdminPaymentsRoute: typeof AdminPaymentsRouteWithChildren
+  AdminSeatReservationsRoute: typeof AdminSeatReservationsRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSponsorshipsRoute: typeof AdminSponsorshipsRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
@@ -1017,6 +1109,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminNominationsRoute: AdminNominationsRouteWithChildren,
   AdminPasscodesRoute: AdminPasscodesRoute,
   AdminPaymentsRoute: AdminPaymentsRouteWithChildren,
+  AdminSeatReservationsRoute: AdminSeatReservationsRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSponsorshipsRoute: AdminSponsorshipsRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
@@ -1061,6 +1154,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicationsRoute: PublicationsRoute,
   RameshbabupasupuletiRoute: RameshbabupasupuletiRoute,
   RefundPolicyRoute: RefundPolicyRoute,
+  ReserveSeatRoute: ReserveSeatRoute,
   SponsorshipRoute: SponsorshipRoute,
   TeamRoute: TeamRoute,
   TeaserRoute: TeaserRoute,

@@ -1,4 +1,12 @@
-import { postNominationCreateOrder, postNominationPayment, postSponsorshipCreateOrder, postSponsorshipPayment, type PasscodeReferralPayload } from "@/lib/api-client";
+import {
+  postNominationCreateOrder,
+  postNominationPayment,
+  postSeatReservationCreateOrder,
+  postSeatReservationPayment,
+  postSponsorshipCreateOrder,
+  postSponsorshipPayment,
+  type PasscodeReferralPayload,
+} from "@/lib/api-client";
 import type { SponsorshipTierId } from "@/data/awards";
 import { toast } from "sonner";
 
@@ -254,6 +262,103 @@ export async function openNominationRazorpayCheckout(
           });
 
           await onSuccess(payment.paymentId);
+          finish(() => resolve());
+        } catch (error) {
+          finish(() => reject(error));
+        }
+      },
+      modal: {
+        ondismiss: () => {
+          if (settled) return;
+          onDismiss?.();
+          finish(() => resolve());
+        },
+      },
+    });
+
+    rzp.on("payment.failed", (response: { error?: { description?: string; reason?: string } }) => {
+      const description =
+        response?.error?.description?.trim() ||
+        response?.error?.reason?.trim() ||
+        "Payment failed. Please try again.";
+      finish(() => reject(new Error(description)));
+    });
+
+    rzp.open();
+  });
+}
+
+export type SeatReservationCheckoutInput = {
+  fullName: string;
+  email: string;
+  phone: string;
+};
+
+export async function openSeatReservationRazorpayCheckout(
+  input: SeatReservationCheckoutInput,
+  reservationId: string,
+  onSuccess: () => void,
+  onDismiss?: () => void,
+): Promise<void> {
+  const order = await postSeatReservationCreateOrder({
+    reservationId,
+    fullName: input.fullName,
+    email: input.email,
+    phone: input.phone,
+  });
+
+  const scriptLoaded = await loadRazorpayScript();
+  if (!scriptLoaded || !window.Razorpay) {
+    throw new Error("Unable to load Razorpay checkout. Please try again.");
+  }
+
+  if (!order.orderId) {
+    throw new Error("Unable to create payment order.");
+  }
+
+  if (order.isTestCharge) {
+    const testInr = (order.amount / 100).toLocaleString("en-IN");
+    const displayInr = (order.displayAmountPaise / 100).toLocaleString("en-IN");
+    toast.message(
+      `Checkout will charge ₹${testInr} for testing (seat fee shown: ₹${displayInr}).`,
+    );
+  }
+
+  return new Promise((resolve, reject) => {
+    let settled = false;
+
+    const finish = (fn: () => void) => {
+      if (settled) return;
+      settled = true;
+      fn();
+    };
+
+    const rzp = new window.Razorpay!({
+      key: order.keyId,
+      amount: order.amount,
+      currency: order.currency,
+      name: "FG Media Group",
+      description: order.feeLabel,
+      order_id: order.orderId,
+      prefill: {
+        name: input.fullName,
+        email: input.email,
+        contact: input.phone,
+      },
+      theme: {
+        color: "#d97706",
+      },
+      handler: async (response: RazorpayHandlerResponse) => {
+        try {
+          await postSeatReservationPayment({
+            reservationId,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
+            amountPaise: order.totalPaise ?? order.displayAmountPaise,
+          });
+
+          onSuccess();
           finish(() => resolve());
         } catch (error) {
           finish(() => reject(error));

@@ -5,11 +5,12 @@ import type { SiteButtonSize } from "@/lib/site-buttons";
 type CtaRowProps = {
   primary?: { to: string; label: string; variant?: "gold" | "viera"; hash?: string };
   secondary?: { to: string; label: string; hash?: string };
+  tertiary?: { to: string; label: string; hash?: string };
   className?: string;
   size?: SiteButtonSize;
 };
 
-export function CtaRow({ primary, secondary, className = "", size = "md" }: CtaRowProps) {
+export function CtaRow({ primary, secondary, tertiary, className = "", size = "md" }: CtaRowProps) {
   return (
     <div className={`flex flex-wrap items-center justify-center gap-3 sm:gap-4 ${className}`}>
       {primary && (
@@ -32,6 +33,17 @@ export function CtaRow({ primary, secondary, className = "", size = "md" }: CtaR
           className="min-w-[10.5rem] justify-center"
         >
           {secondary.label}
+        </SiteLinkButton>
+      )}
+      {tertiary && (
+        <SiteLinkButton
+          to={tertiary.to}
+          hash={tertiary.hash}
+          variant="outline"
+          size={size}
+          className="min-w-[10.5rem] justify-center"
+        >
+          {tertiary.label}
         </SiteLinkButton>
       )}
     </div>

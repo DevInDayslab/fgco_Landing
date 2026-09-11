@@ -26,6 +26,7 @@ const pages = [
   { path: "/award-comes-to-you", changefreq: "weekly", priority: "0.85" },
   { path: "/sponsorship", changefreq: "monthly", priority: "0.7" },
   { path: "/nominate", changefreq: "weekly", priority: "0.8" },
+  { path: "/reserve-seat", changefreq: "weekly", priority: "0.8" },
   { path: "/contact", changefreq: "monthly", priority: "0.7" },
   { path: "/foundation", changefreq: "monthly", priority: "0.75" },
   { path: "/terms", changefreq: "yearly", priority: "0.4" },

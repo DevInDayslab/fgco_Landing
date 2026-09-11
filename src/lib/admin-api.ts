@@ -4,6 +4,7 @@ import { adminFetch } from "./api-client";
 export type DashboardMetrics = {
   nominations: number;
   inquiries: number;
+  seatReservations: number;
   revenueInr: number;
 };
 
@@ -40,7 +41,7 @@ export type PaymentRow = {
   razorpayPaymentId: string | null;
   amountInr: number;
   status: "created" | "paid" | "failed";
-  type: "nomination" | "sponsorship";
+  type: "nomination" | "sponsorship" | "seat_reservation";
   createdAt: string;
   contactName?: string | null;
   contactPhone?: string | null;
@@ -130,6 +131,43 @@ export type SponsorshipDetail = SponsorshipRow & {
   spots: number;
   updatedAt: string;
   paymentRecord: SponsorshipPaymentRecord | null;
+};
+
+export type SeatReservationPaymentRecord = {
+  id: string | null;
+  razorpayOrderId: string;
+  razorpayPaymentId: string | null;
+  status: string;
+  amountInr: number;
+  baseInr: number;
+  gstInr: number;
+  createdAt: string;
+  updatedAt: string;
+  metadata: Record<string, unknown> | null;
+};
+
+export type SeatReservationRow = {
+  id: string;
+  referenceId: string | null;
+  fullName: string;
+  email: string;
+  phone: string;
+  organization: string | null;
+  city: string | null;
+  status: "pending" | "confirmed" | "cancelled";
+  paymentId: string | null;
+  paymentPaid: boolean;
+  payment: {
+    status: string;
+    amountPaise: number;
+    razorpayPaymentId: string | null;
+  } | null;
+  createdAt: string;
+};
+
+export type SeatReservationDetail = SeatReservationRow & {
+  updatedAt: string;
+  paymentRecord: SeatReservationPaymentRecord | null;
 };
 
 export function useDashboardMetrics() {
@@ -282,6 +320,39 @@ export function useSponsorship(id: string) {
     queryKey: ["admin", "sponsorships", id],
     queryFn: () => adminFetch<SponsorshipDetail>(`/api/admin/sponsorships/${id}`),
     retry: 1,
+  });
+}
+
+export function useSeatReservations() {
+  return useQuery({
+    queryKey: ["admin", "seat-reservations"],
+    queryFn: () => adminFetch<{ items: SeatReservationRow[] }>("/api/admin/seat-reservations"),
+    retry: 1,
+  });
+}
+
+export function useSeatReservation(id: string) {
+  return useQuery({
+    queryKey: ["admin", "seat-reservations", id],
+    queryFn: () => adminFetch<SeatReservationDetail>(`/api/admin/seat-reservations/${id}`),
+    retry: 1,
+  });
+}
+
+export function useUpdateSeatReservation(id: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: Record<string, unknown>) =>
+      adminFetch<{ ok: boolean }>(`/api/admin/seat-reservations/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "seat-reservations"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "seat-reservations", id] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
+    },
   });
 }
 

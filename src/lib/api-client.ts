@@ -369,6 +369,58 @@ export async function postSponsorshipPayment(payload: {
   });
 }
 
+export async function postSeatReservationRegister(payload: {
+  fullName: string;
+  email: string;
+  phone: string;
+  organization?: string;
+  city?: string;
+}) {
+  return apiFetch<{ ok: boolean; id: string; referenceId: string }>(
+    "/api/seat-reservations/register",
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
+export async function postSeatReservationCreateOrder(payload: {
+  reservationId: string;
+  fullName: string;
+  email: string;
+  phone: string;
+}) {
+  return apiFetch<{
+    orderId: string;
+    amount: number;
+    displayAmountPaise: number;
+    basePaise: number;
+    gstPaise: number;
+    totalPaise: number;
+    isTestCharge: boolean;
+    currency: string;
+    keyId: string;
+    feeLabel: string;
+  }>("/api/seat-reservations/create-order", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function postSeatReservationPayment(payload: {
+  reservationId: string;
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  razorpaySignature: string;
+  amountPaise: number;
+}) {
+  return apiFetch<{ ok: boolean; paymentId: string }>("/api/seat-reservations/complete-payment", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export async function postPasscodesCheck(payload: { code: string }) {
   return apiFetch<{ valid: true }>("/api/passcodes/check", {
     method: "POST",

@@ -253,6 +253,25 @@ export const SEO_PAGES = {
     changefreq: "monthly",
     priority: 0.7,
   },
+  reserveSeat: {
+    path: "/reserve-seat",
+    title: "Reserve Your Seat — HIT ViERA Awards 2026 Ceremony",
+    description:
+      "Reserve your seat at the HIT ViERA National Awards 2026 Grand Awards Ceremony in Bengaluru for ₹1,000.",
+    ogTitle: "Reserve Your Seat — HIT ViERA Awards 2026",
+    ogDescription:
+      "Secure your place at the Grand Awards Ceremony in Bengaluru. One seat per registration at ₹1,000.",
+    ogImage: SEO_OG_IMAGES.awards,
+    ogImageAlt: SEO_OG_IMAGE_ALT.awards,
+    keywords: [
+      "HIT ViERA Awards ceremony",
+      "reserve seat",
+      "Bengaluru awards event",
+      "FG Media",
+    ],
+    changefreq: "weekly",
+    priority: 0.8,
+  },
   nominate: {
     path: "/nominate",
     title: "Official Nomination Portal — HIT ViERA Awards 2026",

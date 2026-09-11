@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AwardTierComparison } from "@/components/awards/AwardTierComparison";
 import { SignatureSpotlight } from "@/components/awards/SignatureSpotlight";
 import { CtaRow } from "@/components/awards/CtaRow";
@@ -62,7 +62,8 @@ function Awards() {
       >
         <CtaRow
           primary={{ to: "/nominate", label: "Submit Nomination" }}
-          secondary={{ to: "/sponsorship", label: "Sponsorship Tiers", hash: SPONSORSHIP_TIERS_HASH }}
+          secondary={{ to: "/reserve-seat", label: "Reserve Your Seat" }}
+          tertiary={{ to: "/sponsorship", label: "Sponsorship Tiers", hash: SPONSORSHIP_TIERS_HASH }}
           size="lg"
         />
       </PageHero>
@@ -166,6 +167,20 @@ function Awards() {
               Sports and Civil Society — celebrating excellence, recognising transformative
               leadership and inspiring future generations of innovators and nation builders.
             </p>
+            <div className="mt-8 flex flex-col items-start gap-4 rounded-2xl border border-gold/25 bg-gold/[0.06] p-6 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-foreground">Reserve Your Seat</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Secure your place at the Bengaluru ceremony — ₹1,000 per seat.
+                </p>
+              </div>
+              <Link
+                to="/reserve-seat"
+                className="inline-flex shrink-0 items-center justify-center rounded-xl bg-gold px-6 py-3 text-sm font-bold text-black transition-opacity hover:opacity-90"
+              >
+                Reserve Your Seat
+              </Link>
+            </div>
             </div>
           </div>
         </div>

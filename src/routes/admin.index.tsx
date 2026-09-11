@@ -53,8 +53,9 @@ function AdminDashboard() {
         subtitle="Live platform snapshot and incoming activity across nominations, sponsorships, and inquiries."
       />
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
         <MetricCard label="Total Nominations" value={data?.nominations ?? 0} />
+        <MetricCard label="Reserved Seats" value={data?.seatReservations ?? 0} />
         <MetricCard
           label="Total Revenue (INR)"
           value={`₹${(data?.revenueInr ?? 0).toLocaleString("en-IN")}`}
